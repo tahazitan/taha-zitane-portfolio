@@ -1,0 +1,77 @@
+/* Layout regression fix: never collapse real copy to zero height. */
+.work-card-copy{display:flex;flex-direction:column;gap:14px;min-width:0;min-height:0;padding:clamp(20px,2.5vw,26px)}
+.work-card-copy>*{min-width:0}
+.work-card-copy .work-card-summary{
+ display:block;flex:0 0 auto!important;position:static;
+ height:auto!important;min-height:auto;max-height:none!important;
+ overflow:visible;line-height:1.7;font-size:14px;color:#34515d;
+ text-wrap:pretty;overflow-wrap:break-word
+}
+.work-card-copy .tech-marks{flex:0 0 auto;row-gap:7px;align-self:stretch}
+.work-card-copy .tech-mark{flex-shrink:0;max-width:100%;font-size:11px}
+.work-card-copy .work-tags{
+ flex:0 0 auto;position:static;display:flex;flex-wrap:wrap;
+ gap:7px;margin:4px 0 4px;padding:14px 0 0;
+ border-top:1px solid #d9e7e4;min-height:0
+}
+.work-card-copy .work-tags span{position:static;display:inline-block;max-width:100%;font-size:10px;line-height:1.45;overflow-wrap:anywhere}
+.work-card-copy .work-card-actions{
+ position:static;flex:0 0 auto;display:flex;flex-wrap:wrap;
+ gap:10px;margin-top:auto;padding-top:14px
+}
+.work-card-copy .work-primary-action,.work-card-copy .work-secondary-action{min-height:43px;position:static;white-space:normal;line-height:1.4}
+.work-card-copy .work-card-title{flex:0 0 auto;overflow-wrap:anywhere;line-height:1.25!important}
+.work-card-art{min-height:0!important;height:auto;gap:10px;justify-content:flex-start;padding:17px 17px 27px!important}
+.work-card-art .editorial-project-no{font-size:10px;letter-spacing:.08em;line-height:1.5}
+.work-card-art .editorial-project-arrow{bottom:9px}
+.visual-project--topology{
+ width:100%;display:flex;flex-direction:column;min-width:0;
+ border:1px solid #466b81;border-radius:10px;overflow:hidden;
+ padding:11px;background:#102b3b;color:#eaf8fa
+}
+.visual-project--topology .visual-project-top{
+ display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+ padding:2px 4px 10px;color:#e0f3f6;font-size:10px;letter-spacing:.025em
+}
+.visual-project--topology .visual-project-top>span{max-width:100%;color:#d8ebef}
+.visual-project--topology .visual-project-top>span:last-child{font-size:9px;color:#a6d0db}
+.topology-preview-stage{position:relative;width:100%;min-width:0;overflow:hidden;border-radius:8px;border:1px solid #3e6b7d;background:#102c3c}
+.topology-preview-stage svg{display:block;width:100%;height:auto;max-height:none}
+.visual-project--topology .visual-project-caption{padding-top:9px;font-size:10px;color:#c9e3e9;letter-spacing:.04em}
+.visual-project--large{margin:16px 0 34px;padding:clamp(13px,2.5vw,24px)}
+.visual-project--large .topology-preview-stage{max-width:1060px;margin-inline:auto}
+.visual-project--large .visual-project-bottom{font-size:12px}
+.visual-project--large .visual-project-top{font-size:12px}
+.work-card-summary,.work-card-actions,.work-tags{z-index:auto}
+.tech-marks{row-gap:7px}
+.tech-mark{line-height:1.45;white-space:normal;overflow-wrap:anywhere}
+.tech-mark-label{white-space:normal;font-size:inherit}
+.tech-mark-image{width:29px;height:29px}
+.tech-mark-image img{width:25px;height:25px;object-fit:contain}
+.tech-marks--inline .tech-mark-image{width:25px;height:25px}
+.tech-marks--inline img{width:22px;height:22px}
+.tech-marks--mini .tech-mark-image{background:#fff}
+.tech-mark--wordmark{background:transparent!important;border-color:#9cb7b5!important;color:#315460!important}
+.capability-card .tech-mark--wordmark{color:#dbeaec!important;border-color:#7393a0!important}
+.source-technology .tech-mark--wordmark{color:#e0f2f4!important;border-color:#7393a0!important}
+.roadmap-stage{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;line-height:1.55;overflow-wrap:anywhere;text-align:center}
+.roadmap-stage svg{flex-shrink:0}
+.roadmap-stages{gap:8px}
+.source-figure svg{min-width:0}
+@media(max-width:900px){
+ .work-card-copy .work-card-summary{line-height:1.75}
+ .work-card-art{padding:15px 15px 25px!important}
+}
+@media(max-width:550px){
+ .work-card-copy{padding:20px;gap:12px}
+ .work-card-copy .work-tags{gap:6px}
+ .work-card-copy .work-card-summary{font-size:14px;line-height:1.65}
+ .work-card-art{padding:12px 12px 24px!important}
+ .visual-project--topology{padding:8px}
+ .visual-project--topology .visual-project-top{font-size:9px}
+ .visual-project--topology .visual-project-top>span:last-child{font-size:8px}
+ .visual-project--large .topology-preview-stage{overflow-x:auto}
+ .visual-project--large .topology-preview-stage svg{min-width:530px}
+ .roadmap-stages{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(prefers-reduced-motion:reduce){.work-card:hover{transform:none}}
