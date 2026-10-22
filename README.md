@@ -78,3 +78,10 @@ Source files: src/components/DiagnosticExplorer.tsx, src/components/SecurityOper
 To extend diagnostic scenarios, add entries with localized en/fr/ar text, safe illustrative outputs and evidence-based decision stages. Add only synthetic event data to the SOC demo using TEST-NET addresses and plausible defensive analysis. Link new skills to already-present project slugs. Verified lab evidence, once created and sanitized, belongs in the relevant case study, not in the synthetic demonstration.
 
 Verification: npm install then npm run check. GitHub Actions also executes scripts/browser-smoke.mjs with real Chromium interactions for diagnostics, SOC filtering, skill links, project search, 2D/3D controls and mobile EN/FR/AR. GitHub success validates the source build and browser test environment; Cloudflare production deployment status requires independent verification. Cloudflare uses Workers Static Assets from ./out, not SSR.
+
+
+## Published network-lab source evidence (Oct 2026)
+
+Two portfolio case studies link to the public [Enterprise Network Lab](https://github.com/tahazitan/enterprise-network-lab): (1) the **base FRRouting/OSPF two-site Containerlab source** and (2) the **secure VLAN/WireGuard profile** under `secure/`. Both include configuration files, runbooks and test scripts. They are described as **source-published, runtime unverified**, not live operational proof. The base profile includes no VPN or VLAN; the secure profile implements WireGuard, not FortiGate/Palo Alto IPsec. The 3D diagrams are architectural illustrations, not connected production networks.
+
+These source-backed case studies lead the project gallery. Pre-existing professional experience remains CV-reported, and remaining lab blueprints are separate reference designs. All EN/FR/AR routes are included in static export.
