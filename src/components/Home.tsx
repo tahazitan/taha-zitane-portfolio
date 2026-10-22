@@ -18,7 +18,7 @@ export default function Home({locale}:{locale:Locale}){
     <div className="hero-meta"><span className="small-overline">{c.eyebrow}</span><span className="live-tag"><span className="pulse-dot"/>{c.availability}</span></div>
     <div className="hero-grid"><div className="hero-copy">
       <div className="hero-serial"><span className="index-dot"/>{locale==='ar'?'الأنظمة / الشبكات / العمليات':'SYSTEMS / NETWORKS / OPERATIONS'}<span>— 001</span></div>
-      <h1 id="hero-title"><span className="hero-person">${locale==='ar'?'طه زيطان':'Taha Zitane'}</span><span className="hero-serif">${locale==='ar'?'هندسة الأنظمة والشبكات':locale==='fr'?'Systèmes, réseaux & infrastructure.':'Systems, networks & infrastructure.'}</span></h1>
+      <h1 id="hero-title"><span className="hero-person">{locale==='ar'?'طه زيطان':'Taha Zitane'}</span><span className="hero-serif">{locale==='ar'?'هندسة الأنظمة والشبكات':locale==='fr'?'Systèmes, réseaux & infrastructure.':'Systems, networks & infrastructure.'}</span></h1>
       <div className="hero-lead"><div className="hero-rule"/><div><h2>{c.heroSubtitle}</h2><p>{c.heroLead}</p></div></div>
       <div className="hero-actions"><a className="btn btn-primary" href="#work">{locale==='fr'?'Études de cas':locale==='ar'?'المشاريع التقنية':'View projects'}<ArrowUpRight size={18}/></a><a className="btn btn-text" href="#contact">{locale==='fr'?'Me contacter':locale==='ar'?'تواصل معي':'Get in touch'}<ArrowRight size={18}/></a></div>
       <a className="hero-resume-link" href="/cv/Taha_Zitane_CV_2026.pdf" download="Taha_Zitane_CV_2026.pdf"><FileDown size={17}/>{locale==='ar'?'تحميل السيرة الذاتية (PDF)':locale==='fr'?'Télécharger mon CV (PDF)':'Download CV (PDF)'}<ArrowUpRight size={16}/></a>
