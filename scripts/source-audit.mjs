@@ -13,7 +13,8 @@ const navigation=readFileSync(path.join(root,'src/components/Navigation.tsx'),'u
 if(!navigation.includes('const anchors=["work","experience","education","expertise","contact"]')||!navigation.includes('c.nav[5]'))throw new Error('Recruiter navigation must expose five distinct useful anchors');
 const home=readFileSync(path.join(root,'src/components/Home.tsx'),'utf8');
 if(!home.includes('<ProjectExplorer')||!home.includes('<SourceTopology'))throw new Error('Evidence-led projects, sourced diagram or representative media missing');
-if(home.includes('>||home.includes('<TechnologyReferences')||home.includes('engineeringMethod')||home.includes('hero-proof-strip'))throw new Error('Redundant portfolio widgets or vanity metrics not removed');
+for(const unused of ['SolutionMedia','SkillEvidence','TechnologyReferences','engineeringMethod','hero-proof-strip'])if(home.includes(unused))throw new Error('Unused widget remains: '+unused);
+if(home.includes('hero-person">$')||home.includes('hero-serif">$'))throw new Error('Literal dollar marker rendered in professional heading');
 const order=['className="hero"','className="about-section"','className="section experience-section"','className="section work-section"'];
 if(order.some((a,i)=>i>0&&home.indexOf(a)<home.indexOf(order[i-1])))throw new Error('Personal context and experience must precede case studies');
 if(home.includes('<EquipmentGallery')||home.includes('<TopologyStudio')||home.includes('<NetworkBackdrop'))throw new Error('Unsourced equipment/topology visuals are still displayed');
