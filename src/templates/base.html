@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="{{ lang }}" dir="{{ t.dir }}">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#070c12" />
+  <meta name="description" content="{{ page_description }}" />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:title" content="{{ page_title }}" />
+  <meta property="og:description" content="{{ page_description }}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="{{ t.locale }}" />
+  <meta name="twitter:card" content="summary" />
+  <title>{{ page_title }}</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+  {% for loc, href in alternatives.items() %}<link rel="alternate" hreflang="{{ loc }}" href="{{ href }}" />{% endfor %}
+</head>
+<body>
+  <a class="skip-link" href="#main">{{ t.nav_projects if page_kind == 'home' else t.case_overview }}</a>
+  <div class="site-shell">
+    <header class="site-header" id="top">
+      <nav class="nav wrap" aria-label="{{ t.nav_label }}">
+        <a class="brand" href="{{ t.path }}" aria-label="Taha Zitane — Home"><span class="brand-glyph">T<span class="dot">.</span>Z</span><span class="brand-copy"><strong>TAHA ZITANE</strong><small>INFRASTRUCTURE / SECURITY</small></span></a>
+        <button id="menu-toggle" class="menu-toggle" type="button" aria-controls="nav-content" aria-expanded="false" aria-label="{{ t.menu_open }}"><span></span><span></span><span></span></button>
+        <div class="nav-content" id="nav-content">
+          <div class="nav-links">
+            <a href="{{ t.path }}#projects">{{ t.nav_projects }}</a>
+            <a href="{{ t.path }}#experience">{{ t.nav_experience }}</a>
+            <a href="{{ t.path }}#expertise">{{ t.nav_expertise }}</a>
+            <a href="{{ t.path }}#services">{{ t.nav_services }}</a>
+          </div>
+          <div class="nav-right">
+            <div class="lang-select" aria-label="{{ t.lang_switch }}">
+              {% for code, loc in languages.items() %}<a href="{{ lang_urls[code] }}" lang="{{ code }}" hreflang="{{ code }}" {% if lang == code %}class="selected" aria-current="page"{% endif %}>{{ loc.code }}</a>{% endfor %}
+            </div>
+            <a class="nav-contact" href="{{ t.path }}#contact">{{ t.nav_contact }} <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </nav>
+    </header>
+    {% block content %}{% endblock %}
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <div><a class="footer-brand" href="{{ t.path }}">TAHA ZITANE<span class="dot">.</span></a><p>{{ t.footer_note }}</p></div>
+        <div class="footer-links"><a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="mailto:{{ profile.email }}">Email ↗</a></div>
+      </div>
+      <div class="wrap footer-bottom"><span>© 2026 Taha Zitane. {{ t.footer_copyright }}</span><span>DESIGNED FOR CLARITY · BUILT TO EVOLVE</span></div>
+    </footer>
+  </div>
+  <script src="/assets/site.js" defer></script>
+</body>
+</html>
