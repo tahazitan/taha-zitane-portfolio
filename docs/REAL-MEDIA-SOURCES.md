@@ -30,3 +30,21 @@ The source-linked diagrams in the portfolio use node and link relationships from
 ## Proposed public grouping
 
 Keep the homepage focused on **Solutions / Engineering Work**, not a carousel of vendor names. Put actual topology screenshots in the matching case study, attach a clear source caption, and provide a route to the related configuration / technical documentation.
+
+## Verified official technology references (22 October 2026)
+
+These are external educational/technical references linked from the on-site expertise section; none is represented as evidence of the portfolio owner's completed deployment:
+
+- Microsoft AD DS: https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview
+- Microsoft GPO: https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-management-console
+- Ubuntu Server administration: https://ubuntu.com/server/docs/
+- Ubuntu Server security: https://ubuntu.com/server/docs/how-to/security/
+- Docker Engine: https://docs.docker.com/get-started/docker-overview/
+- Wireshark interface and packet analysis: https://www.wireshark.org/docs/wsug_html_chunked/ChapterUsing.html
+- Wazuh architecture: https://documentation.wazuh.com/current/getting-started/architecture.html
+- Fortinet FortiGate product documentation: https://docs.fortinet.com/product/fortigate
+- Palo Alto site-to-site VPN: https://docs.paloaltonetworks.com/network-security/ipsec-vpn/administration/set-up-site-to-site-vpn
+- GNS3 authentic topology capture method: https://docs.gns3.com/docs-3.1-en/web-ui/use-screenshot
+- Cisco enterprise networking: https://www.cisco.com/c/en/us/solutions/enterprise-networks/index.html
+
+**Images remain excluded until usage rights are verified**, despite official screenshots being viewable. Docker's trademark guidelines in particular limit logo reproduction and require permission for some visual uses: https://www.docker.com/legal/trademark-guidelines/. The interface links to original manuals instead of copying copyrighted screenshots.
