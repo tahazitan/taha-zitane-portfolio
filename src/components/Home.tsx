@@ -10,6 +10,24 @@ import ProjectExplorer from "./ProjectExplorer";
 import {professional} from "@/data/professional";
 import {content,githubUrl,linkedInUrl,mailUrl,phoneNumber,prettyPhoneNumber,Locale} from "@/data/content";
 
+const engineeringMethod = {
+ en:{kicker:"THE WORKING METHOD",title:"Design for the day after deployment.",intro:"Infrastructure is useful only when it can be operated, investigated and handed over. This is the workflow I apply to support tasks and develop through my documented labs.",steps:[
+  {num:"01",title:"Understand",tag:"SCOPE / BASELINE",body:"Clarify symptoms, users, topology, dependencies and the boundaries of the assignment before changing a system."},
+  {num:"02",title:"Configure",tag:"BUILD / CONTROL",body:"Work through repeatable configurations, access rules and change notes with attention to least privilege and reversibility."},
+  {num:"03",title:"Verify",tag:"TEST / OBSERVE",body:"Check reachability, name resolution, event logs and expected access paths. Identify what has been tested versus what remains planned."},
+  {num:"04",title:"Document",tag:"HANDOVER / IMPROVE",body:"Record decisions, troubleshooting steps and next checks so another person can understand and support the environment."}]},
+ fr:{kicker:"MA MÉTHODE DE TRAVAIL",title:"Une infrastructure pensée pour durer.",intro:"Une infrastructure utile doit rester compréhensible, vérifiable et maintenable. Voici ma démarche pour les interventions de support et les laboratoires documentés.",steps:[
+  {num:"01",title:"Comprendre",tag:"PÉRIMÈTRE / ÉTAT INITIAL",body:"Qualifier les symptômes, les utilisateurs, la topologie, les dépendances et les limites de l'intervention avant de modifier le système."},
+  {num:"02",title:"Configurer",tag:"MISE EN ŒUVRE / CONTRÔLE",body:"Procéder par configurations reproductibles, règles d'accès précises et changements documentés, avec un plan de retour arrière."},
+  {num:"03",title:"Vérifier",tag:"TESTS / SUPERVISION",body:"Contrôler la connectivité, le DNS, les journaux et les flux autorisés. Distinguer les vérifications effectuées des tests encore prévus."},
+  {num:"04",title:"Documenter",tag:"TRANSMISSION / AMÉLIORATION",body:"Consigner les décisions, diagnostics et étapes suivantes pour faciliter la reprise par un autre technicien."}]},
+ ar:{kicker:"منهجيتي في العمل",title:"بنية يمكن تشغيلها وفهمها وصيانتها.",intro:"قيمة البنية التحتية لا تقف عند التركيب؛ بل تظهر عند التشخيص والتحقق والتوثيق. هذه هي المنهجية التي أتبعها في الدعم التقني وأطوّرها في مختبراتي.",steps:[
+  {num:"01",title:"فهم المشكلة",tag:"النطاق / الوضع الأولي",body:"تحديد الأعراض والمستخدمين وطوبولوجيا الشبكة والاعتماديات وحدود المهمة قبل تغيير أي إعداد."},
+  {num:"02",title:"الإعداد والتنفيذ",tag:"التنفيذ / الضبط",body:"اعتماد إعدادات قابلة لإعادة التطبيق، وصلاحيات دقيقة، وتوثيق التغييرات مع مراعاة إمكانية الرجوع."},
+  {num:"03",title:"التحقق",tag:"اختبارات / مراقبة",body:"فحص الاتصال وDNS والسجلات ومسارات الوصول، والتمييز بوضوح بين الاختبارات المنجزة والمخطط لها."},
+  {num:"04",title:"التوثيق",tag:"تسليم / تحسين",body:"توثيق القرارات وخطوات التشخيص والفحوص المقبلة حتى يستطيع شخص آخر صيانة البيئة التقنية."}]}
+} as const;
+
 export default function Home({locale}:{locale:Locale}){
  const c=content[locale];const rtl=locale==="ar";const credentials=professional[locale];
  return <div className={`page-shell ${rtl?"rtl":""}`} dir={rtl?"rtl":"ltr"}>
@@ -24,6 +42,12 @@ export default function Home({locale}:{locale:Locale}){
       <div className="hero-lead"><div className="hero-rule"/><div><h2>{c.heroSubtitle}</h2><p>{c.heroLead}</p></div></div>
       <div className="hero-actions"><a className="btn btn-primary" href="#work">{locale==='fr'?'Voir mes projets':locale==='ar'?'تصفح المشاريع':'Explore case studies'}<ArrowUpRight size={18}/></a><a className="btn btn-text" href="#experience">{locale==='fr'?'Mon parcours':locale==='ar'?'الخبرات المهنية':'Professional experience'}<ArrowRight size={18}/></a></div>
       <a className="hero-3d-link" href="#topology"><Network size={18}/>{c.seeWork}<ArrowUpRight size={16}/></a>
+      <div className="hero-proof-strip" aria-label={locale==='ar'?'ملخص ملف الأعمال':locale==='fr'?'Portfolio en chiffres':'Portfolio overview'}>
+        <div><strong>{String(c.projects.length).padStart(2,'0')}</strong><span>{locale==='ar'?'دراسات مشاريع':locale==='fr'?'études de cas':'case studies'}</span></div>
+        <div><strong>{String(c.experience.length).padStart(2,'0')}</strong><span>{locale==='ar'?'تجارب مهنية':locale==='fr'?'expériences':'career entries'}</span></div>
+        <div><strong>03</strong><span>{locale==='ar'?'لغات':locale==='fr'?'langues':'languages'}</span></div>
+      </div>
+
     </div><div className="hero-visual">
        <div className="portrait-frame"><div className="portrait-image"><Image src="/images/taha-portrait.webp" alt={c.portraitAlt} fill priority sizes="(max-width: 900px) 80vw, 440px"/></div><span className="portrait-vertical">{locale==='ar'?'طه زيطان — 2026':'TAHA / ZITANE — 2026'}</span></div>
        <div className="portrait-caption"><div><span className="image-number">FIG. 01</span><strong>{c.portraitLabel}</strong></div><span>{c.portraitCaption}</span></div>
@@ -62,6 +86,15 @@ export default function Home({locale}:{locale:Locale}){
    </div></section>
 
    <section className="expertise-section" id="expertise" aria-labelledby="expertise-title"><div className="container-xl"><Reveal className="section-heading"><span className="section-number light-number">{c.capabilitiesKicker}</span><div className="heading-row"><h2 id="expertise-title">{c.capabilitiesTitle}</h2><p>{c.capabilitiesSub}</p></div></Reveal><div className="capability-grid">{c.capabilities.map(cap=><Reveal key={cap.n}><article className="capability-card"><span className="cap-no">{cap.n}</span><h3>{cap.title}</h3><p>{cap.description}</p><span className="cap-tech">{cap.tech}</span></article></Reveal>)}</div></div></section>
+
+   <section className="engineering-method" aria-labelledby="engineering-method-title">
+     <div className="container-xl">
+       <Reveal className="method-heading"><span className="section-number">{engineeringMethod[locale].kicker}</span><h2 id="engineering-method-title">{engineeringMethod[locale].title}</h2><p>{engineeringMethod[locale].intro}</p></Reveal>
+       <div className="method-grid">
+         {engineeringMethod[locale].steps.map(step=><Reveal key={step.num}><article className="method-card"><div className="method-card-top"><strong>{step.num}</strong><span className="method-card-line"/></div><span className="method-tag">{step.tag}</span><h3>{step.title}</h3><p>{step.body}</p><span className="method-card-arrow" aria-hidden="true">↗</span></article></Reveal>)}
+       </div>
+     </div>
+   </section>
 
    <section className="section service-section" id="services" aria-labelledby="services-title"><div className="container-xl"><Reveal className="section-heading"><span className="section-number">{c.servicesKicker}</span><div className="heading-row"><h2 id="services-title">{c.servicesTitle}</h2><p>{c.servicesSub}</p></div></Reveal><div className="services-grid">{c.services.map(service=><Reveal key={service.number}><article className="service-item"><span>{service.number}</span><ArrowUpRight size={22}/><h3>{service.title}</h3><p>{service.body}</p></article></Reveal>)}</div></div></section>
 
