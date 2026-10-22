@@ -87,6 +87,10 @@ try{
  const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
  mobile.on('pageerror',err=>errors.push('mobile: '+err.message));
  await mobile.goto(base+'/fr/',{waitUntil:'domcontentloaded',timeout:30000});
+ await mobile.waitForFunction(()=>{const img=document.querySelector('.portrait-photo');return img instanceof HTMLImageElement&&img.complete&&img.naturalWidth>100;},{timeout:15000});
+ const mobilePortrait=await mobile.locator('.portrait-frame').boundingBox();
+ assert.ok(mobilePortrait&&mobilePortrait.y>=0&&mobilePortrait.y<770,'Authentic portrait must be visible in initial mobile viewport');
+
  await mobile.locator('.nav-toggle').waitFor({timeout:15000});
  await mobile.waitForTimeout(650);
  await mobile.locator('.nav-toggle').click();
@@ -101,6 +105,8 @@ try{
  assert.equal(await mobile.locator('html').getAttribute('dir'),'rtl');
  assert.ok((await mobile.locator('.brand-name').innerText()).includes('طه زيطان'),'Arabic spelling is correct');
  assert.equal(await mobile.locator('.equipment-card').count(),7,'Equipment gallery available in Arabic RTL');
+ const arabicPortrait=await mobile.locator('.portrait-frame').boundingBox();
+ assert.ok(arabicPortrait&&arabicPortrait.y>=0&&arabicPortrait.y<770,'Arabic mobile also shows the portrait near the top');
  const overflowAR=await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
  assert.ok(overflowAR<=2,`Arabic page horizontal overflow: ${overflowAR}px`);
  await mobile.screenshot({path:path.join(root,'screenshots','mobile-ar.png'),animations:'disabled'});
