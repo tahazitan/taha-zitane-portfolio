@@ -391,7 +391,7 @@ button, input { font: inherit; }
 .portrait-image .portrait-photo {
   object-fit: cover;
   object-position: 50% 23%;
-  filter: brightness(1.12) contrast(0.99) saturate(1.04);
+  filter: brightness(1.05) contrast(1.01) saturate(1.01);
 }
 .hero-visual .portrait-caption {
   width: min(405px, 100%);
