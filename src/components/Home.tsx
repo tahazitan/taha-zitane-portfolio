@@ -6,6 +6,9 @@ import LocaleSetup from "./LocaleSetup";
 import ProjectExplorer from "./ProjectExplorer";
 import SourceTopology from "./SourceTopology";
 import TechnologyMarks from "./TechnologyMarks";
+import ExperienceProof from "./ExperienceProof";
+import DiagnosticSection from "./DiagnosticSection";
+import LabRoadmap from "./LabRoadmap";
 import {professional} from "@/data/professional";
 import {content,githubUrl,linkedInUrl,mailUrl,phoneNumber,prettyPhoneNumber,Locale} from "@/data/content";
 
@@ -38,7 +41,7 @@ export default function Home({locale}:{locale:Locale}){
 
    <section className="section experience-section" id="experience" aria-labelledby="experience-title"><div className="container-xl">
      <Reveal className="section-heading"><span className="section-number">{c.experienceKicker}</span><div className="heading-row"><h2 id="experience-title">{c.experienceTitle}</h2><p>{c.experienceSub}</p></div></Reveal>
-     <div className="experience-list">{c.experience.map((exp,i)=><Reveal key={i}><div className="experience-item"><div className="experience-period">{exp.period}</div><div className="experience-detail"><h3>{exp.position}</h3><p>{exp.organisation}</p><TechnologyMarks technologies={[exp.position,exp.details]} limit={3} variant="inline"/></div><p className="experience-desc">{exp.details}</p><span className="experience-arrow">↗</span></div></Reveal>)}</div>
+     <div className="experience-list">{c.experience.map((exp,i)=><Reveal key={i}><div className="experience-item"><div className="experience-period">{exp.period}</div><div className="experience-detail"><h3>{exp.position}</h3><p>{exp.organisation}</p><ExperienceProof index={i} locale={locale}/></div><p className="experience-desc">{exp.details}</p><span className="experience-arrow">↗</span></div></Reveal>)}</div>
    </div></section>
 
    <section className="section work-section" id="work" aria-labelledby="work-title"><div className="container-xl">
@@ -46,9 +49,11 @@ export default function Home({locale}:{locale:Locale}){
      <ProjectExplorer locale={locale} projects={c.projects}/>
    </div></section>
 
+   <DiagnosticSection locale={locale}/>
    <SourceTopology locale={locale}/>
+   <LabRoadmap locale={locale}/>
 
-   <section className="expertise-section" id="expertise" aria-labelledby="expertise-title"><div className="container-xl"><Reveal className="section-heading"><span className="section-number light-number">{c.capabilitiesKicker}</span><div className="heading-row"><h2 id="expertise-title">{c.capabilitiesTitle}</h2><p>{c.capabilitiesSub}</p></div></Reveal><div className="capability-grid">{c.capabilities.map(cap=><Reveal key={cap.n}><article className="capability-card"><span className="cap-no">{cap.n}</span><h3>{cap.title}</h3><p>{cap.description}</p><TechnologyMarks technologies={[cap.tech]} limit={4} variant="inline"/><span className="cap-tech">{cap.tech}</span></article></Reveal>)}</div></div></section>
+   <section className="expertise-section" id="expertise" aria-labelledby="expertise-title"><div className="container-xl"><Reveal className="section-heading"><span className="section-number light-number">{c.capabilitiesKicker}</span><div className="heading-row"><h2 id="expertise-title">{c.capabilitiesTitle}</h2><p>{c.capabilitiesSub}</p></div></Reveal><div className="capability-grid">{c.capabilities.map(cap=><Reveal key={cap.n}><article className="capability-card"><span className="cap-no">{cap.n}</span><h3>{cap.title}</h3><p>{cap.description}</p><TechnologyMarks technologies={[cap.tech]} limit={4} variant="inline"/><div className="capability-keywords">{cap.tech.split("  /  ").map(x=><span key={x}>{x}</span>)}</div></article></Reveal>)}</div></div></section>
 
    <section className="section education-section" id="education"><div className="container-xl">
     <Reveal className="section-heading"><span className="section-number">{credentials.kicker}</span><div className="heading-row"><h2>{credentials.title}</h2><p>{credentials.intro}</p></div></Reveal>

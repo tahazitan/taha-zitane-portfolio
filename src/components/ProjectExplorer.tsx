@@ -4,6 +4,7 @@ import Link from 'next/link';
 import {ArrowUpRight, Github, Search, X, Network, BriefcaseBusiness} from 'lucide-react';
 import {projectPath,type Locale,type Project} from '@/data/content';
 import TechnologyMarks from './TechnologyMarks';
+import VisualProject from './VisualProject';
 
 type Group='all'|'architecture'|'experience';
 const strings={
@@ -34,8 +35,10 @@ export default function ProjectExplorer({locale,projects}:{locale:Locale;project
   </div>
   <div className="work-results-count" role="status" aria-live="polite"><strong>{matches.length.toString().padStart(2,'0')}</strong> / {projects.length} {t.count}</div>
   {matches.length?<div className="work-cards">{matches.map((p,i)=><article className="work-card" key={p.slug}>
-     <Link className="work-card-art work-art-editorial" href={projectPath(locale,p.slug)} aria-label={`${t.study}: ${p.title}`}><span className="editorial-project-no">{p.number}</span><div className="editorial-project-body"><small>{p.statusKind==='historical'?(locale==='fr'?'EXPÉRIENCE PROFESSIONNELLE':locale==='ar'?'خبرة مهنية':'PROFESSIONAL EXPERIENCE'):(locale==='fr'?'ÉTUDE TECHNIQUE':locale==='ar'?'دراسة تقنية':'ENGINEERING CASE STUDY')}</small><strong>{p.title}</strong></div><TechnologyMarks technologies={p.tech} limit={5} variant="card"/><span className="editorial-project-arrow"><ArrowUpRight size={22}/></span></Link>
+     <Link className="work-card-art work-art-editorial" href={projectPath(locale,p.slug)} aria-label={`${t.study}: ${p.title}`}><span className="editorial-project-no">{p.number} / {p.statusKind==='historical'?(locale==='fr'?'EXPÉRIENCE':locale==='ar'?'خبرة فعلية':'EXPERIENCE'):(locale==='fr'?'ARCHITECTURE / LAB':locale==='ar'?'تصميم / مختبر':'ARCHITECTURE / LAB')}</span><VisualProject slug={p.slug} locale={locale}/><span className="editorial-project-arrow"><ArrowUpRight size={22}/></span></Link>
      <div className="work-card-copy"><div className="work-card-meta"><span>{p.number} / {p.type}</span></div>
+       <h3 className="work-card-title"><Link href={projectPath(locale,p.slug)}>{p.title}</Link></h3>
+       <TechnologyMarks technologies={p.tech} limit={5} variant="inline"/>
        <p className="work-card-summary">{p.summary}</p>
        <div className="work-tags">{p.tech.slice(0,6).map(tag=><span key={tag}>{tag}</span>)}</div>
        <div className="work-card-actions"><Link className="work-primary-action" href={projectPath(locale,p.slug)}>{t.study}<ArrowUpRight size={17}/></Link>{p.link&&<a className="work-secondary-action" href={p.link} target="_blank" rel="noopener noreferrer" aria-label={`${t.repo}: ${p.title}`}><Github size={18}/><span>{t.repo}</span></a>}</div>
