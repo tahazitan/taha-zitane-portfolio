@@ -1,0 +1,25 @@
+name: Portfolio V2 — production build
+on:
+  push:
+    branches: ["portfolio-v2", "main"]
+  pull_request:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm run check
+      - name: Check exported locale homepages
+        run: |
+          test -f out/index.html
+          test -f out/fr/index.html
+          test -f out/ar/index.html
+          test -f out/projects/enterprise-network-lab/index.html
+          test -f out/fr/projects/enterprise-network-lab/index.html
+          test -f out/ar/projects/enterprise-network-lab/index.html
