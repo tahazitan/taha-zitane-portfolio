@@ -10,9 +10,12 @@ for(const language of ['en','fr','ar'])if(!content.includes(`${language}:`))thro
 if(!content.includes('طه زيطان') || content.includes('طه زيتان')) throw new Error('Correct Arabic identity not applied consistently');
 if(!/@media\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/.test(css))throw new Error('Reduced motion CSS missing');
 const navigation=readFileSync(path.join(root,'src/components/Navigation.tsx'),'utf8');
-if(!navigation.includes('...c.nav')||navigation.includes('...c.nav.slice'))throw new Error('Navigation items drift from actual 7 anchors');
+if(!navigation.includes('const anchors=["work","experience","education","expertise","contact"]')||!navigation.includes('c.nav[5]'))throw new Error('Recruiter navigation must expose five distinct useful anchors');
 const home=readFileSync(path.join(root,'src/components/Home.tsx'),'utf8');
-if(!home.includes('<ProjectExplorer')||!home.includes('<SourceTopology')||!home.includes('<SkillEvidence')||!home.includes('<TechnologyReferences')||!home.includes('<SolutionMedia'))throw new Error('Source-backed portfolio sections missing');
+if(!home.includes('<ProjectExplorer')||!home.includes('<SourceTopology')||!home.includes('<SolutionMedia'))throw new Error('Evidence-led projects, sourced diagram or representative media missing');
+if(home.includes('<SkillEvidence')||home.includes('<TechnologyReferences')||home.includes('engineeringMethod')||home.includes('hero-proof-strip'))throw new Error('Redundant portfolio widgets or vanity metrics not removed');
+const order=['className="hero"','className="about-section"','className="section experience-section"','className="section work-section"'];
+if(order.some((a,i)=>i>0&&home.indexOf(a)<home.indexOf(order[i-1])))throw new Error('Personal context and experience must precede case studies');
 if(home.includes('<EquipmentGallery')||home.includes('<TopologyStudio')||home.includes('<NetworkBackdrop'))throw new Error('Unsourced equipment/topology visuals are still displayed');
 const sourceTopology=readFileSync(path.join(root,'src/components/SourceTopology.tsx'),'utf8');
 for(const required of ['hq-rtr','branch-rtr','hq-switch','branch-switch','eth1 ↔ eth1','topology.clab.yml','topology.secure.clab.yml'])if(!sourceTopology.includes(required))throw new Error('Source topology missing documented node or interface: '+required);
@@ -23,4 +26,4 @@ const media=readFileSync(path.join(root,'src/components/SolutionMedia.tsx'),'utf
 for(const name of ['Servers_in_a_Rack.jpg','Cisco_SG_200-08P_front.jpg','Fortinet_FortiGate_6501F.png','Wireshark_interface','creativecommons.org'])if(!media.includes(name))throw new Error('Missing attributed real-media source: '+name);
 const tech=readFileSync(path.join(root,'src/components/TechnologyReferences.tsx'),'utf8');
 for(const domain of ['learn.microsoft.com','ubuntu.com','docs.docker.com','wireshark.org','documentation.wazuh.com','docs.fortinet.com','docs.paloaltonetworks.com','docs.gns3.com','cisco.com'])if(!tech.includes(domain))throw new Error('Missing technology source: '+domain);
-console.log('PASS: four Creative Commons real images, official platform reference links, actual YAML topology references, no fictional equipment images or GNS3 screenshots, 8 cases, 3 locales, navigation, portrait, media transparency');
+console.log('PASS: concise experience-first home page, five meaningful navigation items, no redundant widgets, four Creative Commons real images, official platform reference links, actual YAML topology references, no fictional equipment images or GNS3 screenshots, 8 cases, 3 locales, navigation, portrait, media transparency');
