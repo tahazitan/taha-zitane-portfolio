@@ -1,0 +1,33 @@
+{
+  "name": "taha-zitane-portfolio-v2",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "tsc --noEmit",
+    "check": "npm run lint && npm run build",
+    "prebuild": "node scripts/source-audit.mjs",
+    "postbuild": "node scripts/localize-export.mjs"
+  },
+  "dependencies": {
+    "next": "^15.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.175.0",
+    "@react-three/fiber": "^9.1.0",
+    "framer-motion": "^12.6.0",
+    "lucide-react": "^0.487.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "@types/three": "^0.175.0",
+    "tailwindcss": "^3.4.17",
+    "postcss": "^8.5.3",
+    "autoprefixer": "^10.4.21"
+  }
+}
