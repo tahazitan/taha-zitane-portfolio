@@ -67,7 +67,7 @@ The security and infrastructure diagrams represent **documented labs or referenc
 
 ## V4.2 — source-backed technical presentation
 
-The public portfolio deliberately does **not** display fabricated GNS3 screenshots, AI-generated hardware renders, or unsourced vendor equipment photographs. The genuine user portrait is the only owned image currently available in the repository.
+The public portfolio deliberately does **not** display fabricated GNS3 screenshots, AI-generated hardware renders, or unsourced vendor equipment photographs. The genuine user portrait is the only owner-provided photograph currently available in the repository. Four clearly attributed, openly licensed third-party photos/screenshots are shown as **representative** solution imagery; they are not user deployment evidence.
 
 The `SourceTopology` view includes two documented topology files owned by this GitHub account:
 
@@ -76,7 +76,7 @@ The `SourceTopology` view includes two documented topology files owned by this G
 
 The source-linked diagram reproduces exactly five nodes/four connections in the base YAML and seven nodes/six connections in the secure YAML, including matching endpoints and router/switch roles. It is **Containerlab**, not GNS3; no photographed equipment, running GNS3 canvas, measured routing success or verified live tests are implied.
 
-The remaining eight case studies are displayed as clean editorial text cards until authentic, attributable technical media is available. The former placeholder equipment-gallery art, conceptual 3D topology and unverified project thumbnails are removed from the live page. Case-study technical analysis remains available.
+The eight case studies are displayed as clean editorial text cards. A separate Solutions gallery displays license-credited real Cisco-switch and FortiGate photography, server rack imagery and a genuine Wireshark screenshot from Wikimedia Commons, without implying that these assets were captured from personal labs. The former placeholder equipment-gallery art, conceptual 3D topology and unverified project thumbnails are removed from the live page. Case-study technical analysis remains available.
 
 ### Media acceptance rule
 
