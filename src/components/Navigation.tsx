@@ -15,7 +15,7 @@ export default function Navigation({locale,slug}:{locale:Locale;slug?:string}){
   <Link className="brand" href={homePath(locale)} aria-label={locale==="ar"?"الصفحة الرئيسية لطه زيطان":"Taha Zitane home"}><BrandMark size={52} className="brand-mark"/><span className="brand-name">{locale==="ar"?"طه زيطان":"TAHA ZITANE"}<span>{locale==="ar"?" / هندسة الأنظمة والشبكات":" / SYSTEMS & NETWORKS"}</span></span></Link>
   <nav className="nav-links" aria-label="Primary navigation">{names.map((item,i)=><Link key={i} href={target(anchors[i])}>{item}</Link>)}</nav>
   <div className="nav-right"><div className="language-switcher" aria-label="Site language">{languages.map(lang=><Link href={otherHref(lang)} key={lang} hrefLang={lang} aria-current={lang===locale?"page":undefined} className={lang===locale?"selected":""}>{lang.toUpperCase()}</Link>)}</div>
-   <Link href={target("contact")} className="nav-cta" aria-label={c.contact}><ArrowUpRight size={17}/></Link>
+
   </div>
   <button className="nav-toggle" onClick={()=>setOpen(!open)} aria-expanded={open} aria-controls="mobile-nav" aria-label={open?'Close navigation':'Open navigation'}>{open?<X size={24}/>:<Menu size={24}/>}</button>
  </div>
