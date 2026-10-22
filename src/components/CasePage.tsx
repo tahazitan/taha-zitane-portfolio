@@ -1,12 +1,9 @@
 import Link from "next/link";
 import {ArrowLeft,ArrowUpRight, Github, Mail, Route, Scale, ListChecks} from "lucide-react";
 import Navigation from "./Navigation";
-import ProjectGraphic from "./ProjectGraphic";
 import LocaleSetup from "./LocaleSetup";
-import TopologyStudio from "./TopologyStudio";
-import EnterpriseBlueprint from "./EnterpriseBlueprint";
 import DesignReview from "./DesignReview";
-import {topologyForProject} from "@/data/labTopologies";
+import SourceTopology from "./SourceTopology";
 import {enterpriseCase} from "@/data/enterpriseCase";
 import {content,homePath,projectPath,Locale,mailUrl} from "@/data/content";
 
@@ -24,9 +21,8 @@ export default function CasePage({locale,slug}:{locale:Locale;slug:string}){
  return <div className={`page-shell ${rtl?'rtl':''}`} dir={rtl?'rtl':'ltr'}><LocaleSetup locale={locale}/><Navigation locale={locale} slug={slug}/><main className="case-main"><div className="container-xl">
   <div className="case-breadcrumb"><Link href={`${homePath(locale)}#work`}><ArrowLeft size={16}/>{c.backToWork}</Link><span>{project.number} / {String(c.projects.length).padStart(2,"0")}</span></div>
   <div className="case-heading"><span className="section-number">{project.type}</span><h1>{project.title}<span>.</span></h1><p>{project.summary}</p><span className={`status-pill status-${project.statusKind}`}>{project.status}</span></div>
-  <div className="case-cover"><ProjectGraphic slug={project.slug}/></div>
-  {enterprise&&<EnterpriseBlueprint locale={locale}/>}
-  {topologyForProject(slug)&&<TopologyStudio locale={locale} compact project={slug}/>} 
+  <div className="case-overview-strip"><strong>{project.type}</strong><span>{project.tech.slice(0,5).join(" · ")}</span></div>
+  {enterprise&&<SourceTopology locale={locale} compact/>}
   <div className="case-info-bar"><div><small>{c.projectRole}</small><strong>{project.role}</strong></div><div><small>{c.statusLabel}</small><strong>{project.status}</strong></div><div><small>TECHNOLOGIES</small><strong>{project.tech.join(" / ")}</strong></div></div>
 
   <div className="case-body">
