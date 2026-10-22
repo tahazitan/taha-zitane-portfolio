@@ -5,7 +5,6 @@ import Reveal from "./Reveal";
 import LocaleSetup from "./LocaleSetup";
 import ProjectExplorer from "./ProjectExplorer";
 import SourceTopology from "./SourceTopology";
-import SolutionMedia from "./SolutionMedia";
 import {professional} from "@/data/professional";
 import {content,githubUrl,linkedInUrl,mailUrl,phoneNumber,prettyPhoneNumber,Locale} from "@/data/content";
 
@@ -47,7 +46,6 @@ export default function Home({locale}:{locale:Locale}){
 
    <SourceTopology locale={locale}/>
 
-   <SolutionMedia locale={locale}/>
    <section className="expertise-section" id="expertise" aria-labelledby="expertise-title"><div className="container-xl"><Reveal className="section-heading"><span className="section-number light-number">{c.capabilitiesKicker}</span><div className="heading-row"><h2 id="expertise-title">{c.capabilitiesTitle}</h2><p>{c.capabilitiesSub}</p></div></Reveal><div className="capability-grid">{c.capabilities.map(cap=><Reveal key={cap.n}><article className="capability-card"><span className="cap-no">{cap.n}</span><h3>{cap.title}</h3><p>{cap.description}</p><span className="cap-tech">{cap.tech}</span></article></Reveal>)}</div></div></section>
 
    <section className="section education-section" id="education"><div className="container-xl">
