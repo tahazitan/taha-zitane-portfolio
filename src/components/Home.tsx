@@ -24,9 +24,14 @@ export default function Home({locale}:{locale:Locale}){
       <div className="hero-lead"><div className="hero-rule"/><div><h2>{c.heroSubtitle}</h2><p>{c.heroLead}</p></div></div>
       <div className="hero-actions"><a className="btn btn-primary" href="#work">{locale==='fr'?'Voir mes projets':locale==='ar'?'تصفح المشاريع':'Explore case studies'}<ArrowUpRight size={18}/></a><a className="btn btn-text" href="#experience">{locale==='fr'?'Mon parcours':locale==='ar'?'الخبرات المهنية':'Professional experience'}<ArrowRight size={18}/></a></div>
       <a className="hero-3d-link" href="#topology"><Network size={18}/>{c.seeWork}<ArrowUpRight size={16}/></a>
-    </div><div className="hero-visual"><div className="hero-network"><NetworkBackdrop/></div>
+    </div><div className="hero-visual">
        <div className="portrait-frame"><div className="portrait-image"><Image src="/images/taha-portrait.webp" alt={c.portraitAlt} fill priority sizes="(max-width: 900px) 80vw, 440px"/></div><span className="portrait-vertical">{locale==='ar'?'طه زيطان — 2026':'TAHA / ZITANE — 2026'}</span></div>
        <div className="portrait-caption"><div><span className="image-number">FIG. 01</span><strong>{c.portraitLabel}</strong></div><span>{c.portraitCaption}</span></div>
+       <div className="hero-network hero-network-exhibit" role="group" aria-label={locale==='fr'?'Visualisation réseau animée en 3D':locale==='ar'?'تصور ثلاثي الأبعاد لشبكة معلوماتية':'Animated 3D network visualization'}>
+         <div className="hero-exhibit-top"><span className="hero-exhibit-status"/><span>{locale==='fr'?'VISUALISATION 3D / EN DIRECT':locale==='ar'?'تصور تفاعلي / ثلاثي الأبعاد':'LIVE VISUALIZATION / 3D'}</span><span>00:NETWORK</span></div>
+         <NetworkBackdrop/>
+         <a className="hero-exhibit-bottom" href="#topology"><span>{locale==='fr'?'Ouvrir le laboratoire interactif':locale==='ar'?'افتح مختبر الشبكات التفاعلي':'Explore the interactive network lab'}</span><ArrowUpRight size={17}/></a>
+       </div>
     </div></div>
     <div className="hero-foot"><span><MoveDown size={14}/>{c.scroll}</span><div className="hero-foot-rule"/><span>35° 10′ N &nbsp; / &nbsp; 05° 16′ W</span></div>
    </div></section>
