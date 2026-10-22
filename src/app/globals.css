@@ -409,3 +409,9 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #eaa3
  .skill-detail{padding:20px}
 }
 @media(prefers-reduced-motion:reduce){.lab-pathway a,.demo-section button{transition:none}}
+
+/* Recruiter CV action: real PDF asset, distinct from navigation and lab links */
+.hero-resume-link{display:inline-flex;align-items:center;gap:11px;margin:15px 0 4px 58px;color:#dfedf1;border:1px solid #80bfc48a;background:#1c3d48c9;padding:12px 17px;width:max-content;max-width:100%;font-size:12px;font-weight:800;transition:background .2s,border-color .2s}
+.hero-resume-link:hover{background:#275c68;border-color:#9be1e5}
+@media(max-width:900px){.hero-resume-link{margin-inline-start:0}}
+@media(max-width:520px){.hero-resume-link{width:100%;justify-content:space-between}}
