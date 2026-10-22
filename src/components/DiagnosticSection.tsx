@@ -32,7 +32,7 @@ export default function DiagnosticSection({locale}:{locale:Locale}){
    <div className="diagnostic-content"><div className="diagnostic-situation">
     <span className="diagnostic-micro"><AlertTriangle size={15}/>TICKET / 0{active+1}</span><h3>{s.issue}</h3><p>{s.scope}</p>
     <span className="diagnostic-small-heading">{t.tools}</span>
-    <div className="diagnostic-toolkit"><TechnologyMarks technologies={s.tools} limit={5} variant="inline"/>{s.tools.map(tool=><span className="diagnostic-command" key={tool}>{tool}</span>)}</div>
+    <div className="diagnostic-toolkit"><TechnologyMarks technologies={[...s.tools]} limit={5} variant="inline"/>{s.tools.map(tool=><span className="diagnostic-command" key={tool}>{tool}</span>)}</div>
    </div>
    <div className="diagnostic-steps"><span className="diagnostic-micro"><Terminal size={15}/>{t.workflow}</span><div className="diagnostic-step-track">{t.steps.map((step,i)=>{const Icon=stepIcons[i];return <button type="button" key={step} aria-current={i===selected?"step":undefined} onClick={()=>setSelected(i)}><Icon size={17}/><span>{step}</span></button>})}</div>
    <div className="diagnostic-step-detail"><span>0{selected+1} / 05</span><h4>{t.steps[selected]}</h4><p>{s.sequence[selected]}</p></div>
