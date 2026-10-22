@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://taha-zitane-engineering.zitanet44.workers.dev/sitemap.xml

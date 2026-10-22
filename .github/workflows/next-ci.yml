@@ -1,7 +1,7 @@
-name: Portfolio V2 — production build
+name: Portfolio — build, SEO and localized routes
 on:
   push:
-    branches: ["portfolio-v2", "main"]
+    branches: ["main", "portfolio-v2"]
   pull_request:
 jobs:
   validate:
@@ -15,11 +15,15 @@ jobs:
           node-version: '22'
       - run: npm install --no-audit --no-fund
       - run: npm run check
-      - name: Check exported locale homepages
+      - name: Verify public assets, sitemap and all localized case-study routes
         run: |
-          test -f out/index.html
-          test -f out/fr/index.html
-          test -f out/ar/index.html
-          test -f out/projects/enterprise-network-lab/index.html
-          test -f out/fr/projects/enterprise-network-lab/index.html
-          test -f out/ar/projects/enterprise-network-lab/index.html
+          test -f out/sitemap.xml
+          test -f out/robots.txt
+          test -f out/meta/portfolio-social.png
+          test -f out/meta/mark.svg
+          for prefix in "" "fr/" "ar/"; do
+            test -f "out/${prefix}index.html"
+            for slug in enterprise-network-lab windows-server-ad remote-it-support hospital-network-support security-observability-labs firewall-ipsec-lab proxmox-virtualization-lab cisco-campus-network-lab; do
+              test -f "out/${prefix}projects/${slug}/index.html"
+            done
+          done

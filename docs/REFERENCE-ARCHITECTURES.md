@@ -1,8 +1,13 @@
 # 3D Reference Architecture Notes
 
-The 3D studio is an interactive visualization of six planned/partly documented engineering lab **topologies**. It does not run real routing or simulate actual packets. The animated particles are visualization of the intended connectivity only. Device inspection and fallback SVG use the same structured data as the 3D scene.
+The 3D studio is an interactive visualization of seven reference engineering lab **topologies**. It does not run real routing or simulate actual packets. The animated particles are visualization of the intended connectivity only. Device inspection and fallback SVG use the same structured data as the 3D scene.
 
 ## Topology designs
+
+### Primary enterprise architecture
+
+Headquarters, two branches and remote workers, four HQ VLANs (users / servers / management / guests), site-to-site and remote VPN, a DMZ, Windows identity/DNS, Linux/Docker services, security event collection and a separately protected recovery target. The 3D diagram displays illustrative traffic routes, including Branch B → HQ Linux service. Design trade-offs and acceptance criteria are explained on the project page; none are claimed as measured test results.
+
 
 ### A. HQ / branch dynamic routing
 

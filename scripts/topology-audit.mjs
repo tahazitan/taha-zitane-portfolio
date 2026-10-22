@@ -12,7 +12,7 @@ const js=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.Common
 const obj={exports:{}};
 vm.runInNewContext(js,{exports:obj.exports,module:obj},{timeout:3000});
 const topologies=obj.exports.topologyDesigns;
-if(!Array.isArray(topologies)||topologies.length!==6)throw new Error(`Expected six topology designs; received ${topologies?.length}`);
+if(!Array.isArray(topologies)||topologies.length!==7)throw new Error(`Expected seven topology designs; received ${topologies?.length}`);
 const known=new Set();
 const content=fs.readFileSync(path.join(root,'src/data/content.ts'),'utf8')+fs.readFileSync(path.join(root,'src/data/additionalProjects.ts'),'utf8');
 const descriptions=fs.readFileSync(path.join(root,'src/data/topologyDescriptions.ts'),'utf8');
@@ -29,6 +29,13 @@ for(const topo of topologies){
  for(const [a,b] of topo.links){
   if(!nodes.has(a)||!nodes.has(b)||a===b)throw new Error(`Invalid link ${a} -> ${b} in ${topo.id}`);
   const key=[a,b].sort().join('~');if(edges.has(key))throw new Error(`Repeated link: ${key}`);edges.add(key);
+ }
+ for(const flow of topo.flows??[]){
+   if(flow.nodes.length<2)throw new Error(`Incomplete flow: ${topo.id}/${flow.id}`);
+   for(const [idx,node] of flow.nodes.entries()){
+     if(!nodes.has(node))throw new Error(`Missing flow node: ${topo.id}/${flow.id}/${node}`);
+     if(idx&& !edges.has([flow.nodes[idx-1],node].sort().join('~')))throw new Error(`Disconnected traffic path: ${topo.id}/${flow.id}`);
+   }
  }
  for(const locale of ['en','fr','ar'])if(!descriptions.includes(`${locale}:{`))throw new Error(`Missing translation: ${locale}`);
  if(!descriptions.includes(`${topo.id}:{title:`))throw new Error(`Missing locale topology title ${topo.id}`);

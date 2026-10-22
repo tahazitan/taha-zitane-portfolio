@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import {ArrowDownRight,ArrowUpRight,ArrowRight,Github,Linkedin,Mail,MoveDown,ShieldCheck,ArrowDown} from "lucide-react";
+import {ArrowUpRight,ArrowRight,Github,Linkedin,MoveDown,ShieldCheck,ArrowDown,Phone} from "lucide-react";
 import Navigation from "./Navigation";
 import Reveal from "./Reveal";
 import NetworkBackdrop from "./NetworkBackdrop";
@@ -8,7 +8,7 @@ import ProjectGraphic from "./ProjectGraphic";
 import LocaleSetup from "./LocaleSetup";
 import TopologyStudio from "./TopologyStudio";
 import {professional} from "@/data/professional";
-import {content,githubUrl,linkedInUrl,mailUrl,projectPath,Locale} from "@/data/content";
+import {content,githubUrl,linkedInUrl,mailUrl,phoneNumber,prettyPhoneNumber,projectPath,Locale} from "@/data/content";
 
 export default function Home({locale}:{locale:Locale}){
  const c=content[locale];const rtl=locale==="ar";const credentials=professional[locale];
@@ -65,7 +65,7 @@ export default function Home({locale}:{locale:Locale}){
 
    <section className="section service-section" id="services" aria-labelledby="services-title"><div className="container-xl"><Reveal className="section-heading"><span className="section-number">{c.servicesKicker}</span><div className="heading-row"><h2 id="services-title">{c.servicesTitle}</h2><p>{c.servicesSub}</p></div></Reveal><div className="services-grid">{c.services.map(service=><Reveal key={service.number}><article className="service-item"><span>{service.number}</span><ArrowUpRight size={22}/><h3>{service.title}</h3><p>{service.body}</p></article></Reveal>)}</div></div></section>
 
-   <section className="contact-section" id="contact" aria-labelledby="contact-title"><div className="container-xl"><Reveal><span className="section-number light-number">{c.contactKicker}</span><div className="contact-row"><div><h2 id="contact-title">{c.contactTitle}</h2><p>{c.contactBody}</p></div><a className="contact-circle" href={mailUrl} aria-label={c.emailMe}><ArrowUpRight size={52} strokeWidth={1.3}/></a></div></Reveal><div className="contact-bottom"><a href={mailUrl} className="email-address">zitanet44@gmail.com <ArrowUpRight size={20}/></a><div className="socials"><a href={githubUrl} target="_blank" rel="noopener noreferrer"><Github size={18}/> GITHUB</a><a href={linkedInUrl} target="_blank" rel="noopener noreferrer"><Linkedin size={18}/> LINKEDIN</a></div></div></div></section>
+   <section className="contact-section" id="contact" aria-labelledby="contact-title"><div className="container-xl"><Reveal><span className="section-number light-number">{c.contactKicker}</span><div className="contact-row"><div><h2 id="contact-title">{c.contactTitle}</h2><p>{c.contactBody}</p></div><a className="contact-circle" href={mailUrl} aria-label={c.emailMe}><ArrowUpRight size={52} strokeWidth={1.3}/></a></div></Reveal><div className="contact-bottom"><a href={mailUrl} className="email-address">zitanet44@gmail.com <ArrowUpRight size={20}/></a><a href={`tel:${phoneNumber}`} className="phone-address"><Phone size={18}/> {prettyPhoneNumber}</a><div className="socials"><a href={githubUrl} target="_blank" rel="noopener noreferrer"><Github size={18}/> GITHUB</a><a href={linkedInUrl} target="_blank" rel="noopener noreferrer"><Linkedin size={18}/> LINKEDIN</a></div></div></div></section>
   </main>
   <footer className="site-footer"><div className="container-xl"><span>© 2026 TAHA ZITANE</span><span>{c.footerNote}</span><a href="#top">BACK TO TOP <ArrowDown size={15}/></a></div></footer>
  </div>;
