@@ -1,54 +1,108 @@
 import type {Locale} from "@/data/content";
-import {ArrowRight,ShieldCheck,Activity,Router,HardDrive,LifeBuoy,Monitor,Network,Layers3,ClipboardCheck} from "lucide-react";
-import TechnologyMarks from "./TechnologyMarks";
+import {Activity,Cloud,HardDrive,Monitor,Network,Router,Server,ShieldCheck,Wrench} from "lucide-react";
 
-type Zone="users"|"network"|"security"|"systems"|"monitor"|"support";
-type Node={name:string;detail:string;zone:Zone;tech?:string};
-type Diagram={id:string;nodes:Node[];accent:string;source:boolean;focus:string[]};
-const diagrams:Record<string,Diagram>={
- "enterprise-network-lab":{id:"HQ–BRANCH",accent:"network",source:true,
-  nodes:[{name:"HQ IT",detail:"10.10.10.10/24",zone:"users",tech:"Linux"},{name:"FRRouting",detail:"10.10.10.1/24",zone:"network",tech:"Linux"},{name:"OSPF WAN",detail:"10.255.0.0/30",zone:"security"},{name:"Branch",detail:"10.20.30.10/24",zone:"users",tech:"Linux"}],
-  focus:["OSPF","Routing","IPv4","Containerlab"]},
- "windows-server-ad":{id:"IDENTITY",accent:"systems",source:false,
-  nodes:[{name:"Windows clients",detail:"Domain join",zone:"users",tech:"Windows Server"},{name:"AD DS / DNS",detail:"Identity & names",zone:"systems",tech:"Windows Server"},{name:"SMB shares",detail:"Controlled access",zone:"systems",tech:"Windows Server"}],
-  focus:["Windows Server","Active Directory","DNS","SMB"]},
- "remote-it-support":{id:"SERVICE DESK",accent:"support",source:false,
-  nodes:[{name:"User incident",detail:"Triage",zone:"users"},{name:"Remote support",detail:"AnyDesk",zone:"support",tech:"AnyDesk"},{name:"Resolution",detail:"User validation",zone:"monitor"}],
-  focus:["Remote support","Windows","LAN / Wi-Fi","Troubleshooting"]},
- "hospital-network-support":{id:"CLINICAL IT",accent:"support",source:false,
-  nodes:[{name:"Clinical users",detail:"Support request",zone:"users"},{name:"Enova Santé",detail:"Application support",zone:"systems"},{name:"IT handover",detail:"Escalation",zone:"support"}],
-  focus:["Application support","LAN","Connectivity","Escalation"]},
- "security-observability-labs":{id:"SECURITY LAB",accent:"security",source:false,
-  nodes:[{name:"Endpoint",detail:"Log source",zone:"users"},{name:"Network IDS",detail:"Snort / PCAP",zone:"security",tech:"Snort"},{name:"SIEM",detail:"Wazuh events",zone:"monitor",tech:"Wazuh"}],
-  focus:["Snort","Wireshark","Wazuh","Log analysis"]},
- "firewall-ipsec-lab":{id:"PERIMETER LAB",accent:"security",source:false,
-  nodes:[{name:"Site A",detail:"Private subnet",zone:"users"},{name:"FortiGate",detail:"IPsec / policy",zone:"security",tech:"FortiGate"},{name:"Palo Alto",detail:"VPN peer",zone:"security",tech:"Palo Alto"}],
-  focus:["IPsec","NAT","FortiGate","Palo Alto"]},
- "proxmox-virtualization-lab":{id:"VIRTUALIZATION",accent:"systems",source:false,
-  nodes:[{name:"Proxmox VE",detail:"Hypervisor",zone:"systems",tech:"Proxmox"},{name:"Windows VM",detail:"Identity services",zone:"systems",tech:"Windows Server"},{name:"Ubuntu VM",detail:"Linux workloads",zone:"monitor",tech:"Ubuntu"}],
-  focus:["Proxmox","VMs","Linux bridges","Backup"]},
- "cisco-campus-network-lab":{id:"CAMPUS LAN",accent:"network",source:false,
-  nodes:[{name:"Access VLAN",detail:"Users / departments",zone:"users",tech:"Cisco"},{name:"Cisco Core",detail:"Inter-VLAN",zone:"network",tech:"Cisco"},{name:"LAN services",detail:"ACL / DHCP",zone:"systems"}],
-  focus:["Cisco","802.1Q","STP","ACL"]}
+type Equipment = "pc"|"router"|"switch"|"firewall"|"server"|"sensor"|"cloud"|"support";
+type TopoNode={id:string;name:string;role:Equipment;x:number;y:number;detail:string;logo?:string};
+type Cable={a:string;b:string;label:string;x:number;y:number;vpn?:boolean};
+type Preview={title:string;source?:boolean;nodes:TopoNode[];cables:Cable[]};
+const node=(id:string,name:string,role:Equipment,x:number,y:number,detail:string,logo?:string):TopoNode=>({id,name,role,x,y,detail,logo});
+const wire=(a:string,b:string,label:string,x:number,y:number,vpn=false):Cable=>({a,b,label,x,y,vpn});
+/** Technical diagrams with explicit equipment, cables and ports.
+ * Only the enterprise base preview includes IP addresses from the public FRRouting/Containerlab configs.
+ * Other cases are clear lab layouts or support workflows with no invented interfaces or IPs.
+ */
+const previews:Record<string,Preview>={
+ "enterprise-network-lab":{
+  title:"HQ / WAN / BRANCH",source:true,
+  nodes:[
+   node("hq-r","HQ FRR","router",285,126,"10.10.10.1","linux"),
+   node("br-r","BRANCH FRR","router",709,126,"10.20.30.1","linux"),
+   node("hq-it","HQ IT","pc",120,349,"10.10.10.10/24","linux"),
+   node("hq-users","HQ USERS","pc",396,349,"10.10.20.10/24","linux"),
+   node("br-user","BRANCH PC","pc",794,349,"10.20.30.10/24","linux")
+  ],
+  cables:[
+   wire("hq-r","br-r","eth1 ↔ eth1 · OSPF",500,96),
+   wire("hq-r","hq-it","eth2 ↔ eth1",142,235),
+   wire("hq-r","hq-users","eth3 ↔ eth1",418,235),
+   wire("br-r","br-user","eth2 ↔ eth1",787,235)
+  ]},
+ "windows-server-ad":{
+  title:"ACTIVE DIRECTORY / LAN",
+  nodes:[node("client","DOMAIN PC","pc",140,350,"Windows client","windows"),node("switch","LAN SWITCH","switch",350,126,"Access layer"),node("ad","AD DS / DNS","server",616,350,"Windows Server","windows"),node("files","FILE SERVER","server",798,126,"SMB shares","windows")],
+  cables:[wire("client","switch","Ethernet LAN",180,231),wire("switch","ad","Domain / DNS",527,231),wire("switch","files","LAN uplink",570,96)]},
+ "remote-it-support":{
+  title:"REMOTE DIAGNOSTICS",
+  nodes:[node("pc","USER PC","pc",140,340,"Workstation","windows"),node("router","LAN / WI-FI","router",343,120,"Connectivity"),node("remote","IT SUPPORT","support",675,120,"AnyDesk","anydesk"),node("result","USER CHECK","pc",815,340,"Resolution")],
+  cables:[wire("pc","router","Local network",182,230),wire("router","remote","Remote session",510,92,true),wire("remote","result","User validation",820,230)]},
+ "hospital-network-support":{
+  title:"APPLICATION SUPPORT",
+  nodes:[node("user","USER POSTE","pc",150,342,"Workstation"),node("lan","LOCAL LAN","switch",350,126,"Network access"),node("app","ENOVA SANTÉ","server",665,126,"Application"),node("help","IT HANDOVER","support",810,342,"Escalation")],
+  cables:[wire("user","lan","LAN",165,237),wire("lan","app","App connectivity",510,98),wire("app","help","Support ticket",818,235)]},
+ "security-observability-labs":{
+  title:"TRAFFIC / LOG MONITORING",
+  nodes:[node("pc","ENDPOINT","pc",130,342,"Event source"),node("switch","LAN SWITCH","switch",348,128,"Traffic path"),node("ids","SNORT IDS","sensor",628,342,"PCAP / IDS","snort"),node("siem","WAZUH","server",816,128,"Event analysis","wazuh")],
+  cables:[wire("pc","switch","Ethernet",170,229),wire("switch","ids","SPAN / PCAP",527,229),wire("ids","siem","Security events",811,238)]},
+ "firewall-ipsec-lab":{
+  title:"SITE-TO-SITE VPN",
+  nodes:[node("a","SITE A LAN","pc",140,338,"Local subnet"),node("fort","FORTIGATE","firewall",350,126,"Security policy","fortinet"),node("palo","PALO ALTO","firewall",670,126,"Security policy","paloalto"),node("b","SITE B LAN","pc",825,338,"Remote subnet")],
+  cables:[wire("a","fort","LAN A",163,226),wire("fort","palo","IPsec tunnel",510,95,true),wire("palo","b","LAN B",815,229)]},
+ "proxmox-virtualization-lab":{
+  title:"VIRTUAL INFRASTRUCTURE",
+  nodes:[node("pve","PROXMOX VE","server",478,112,"Hypervisor","proxmox"),node("bridge","VM BRIDGE","switch",478,295,"Virtual network"),node("win","WINDOWS VM","server",166,362,"AD / DNS","windows"),node("linux","UBUNTU VM","server",800,362,"Linux workloads","ubuntu")],
+  cables:[wire("pve","bridge","vBridge",620,212),wire("bridge","win","VM NIC",304,306),wire("bridge","linux","VM NIC",646,306)]},
+ "cisco-campus-network-lab":{
+  title:"CAMPUS VLAN TOPOLOGY",
+  nodes:[node("core","CISCO CORE","switch",480,112,"L3 / routing","cisco"),node("a","ACCESS SW 1","switch",260,264,"VLAN access","cisco"),node("b","ACCESS SW 2","switch",706,264,"VLAN access","cisco"),node("pc1","DEPT A","pc",105,394,"Endpoint"),node("pc2","DEPT B","pc",847,394,"Endpoint")],
+  cables:[wire("core","a","802.1Q trunk",293,150),wire("core","b","802.1Q trunk",690,150),wire("a","pc1","Access port",99,303),wire("b","pc2","Access port",853,304)]}
 };
-const labels={
- en:{source:"ADDRESSES FROM CONFIG FILE",concept:"TECHNICAL WORKFLOW / CONCEPT",diagram:"Architecture preview",skills:"SKILLS & TOOLS",detail:"Architecture overview",note:"Technical design view; not a deployment screenshot"},
- fr:{source:"ADRESSES ISSUES DU FICHIER SOURCE",concept:"SCHÉMA TECHNIQUE / CONCEPT",diagram:"Aperçu d’architecture",skills:"COMPÉTENCES & OUTILS",detail:"Vue d’architecture",note:"Vue de conception, pas une capture d’un système en production"},
- ar:{source:"عناوين من ملفات الإعداد",concept:"تصميم أو مسار تقني توضيحي",diagram:"مخطط هندسي مختصر",skills:"المهارات والأدوات",detail:"عرض معماري",note:"رسم توضيحي وليس صورة من نظام مشغّل"}
+const pictograms={pc:Monitor,router:Router,switch:Network,firewall:ShieldCheck,server:Server,sensor:Activity,cloud:Cloud,support:Wrench};
+const translations={
+ en:{source:"SOURCE-DEFINED CABLING",concept:"TOPOLOGY / PROJECT VIEW",intro:"Network layout",detail:"View the case study for architecture details",caption:"Equipment · Links · Roles"},
+ fr:{source:"LIAISONS DU FICHIER SOURCE",concept:"TOPOLOGIE / PROJET",intro:"Schéma réseau",detail:"Consultez le projet pour les détails",caption:"Équipements · Liens · Rôles"},
+ ar:{source:"وصلات من ملفات الإعداد",concept:"طوبولوجيا / مشروع",intro:"مخطط الشبكة",detail:"افتح المشروع للتفاصيل",caption:"الأجهزة · الروابط · الأدوار"}
 } as const;
-const icons={users:Monitor,network:Router,security:ShieldCheck,systems:HardDrive,monitor:Activity,support:LifeBuoy};
-export function projectVisualData(slug:string){return diagrams[slug]}
+export function projectVisualData(slug:string){return previews[slug]}
+
 export default function VisualProject({slug,locale,large=false}:{slug:string;locale:Locale;large?:boolean}){
- const d=diagrams[slug];if(!d)return null;
- const nodes=large&&slug==="enterprise-network-lab"?[d.nodes[0],d.nodes[1],d.nodes[2],{name:"Branch FRR",detail:"10.20.30.1/24",zone:"network" as Zone,tech:"Linux"},d.nodes[3]]:d.nodes;
- const t=labels[locale],rtl=locale==="ar";
- return <div className={"visual-project visual-project--"+d.accent+(large?" visual-project--large":"")} dir="ltr" role="group" aria-label={t.diagram+": "+d.id}>
-   <div className="visual-project-top"><span><Network size={13}/>{d.id}</span><span>{d.source?t.source:t.concept}</span></div>
-   <div className="visual-flow">{nodes.map((node,i)=>{const Icon=icons[node.zone];return <div className={"visual-node visual-node--"+node.zone} key={node.name}>
-     <span className="visual-node-icon">{node.tech?<TechnologyMarks technologies={[node.tech]} limit={1} variant="mini"/>:<Icon size={20} strokeWidth={1.8}/>}</span>
-     <strong>{node.name}</strong><small dir="ltr">{node.detail}</small>
-     {i<nodes.length-1&&<span className="visual-flow-link" aria-hidden="true"><ArrowRight size={14}/></span>}
-   </div>})}</div>
-   {large?<div className="visual-project-bottom"><span>{t.note}</span><span>{d.focus.slice(0,3).join(" · ")}</span></div>:<span className="visual-project-caption">{d.source?t.source:t.concept}</span>}
- </div>
+ const diagram=previews[slug];
+ if(!diagram)return null;
+ const language=translations[locale];
+ const byId=new Map(diagram.nodes.map(n=>[n.id,n]));
+ return <div className={"visual-project visual-project--topology"+(large?" visual-project--large":"")} dir="ltr" role="group" aria-label={language.intro+": "+diagram.title}>
+   <div className="visual-project-top"><span><Network size={14}/>{diagram.title}</span><span>{diagram.source?language.source:language.concept}</span></div>
+   <div className="topology-preview-stage">
+    <svg viewBox="0 0 960 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={diagram.title+": "+diagram.nodes.map(n=>n.name).join(", ")}>
+     <defs>
+      <pattern id={"preview-grid-"+slug} width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="#568b9c" opacity=".34"/></pattern>
+     </defs>
+     <rect x="0" y="0" width="960" height="460" rx="12" fill="#102c3c"/>
+     <rect x="0" y="0" width="960" height="460" rx="12" fill={"url(#preview-grid-"+slug+")"}/>
+     {diagram.cables.map((edge,i)=>{
+      const a=byId.get(edge.a)!,b=byId.get(edge.b)!;
+      return <g key={edge.a+"-"+edge.b}>
+       <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={edge.vpn?"#ffc58c":"#86bed0"} strokeWidth={edge.vpn?4:3.5} strokeDasharray={edge.vpn?"13 9":undefined} strokeLinecap="round"/>
+       <rect x={edge.x-Math.max(65,edge.label.length*6.7)} y={edge.y-21} width={Math.max(130,edge.label.length*13.4)} height="28" rx="6" fill="#19394b" stroke={edge.vpn?"#dda56c":"#658fa1"} strokeWidth="1.5"/>
+       <text x={edge.x} y={edge.y-2} textAnchor="middle" fill="#e7f5f8" fontSize="17" fontFamily="ui-monospace,monospace">{edge.label}</text>
+       <title>{a.name+" — "+edge.label+" — "+b.name}</title>
+      </g>;
+     })}
+     {diagram.nodes.map(n=>{
+      const Icon=pictograms[n.role];
+      const accent=n.role==="firewall"?"#ffbd82":n.role==="server"?"#b9baf9":n.role==="pc"?"#8ee3c0":"#84baff";
+      return <g key={n.id} transform={"translate("+n.x+","+n.y+")"}>
+       <rect x="-103" y="-62" width="206" height="124" rx="12" fill="#193e52" stroke={accent} strokeWidth="2"/>
+       <rect x="-103" y="-62" width="206" height="9" rx="4" fill={accent}/>
+       <rect x="-85" y="-43" width="49" height="43" rx="8" fill="#eef7fa"/>
+       <Icon x={-78} y={-37} width={34} height={31} color="#234b64" strokeWidth={1.7}/>
+       {n.logo&&<g><rect x="51" y="-44" width="35" height="35" rx="6" fill="#fff"/><image href={"/tech-logos/"+n.logo+".svg"} x="55" y="-40" width="27" height="27"/></g>}
+       <text x="-87" y="25" fill="#f7fdff" fontWeight="700" fontSize="21" fontFamily="Arial,sans-serif">{n.name}</text>
+       <text x="-87" y="49" fill="#c6e8ed" fontSize="17" fontFamily="ui-monospace,monospace">{n.detail}</text>
+       <title>{n.name+": "+n.detail}</title>
+      </g>;
+     })}
+    </svg>
+   </div>
+   {large?<div className="visual-project-bottom"><span>{language.detail}</span><span>{language.caption}</span></div>:<span className="visual-project-caption">{language.caption}</span>}
+ </div>;
 }
