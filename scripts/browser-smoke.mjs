@@ -54,7 +54,7 @@ try{
  await desktop.locator('.diagnostic-step-track button').nth(2).click();
  assert.equal(await desktop.locator('.diagnostic-step-track button[aria-current="step"]').count(),1,'Step selection works');
  assert.equal(await desktop.locator('.work-card .visual-project--topology').count(),8,'Every project includes a GNS3-style equipment-and-cable topology');
- assert.equal(await desktop.locator('.work-card .topology-preview-stage svg').count(),8,'Project diagrams use scalable source/role graphics');
+ assert.equal(await desktop.locator('.work-card .topology-preview-stage > svg').count(),8,'Project diagrams use scalable source/role graphics');
  const cardGeometry=await desktop.locator('.work-card').evaluateAll(cards=>cards.map((card,index)=>{
   const summary=card.querySelector('.work-card-summary')?.getBoundingClientRect();
   const tags=card.querySelector('.work-tags')?.getBoundingClientRect();
