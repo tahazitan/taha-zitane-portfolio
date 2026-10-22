@@ -69,7 +69,7 @@
 }
 .work-card-title a:hover{text-decoration:underline;text-decoration-color:#70aaa4;text-underline-offset:4px}
 .work-card-copy .tech-marks--inline{margin:0}
-.work-card-summary{min-height:0;flex:0}
+.work-card-summary{min-height:0;flex:0 0 auto}
 .work-cards{align-items:stretch}
 .visual-project{
  --vp-border:#567e97;--vp-glow:#7dd6d4;
