@@ -1,0 +1,37 @@
+/* Identity-first visual system: true tools, named institutions, source-documented diagrams. */
+.tech-mark--wordmark{border-style:dashed!important;background:transparent!important;color:inherit;letter-spacing:.015em}
+.tech-mark--wordmark .tech-mark-label{display:inline!important;font-weight:750;white-space:normal}
+.tech-mark--wordmark .tech-mark-image{display:none}
+.tech-marks--mini .tech-mark--wordmark{padding:4px 6px;border:1px dashed currentColor;background:transparent}
+.tech-marks--mini .tech-mark--wordmark .tech-mark-label{display:inline!important;font-size:9px}
+.tech-marks--hero .tech-mark--wordmark{color:#244c55}
+.experience-proof .proof-process-label{display:inline-flex;max-width:100%;padding:5px 9px;border:1px dashed #aac6c0;border-radius:5px;font-size:10px;font-weight:800;line-height:1.5;letter-spacing:.035em;color:#2c6062;background:#f4f8f6}
+.study-item{grid-template-columns:minmax(74px,95px) minmax(0,1fr);gap:18px;align-items:start}
+.study-body{min-width:0}
+.institution-name{display:inline-flex;direction:ltr;align-items:center;gap:10px;flex-wrap:wrap;width:fit-content;max-width:100%;margin-bottom:12px;padding:10px 12px;border:1px solid #bbd0cc;border-inline-start:4px solid #316e71;border-radius:3px;background:#fff;color:#164c57;font-size:clamp(14px,1.25vw,18px);font-weight:850;line-height:1.2;letter-spacing:-.035em;box-shadow:0 3px 12px rgba(23,61,68,.04)}
+.institution-name small{display:inline;font:750 9px ui-monospace,monospace;color:#657982;letter-spacing:.09em}
+.study-body h4{font-weight:750;line-height:1.35;overflow-wrap:anywhere}
+.study-body p{overflow-wrap:anywhere}
+.training-item .tech-marks{margin:7px 0 0}
+.training-item .tech-mark{width:fit-content}
+.training-item .tech-mark-label{white-space:normal}
+.service-item{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;overflow:hidden;border:1px solid #e2eae6}
+.service-item:hover{transform:translateY(-3px);border-color:#97b9b4;box-shadow:0 12px 26px rgba(25,63,68,.08)}
+.service-item p{flex:1}
+.service-tool-strip{margin-top:23px;padding-top:13px;border-top:1px solid #e5eeeb}
+.service-tool-strip .tech-marks{gap:6px}
+.service-tool-strip .tech-mark{white-space:normal}
+.source-technology{padding:2px 0 12px;min-height:34px}
+.source-technology .tech-marks{margin:0}
+.source-technology .tech-mark{background:#153b4a;border:1px solid #537b83;color:#e5f6f4;padding:3px 8px}
+.source-technology .tech-mark--wordmark{color:#dff4ee}
+.source-figure svg{height:auto;display:block;min-width:0}
+.source-figure svg text{paint-order:stroke fill}
+.source-edges button:focus-visible,.source-switch button:focus-visible,.work-filter button:focus-visible,.work-search input:focus-visible{outline:3px solid #d08855;outline-offset:3px}
+.service-item :is(h3,p),.study-body :is(h4,p),.training-item :is(strong,span){overflow-wrap:anywhere}
+.rtl .institution-name{direction:ltr}
+.rtl .source-technology{direction:ltr}
+@media(max-width:900px){.study-item{grid-template-columns:minmax(62px,85px) minmax(0,1fr)}.service-item{min-height:240px}}
+@media(max-width:760px){.source-figure svg{width:720px;max-width:none}.source-figure{overflow-x:auto}.study-item{grid-template-columns:1fr;gap:8px}.study-item>small{margin:0}.service-tool-strip{margin-top:18px}.source-technology .tech-mark{font-size:10px}}
+@media(max-width:550px){.institution-name{padding:8px 10px;font-size:15px}.service-item{min-height:0}.source-figure svg{width:640px}.source-technology{padding-bottom:10px}.training-item{grid-template-columns:1fr}.training-item small{text-align:start}.tech-marks--hero .tech-mark--wordmark .tech-mark-label{display:inline!important;font-size:10px}}
+@media(prefers-reduced-motion:reduce){.service-item{transition:none}.service-item:hover{transform:none}}
