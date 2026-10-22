@@ -68,12 +68,12 @@ const english: Content = {
     {slug:"security-observability-labs",number:"05",type:"PERSONAL SECURITY LABS",title:"Traffic analysis & security monitoring",summary:"Exploratory security operations practice using packet analysis, IDS concepts and SIEM foundations.",tech:["Wireshark","Snort","Wazuh","Zabbix","Syslog"],status:"Security learning & lab practice",statusKind:"practice",role:"Independent security learner / lab practitioner",context:"Develop practical visibility into network traffic, host events and indicators that help troubleshoot and secure infrastructure.",approach:["Practiced packet inspection with Wireshark and IDS/IPS concepts with Snort.","Explored Wazuh SIEM and Zabbix/SNMP monitoring foundations in personal labs.","Next milestone: publish sanitized event samples, detection logic, incident runbooks and reproducible test cases."],evidence:"These tools are reported as personal lab experience. There is no published production SOC deployment, measured detection efficacy or independently verified alert pipeline yet."}
   ],
   experience:[
-    {period:"2025 — PRESENT",position:"Systems & networks / IT support · Freelance",organisation:"Independent · Remote",details:"Remote troubleshooting, user support, basic LAN/Wi-Fi and workstation configuration."},
-    {period:"NOV 2023 — JAN 2024",position:"Network technician · Internship",organisation:"Hôpital Mohammed V · Chefchaouen",details:"Support for Enova Santé environment, local network activities and anomaly escalation."},
-    {period:"AUG — OCT 2023",position:"Networks & systems instructor",organisation:"ETIGA · Chefchaouen",details:"Delivered hands-on sessions and mentored learners on technical exercises."},
-    {period:"MAY — JUL 2023",position:"IT support / ITSM",organisation:"Operating Media SARL · Tanger",details:"Resolved email-platform issues and managed incidents through internal support workflows."},
-    {period:"APR 2022",position:"Systems & networks administration · Internship",organisation:"Provincial education administration · Chefchaouen",details:"Physical servers, Windows Server, Active Directory and local network support."},
-    {period:"MAY — JUN 2021",position:"IT management · Internship",organisation:"Commune de Chefchaouen",details:"Workstation and printer maintenance, software installation and spreadsheet tasks."}
+    {period:"2025 — PRESENT",position:"Systems & networks / IT support · Freelance",organisation:"Independent · Remote",details:"AnyDesk-assisted remote support: isolate Windows and application issues, investigate router/Wi-Fi and workstation connectivity, check peripherals, and explain practical resolution steps to users."},
+    {period:"NOV 2023 — JAN 2024",position:"Network technician · Internship",organisation:"Hôpital Mohammed V · Chefchaouen",details:"Assisted staff using Enova Santé, participated in local network support and connectivity checks, and escalated application anomalies to the development team within the internship scope."},
+    {period:"AUG — OCT 2023",position:"Networks & systems instructor",organisation:"ETIGA · Chefchaouen",details:"Delivered hands-on networking and systems training, explained configuration fundamentals, guided technical exercises and helped learners interpret troubleshooting results."},
+    {period:"MAY — JUL 2023",position:"IT support / ITSM",organisation:"Operating Media SARL · Tanger",details:"Handled ITSM tickets related to emailing platforms, investigated user-reported faults and followed the internal incident-management workflow to support resolution."},
+    {period:"APR 2022",position:"Systems & networks administration · Internship",organisation:"Provincial education administration · Chefchaouen",details:"Participated in physical Windows Server setup, Active Directory and LAN support, and file-sharing services within the supervised internship environment."},
+    {period:"MAY — JUN 2021",position:"IT management · Internship",organisation:"Commune de Chefchaouen",details:"Assisted with workstation and printer troubleshooting, software installation and routine office productivity tasks within the commune's IT function."}
   ]
 };
 
@@ -97,12 +97,12 @@ const french: Content = {
  {type:"LABORATOIRES PERSONNELS",title:"Analyse de trafic & supervision de sécurité",summary:"Pratique exploratoire en analyse réseau, IDS et fondamentaux SIEM.",status:"Pratique sécurité & supervision",role:"Pratique personnelle en cybersécurité",context:"Développer une visibilité technique sur le réseau, les systèmes et les alertes.",approach:["Analyse de paquets Wireshark et introduction à Snort.","Pratique des bases de Wazuh et Zabbix/SNMP en lab.","À venir : journaux anonymisés, règles de détection et scénarios reproductibles."],evidence:"Expériences de laboratoire déclarées ; aucune implémentation SOC de production n'est revendiquée."}
  ] as Partial<Project>[])[i]})),
  experience:[
- {period:"2025 — AUJ.",position:"Administration systèmes & réseaux / Support IT · Freelance",organisation:"Indépendant · À distance",details:"Diagnostic, assistance utilisateurs et configuration LAN/Wi-Fi de base."},
- {period:"NOV 2023 — JAN 2024",position:"Technicien réseaux · Stage",organisation:"Hôpital Mohammed V · Chefchaouen",details:"Support Enova Santé, interventions réseau local et remontée des anomalies."},
- {period:"AOÛT — OCT 2023",position:"Formateur réseaux & systèmes",organisation:"ETIGA · Chefchaouen",details:"Animation de travaux pratiques et encadrement des stagiaires."},
- {period:"MAI — JUIL 2023",position:"Support IT / ITSM",organisation:"Operating Media SARL · Tanger",details:"Gestion de tickets et incidents sur les plateformes d'emailing."},
- {period:"AVR 2022",position:"Administration systèmes & réseaux · Stage",organisation:"Direction provinciale de l'Éducation · Chefchaouen",details:"Serveurs physiques, Windows Server, Active Directory et réseau local."},
- {period:"MAI — JUIN 2021",position:"Gestion informatique · Stage",organisation:"Commune de Chefchaouen",details:"Maintenance des postes, imprimantes et installations de logiciels."}]
+ {period:"2025 — AUJ.",position:"Administration systèmes & réseaux / Support IT · Freelance",organisation:"Indépendant · À distance",details:"Assistance à distance via AnyDesk : diagnostic Windows et logiciels, dépannage des routeurs, connexions LAN/Wi-Fi, postes et périphériques, avec explication des étapes de résolution."},
+ {period:"NOV 2023 — JAN 2024",position:"Technicien réseaux · Stage",organisation:"Hôpital Mohammed V · Chefchaouen",details:"Assistance aux utilisateurs d'Enova Santé, appui aux interventions sur le réseau local et transmission des anomalies applicatives à l'équipe de développement dans le cadre du stage."},
+ {period:"AOÛT — OCT 2023",position:"Formateur réseaux & systèmes",organisation:"ETIGA · Chefchaouen",details:"Animation de séances pratiques en réseaux et systèmes, explication des configurations et accompagnement des stagiaires dans les exercices de diagnostic."},
+ {period:"MAI — JUIL 2023",position:"Support IT / ITSM",organisation:"Operating Media SARL · Tanger",details:"Traitement de tickets ITSM liés aux plateformes d'emailing : qualification des incidents, diagnostic des problèmes signalés et suivi des procédures de support internes."},
+ {period:"AVR 2022",position:"Administration systèmes & réseaux · Stage",organisation:"Direction provinciale de l'Éducation · Chefchaouen",details:"Participation à l'installation de serveurs physiques sous Windows Server, aux services Active Directory, au partage de fichiers et au support du réseau local pendant le stage."},
+ {period:"MAI — JUIN 2021",position:"Gestion informatique · Stage",organisation:"Commune de Chefchaouen",details:"Assistance pour la maintenance de postes et imprimantes, l'installation de logiciels et les tâches bureautiques courantes du service informatique."}]
 };
 
 const arabic: Content = {
@@ -125,12 +125,12 @@ const arabic: Content = {
  {type:"مختبرات شخصية",title:"تحليل حركة البيانات والمراقبة الأمنية",summary:"تطبيقات تدريبية في تحليل الحزم وIDS وأساسيات SIEM.",status:"تطبيقات أمن ومراقبة",role:"تطبيق شخصي للأمن السيبراني",context:"تطوير مهارات مراقبة الشبكة وأحداث الأنظمة للكشف عن المشاكل الأمنية والتقنية.",approach:["تحليل الحزم بواسطة Wireshark ومبادئ Snort.","تجارب أساسية على Wazuh وZabbix/SNMP.","الخطوة القادمة: أمثلة سجلات وقواعد كشف وسيناريوهات قابلة للتكرار."],evidence:"تجارب مخبرية شخصية، وليست خدمة SOC إنتاجية موثّقة."}
  ] as Partial<Project>[])[i]})),
  experience:[
- {period:"2025 — الآن",position:"إدارة الأنظمة والشبكات / دعم تقني مستقل",organisation:"عمل حر · عن بُعد",details:"تشخيص الأعطال ومساعدة المستخدمين وإعداد الشبكات المحلية الأساسية."},
- {period:"نوفمبر 2023 — يناير 2024",position:"تقني شبكات · تدريب",organisation:"مستشفى محمد الخامس · شفشاون",details:"دعم Enova Santé ومهام الشبكة المحلية ورفع المشاكل."},
- {period:"غشت — أكتوبر 2023",position:"مكوّن في الشبكات والأنظمة",organisation:"ETIGA · شفشاون",details:"ورشات تقنية تطبيقية ومتابعة مشاريع المتدربين."},
- {period:"ماي — يوليوز 2023",position:"دعم تقني / ITSM",organisation:"Operating Media SARL · طنجة",details:"معالجة التذاكر والمشكلات المتعلقة بمنصات البريد الإلكتروني."},
- {period:"أبريل 2022",position:"تدريب إدارة الأنظمة والشبكات",organisation:"المديرية الإقليمية للتعليم · شفشاون",details:"خوادم مادية وWindows Server وActive Directory ودعم الشبكة المحلية."},
- {period:"ماي — يونيو 2021",position:"تدريب التدبير المعلوماتي",organisation:"جماعة شفشاون",details:"صيانة الحواسيب والطابعات وتثبيت البرامج."}]
+ {period:"2025 — الآن",position:"إدارة الأنظمة والشبكات / دعم تقني مستقل",organisation:"عمل حر · عن بُعد",details:"تقديم الدعم عن بُعد عبر AnyDesk، وتشخيص أعطال Windows والبرامج، وفحص اتصال الحواسيب بالشبكات LAN/Wi-Fi والموجّهات والطابعات، وشرح خطوات المعالجة للمستخدمين."},
+ {period:"نوفمبر 2023 — يناير 2024",position:"تقني شبكات · تدريب",organisation:"مستشفى محمد الخامس · شفشاون",details:"مساعدة مستخدمي Enova Santé، والمشاركة في دعم الشبكة المحلية وفحص الاتصال، وإبلاغ فريق التطوير بالأعطال التطبيقية أثناء فترة التدريب."},
+ {period:"غشت — أكتوبر 2023",position:"مكوّن في الشبكات والأنظمة",organisation:"ETIGA · شفشاون",details:"تأطير حصص تطبيقية في الشبكات والأنظمة، وشرح أساسيات الإعداد، ومرافقة المتدربين في التمارين التقنية وتشخيص الأعطال."},
+ {period:"ماي — يوليوز 2023",position:"دعم تقني / ITSM",organisation:"Operating Media SARL · طنجة",details:"معالجة تذاكر ITSM المتعلقة بمنصات البريد الإلكتروني، وتشخيص المشكلات التي يبلغ عنها المستخدمون وتتبع إجراءات الدعم الداخلية."},
+ {period:"أبريل 2022",position:"تدريب إدارة الأنظمة والشبكات",organisation:"المديرية الإقليمية للتعليم · شفشاون",details:"المشاركة في إعداد خوادم فعلية تعمل بـWindows Server، والمساعدة في خدمات Active Directory ومشاركة الملفات ودعم الشبكة المحلية تحت إشراف المؤسسة."},
+ {period:"ماي — يونيو 2021",position:"تدريب التدبير المعلوماتي",organisation:"جماعة شفشاون",details:"المساهمة في صيانة الحواسيب والطابعات وتثبيت البرامج وتنفيذ مهام الدعم المكتبي الروتينية داخل مصلحة المعلوميات."}]
 };
 english.projects.push(...additionalProjects.en);
 french.projects.push(...additionalProjects.fr);
