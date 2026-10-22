@@ -488,3 +488,41 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #eaa3
  .equipment-inspector-image:after{font-size:8px}
 }
 @media(prefers-reduced-motion:reduce){.equipment-card .equipment-drawing{transition:none!important;transform:none!important}}
+
+
+/* Solutions showcase — semantic case studies, no generated hardware art */
+.solutions-section{padding:clamp(68px,9vw,120px) 0;background:#edf2f2;color:#132e40}
+.solutions-heading{max-width:900px;margin-bottom:36px}
+.solutions-heading h2{font-size:clamp(33px,4.6vw,64px);letter-spacing:-.055em;line-height:1.08;margin:16px 0 20px;text-wrap:balance}
+.solutions-heading p{font-size:16px;line-height:1.75;color:#526c79;max-width:770px}
+.solutions-layout{display:grid;grid-template-columns:minmax(270px,.88fr) minmax(0,1.25fr);gap:20px;align-items:stretch}
+.solution-tabs{display:grid;grid-template-columns:1fr;gap:8px}
+.solution-tab{display:flex;align-items:center;text-align:start;gap:16px;min-width:0;cursor:pointer;background:#fff;border:1px solid #d4dfe3;padding:18px 16px;color:#173b49;border-radius:8px;transition:background .2s,border-color .2s,transform .2s}
+.solution-tab:hover{background:#f6fbfb;border-color:#77a7ad}
+.solution-tab.active{background:#123b4c;color:#fff;border-color:#123b4c}
+.solution-tab:focus-visible,.solution-link:focus-visible{outline:3px solid #e7a777;outline-offset:3px}
+.solution-tab-number{font:700 11px ui-monospace,monospace;color:#6a919a;align-self:flex-start}
+.solution-tab.active .solution-tab-number{color:#a8d3dd}
+.solution-tab>span:nth-of-type(2){display:grid;gap:5px;flex:1;min-width:0}
+.solution-tab small{font:700 10px ui-monospace,monospace;letter-spacing:.08em;color:#688994}
+.solution-tab.active small{color:#b6d2d9}
+.solution-tab strong{font-size:14px;line-height:1.3}
+.solution-detail{border-radius:12px;background:#102b3c;color:#f6fafa;min-width:0;padding:clamp(24px,4vw,56px);display:flex;flex-direction:column}
+.solution-detail-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;color:#9dd8d2}
+.solution-detail-heading span{font:700 11px ui-monospace,monospace;letter-spacing:.12em}
+.solution-detail h3{font-size:clamp(29px,3.3vw,47px);line-height:1.09;letter-spacing:-.05em;margin:26px 0 12px}
+.solution-detail>p{color:#c8dbe1;line-height:1.8;font-size:15px;max-width:610px}
+.solution-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:34px 0 26px}
+.solution-flow-step{position:relative;min-width:0;min-height:120px;border:1px solid #517380;background:#19394b;padding:17px 12px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;border-radius:6px}
+.solution-flow-index{font:700 12px ui-monospace,monospace;color:#91cfc5}
+.solution-flow-step strong{font:700 12px/1.4 ui-monospace,monospace;overflow-wrap:anywhere}
+.solution-flow-connector{position:absolute;right:-15px;top:50%;z-index:1;color:#a0e0d7;background:#102b3c;padding:3px;border-radius:50%}
+.solution-tech{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 30px}
+.solution-tech span{font-size:11px;border:1px solid #597a86;border-radius:4px;padding:8px 10px;color:#d2e4e5}
+.solution-link{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:12px;border-radius:5px;padding:13px 17px;background:#d0f3e9;color:#163f48;font-weight:750;font-size:13px}
+.solution-link:hover{background:#fff}
+.solution-disclaimer{display:flex;align-items:flex-start;gap:9px;color:#637e86;line-height:1.6;font-size:12px;margin-top:19px}
+.solution-disclaimer svg{flex-shrink:0;margin-top:2px}
+@media(max-width:940px){.solutions-layout{grid-template-columns:1fr}.solution-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.solution-tabs{grid-template-columns:1fr}.solution-tab{padding:13px}.solution-detail{padding:26px 19px}.solution-flow{gap:7px}.solution-flow-step{min-height:105px;padding:10px 7px}.solution-flow-step strong{font-size:10px}.solution-flow-connector{right:-11px;font-size:12px}.solutions-section{padding:66px 0}}
+@media(prefers-reduced-motion:reduce){.solution-tab{transition:none}}
