@@ -7,6 +7,9 @@ import NetworkBackdrop from "./NetworkBackdrop";
 import LocaleSetup from "./LocaleSetup";
 import TopologyStudio from "./TopologyStudio";
 import ProjectExplorer from "./ProjectExplorer";
+import DiagnosticExplorer from "./DiagnosticExplorer";
+import SecurityOperationsDesk from "./SecurityOperationsDesk";
+import SkillEvidence from "./SkillEvidence";
 import {professional} from "@/data/professional";
 import {content,githubUrl,linkedInUrl,mailUrl,phoneNumber,prettyPhoneNumber,Locale} from "@/data/content";
 
@@ -69,6 +72,15 @@ export default function Home({locale}:{locale:Locale}){
 
    <TopologyStudio locale={locale}/>
 
+   <div className="lab-pathway"><div className="container-xl lab-pathway-inner">
+      <span>${locale==='fr'?'EXPLORER LES MÉTHODES':locale==='ar'?'استكشف المنهجيات':'EXPLORE THE WORKFLOWS'}</span>
+      <a href="#diagnostics">${locale==='fr'?'Simuler un diagnostic':locale==='ar'?'محاكاة تشخيص عطل':'Run a diagnostic scenario'} <ArrowUpRight size={16}/></a>
+      <a href="#security-operations">${locale==='fr'?'Analyser les événements sécurité':locale==='ar'?'تحليل أحداث الأمن':'Investigate synthetic security events'} <ArrowUpRight size={16}/></a>
+   </div></div>
+
+   <DiagnosticExplorer locale={locale}/>
+   <SecurityOperationsDesk locale={locale}/>
+
    <section className="about-section" id="about" aria-labelledby="about-title"><div className="container-xl about-grid">
      <Reveal><span className="section-number light-number">{c.aboutKicker}</span><h2 id="about-title">{c.aboutTitle}</h2></Reveal>
      <Reveal className="about-right" delay={.08}><p className="about-paragraph">{c.aboutBody}</p><div className="facts-grid">{c.profileFacts.map(f=><div key={f.label} className="fact"><span>{f.label}</span><strong>{f.value}</strong></div>)}</div></Reveal>
@@ -85,7 +97,7 @@ export default function Home({locale}:{locale:Locale}){
     <Reveal delay={.1}><h3>{credentials.trainingTitle}</h3><div className="training-list">{credentials.courses.map(item=><div className="training-item" key={item.name}><div><strong>{item.name}</strong><span>{item.provider}</span></div><small>{item.kind}</small></div>)}</div><p className="education-footnote">{credentials.note}</p></Reveal></div>
    </div></section>
 
-   <section className="expertise-section" id="expertise" aria-labelledby="expertise-title"><div className="container-xl"><Reveal className="section-heading"><span className="section-number light-number">{c.capabilitiesKicker}</span><div className="heading-row"><h2 id="expertise-title">{c.capabilitiesTitle}</h2><p>{c.capabilitiesSub}</p></div></Reveal><div className="capability-grid">{c.capabilities.map(cap=><Reveal key={cap.n}><article className="capability-card"><span className="cap-no">{cap.n}</span><h3>{cap.title}</h3><p>{cap.description}</p><span className="cap-tech">{cap.tech}</span></article></Reveal>)}</div></div></section>
+   <section className="expertise-section" id="expertise" aria-labelledby="expertise-title"><div className="container-xl"><Reveal className="section-heading"><span className="section-number light-number">{c.capabilitiesKicker}</span><div className="heading-row"><h2 id="expertise-title">{c.capabilitiesTitle}</h2><p>{c.capabilitiesSub}</p></div></Reveal><div className="capability-grid">{c.capabilities.map(cap=><Reveal key={cap.n}><article className="capability-card"><span className="cap-no">{cap.n}</span><h3>{cap.title}</h3><p>{cap.description}</p><span className="cap-tech">{cap.tech}</span></article></Reveal>)}</div><SkillEvidence locale={locale}/></div></section>
 
    <section className="engineering-method" aria-labelledby="engineering-method-title">
      <div className="container-xl">
