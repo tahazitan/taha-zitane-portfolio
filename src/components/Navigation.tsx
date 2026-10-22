@@ -8,7 +8,7 @@ import BrandMark from "./BrandMark";
 export default function Navigation({locale,slug}:{locale:Locale;slug?:string}){
  const c=content[locale];const [open,setOpen]=useState(false);
  const anchors=["topology","work","experience","education","expertise","services","contact"];
- const names=[locale==="fr"?"Lab 3D":locale==="ar"?"مختبر 3D":"3D Lab",...c.nav];
+ const names=[locale==="fr"?"Source réseau":locale==="ar"?"مصدر الطوبولوجيا":"Network source",...c.nav];
  const target=(id:string)=>slug?`${homePath(locale)}#${id}`:`#${id}`;
  const otherHref=(lang:Locale)=>slug?`${lang==='en'?'':`/${lang}`}/projects/${slug}/`:homePath(lang);
  return <header className="header-wrap"><div className="site-nav container-xl" dir={locale==='ar'?'rtl':'ltr'}>
