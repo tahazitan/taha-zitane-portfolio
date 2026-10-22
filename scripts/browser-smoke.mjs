@@ -68,7 +68,9 @@ try{
  assert.equal(await desktop.locator('.technology-reference').count(),0,'Redundant technical reference card library is no longer on homepage');
 
  assert.equal(await desktop.locator('.source-topology').count(),1,'Actual source topology section exists');
- assert.equal(await desktop.locator('.source-figure svg image').count(),5,'Topology displays Linux technology marks within source-backed nodes');
+ assert.equal(await desktop.locator('.source-figure svg g[transform]').count(),5,'Base profile displays five distinct router/client equipment symbols');
+ assert.equal(await desktop.locator('.source-technology img[src="/tech-logos/linux.svg"]').count(),1,'Authentic Linux logo appears in technology identification, not as a router brand');
+ assert.equal(await desktop.locator('.source-figure svg text').filter({hasText:'eth1 ↔ eth1'}).count(),1,'WAN link shows the YAML interface pair');
  assert.ok((await desktop.locator('.source-figure svg').getAttribute('aria-label')).includes('IPv4'),'Topology communicates source IP context');
  assert.equal(await desktop.locator('.source-edges button').count(),4,'Base YAML profile has four wired links');
  await desktop.locator('.source-switch button').nth(1).click();
