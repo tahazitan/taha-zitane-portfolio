@@ -23,7 +23,7 @@ export default function SkillEvidence({locale}:{locale:Locale}){
    <div className="skill-evidence-heading"><span><Boxes size={19}/>{t.kicker}</span><h3>{t.title}</h3><p>{t.lead}</p></div>
    <div className="skill-evidence-grid">
     <div className="skill-selectors" role="group" aria-label={t.title}>{c.capabilities.map((entry,i)=><button type="button" key={entry.n} className={selected===i?"active":""} aria-pressed={selected===i} onClick={()=>setSelected(i)}><span>{entry.n}</span>{entry.title}<ArrowUpRight size={16}/></button>)}</div>
-    <div className="skill-detail" aria-live="polite"><span className="skill-detail-caption"><GitBranch size={15}/>{t.associated}</span><h4>{skill.title}</h4><p>{skill.description}</p><div className="skill-stack">{skill.tech.split("/").map((s,i)=><span key={i}>{s.trim()}</span>)}</div><div className="skill-linked-work">{projectsBySkill[selected].map(slug=>{const project=c.projects.find(p=>p.slug===slug);return project?<Link key={slug} href={projectPath(locale,slug)}><span><strong>{project.title}</strong><small>{project.type}</small></span><ArrowUpRight size={17}/></Link>:null;})}</div></div>
+    <div className="skill-detail" aria-live="polite"><span className="skill-detail-caption"><GitBranch size={15}/>{t.associated}</span><h4>{skill.title}</h4><p>{skill.description}</p><div className="skill-stack">{skill.tech.split(/\s{2}\/\s{2}/).map((s,i)=><span key={i}>{s.trim()}</span>)}</div><div className="skill-linked-work">{projectsBySkill[selected].map(slug=>{const project=c.projects.find(p=>p.slug===slug);return project?<Link key={slug} href={projectPath(locale,slug)}><span><strong>{project.title}</strong><small>{project.type}</small></span><ArrowUpRight size={17}/></Link>:null;})}</div></div>
    </div>
  </div>;
 }
