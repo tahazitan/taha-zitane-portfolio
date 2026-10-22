@@ -33,6 +33,7 @@ try{
  await desktop.locator('.work-card').first().waitFor({timeout:30000});
  await desktop.waitForTimeout(900); // allow React hydration before exercising client-side filters
  assert.equal(await desktop.locator('.nav-links a').count(),5,'Five deliberate navigation links with distinct purposes');
+ assert.equal(await desktop.locator('.hero-person').innerText(),'Taha Zitane','Name must render without literal template characters');
  assert.equal(await desktop.locator('.work-card').count(),8,'All eight case studies visible by default');
  const search=desktop.locator('.work-search input');
  await search.fill('Proxmox');
@@ -107,6 +108,7 @@ try{
  await mobile.waitForFunction(()=>{const el=document.querySelector('.portrait-photo');return el instanceof HTMLImageElement && el.complete && el.naturalWidth>100;});
  assert.equal(await mobile.locator('html').getAttribute('dir'),'rtl');
  assert.ok((await mobile.locator('.brand-name').innerText()).includes('طه زيطان'),'Arabic spelling is correct');
+ assert.equal(await mobile.locator('.hero-person').innerText(),'طه زيطان','Arabic identity must render naturally with no stray symbols');
  assert.equal(await mobile.locator('.source-topology').count(),1,'Source topology available in Arabic RTL');
  assert.equal(await mobile.locator('.solution-media-card').count(),0,'Arabic layout omits broken third-party images');
  assert.equal(await mobile.locator('.technology-reference').count(),0,'Mobile homepage avoids redundant reference card grid');
