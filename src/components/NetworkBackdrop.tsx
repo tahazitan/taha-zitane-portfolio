@@ -4,17 +4,17 @@
  * This complements the interactive project-specific 3D atlas below.
  */
 const devices=[
- {id:"wan",x:300,y:36,w:134,title:"WAN",subtitle:"ISP / INTERNET",kind:"cloud"},
- {id:"firewall",x:300,y:128,w:182,title:"SECURITY EDGE",subtitle:"FIREWALL / IPsec",kind:"firewall"},
- {id:"core",x:300,y:218,w:190,title:"CAMPUS CORE",subtitle:"L3 / TRUNK",kind:"switch"},
- {id:"users",x:100,y:321,w:156,title:"USER SEGMENT",subtitle:"VLAN 10",kind:"switch"},
- {id:"servers",x:300,y:321,w:156,title:"SERVER SEGMENT",subtitle:"VLAN 20",kind:"server"},
- {id:"mgmt",x:500,y:321,w:156,title:"MGMT SEGMENT",subtitle:"VLAN 30",kind:"server"}
+ {id:"wan",x:300,y:80,w:134,title:"WAN",subtitle:"ISP / INTERNET",kind:"cloud"},
+ {id:"firewall",x:300,y:160,w:182,title:"SECURITY EDGE",subtitle:"FIREWALL / IPsec",kind:"firewall"},
+ {id:"core",x:300,y:240,w:190,title:"CAMPUS CORE",subtitle:"L3 / TRUNK",kind:"switch"},
+ {id:"users",x:100,y:319,w:156,title:"USER SEGMENT",subtitle:"VLAN 10",kind:"switch"},
+ {id:"servers",x:300,y:319,w:156,title:"SERVER SEGMENT",subtitle:"VLAN 20",kind:"server"},
+ {id:"mgmt",x:500,y:319,w:156,title:"MGMT SEGMENT",subtitle:"VLAN 30",kind:"server"}
 ] as const;
 
 const traces=[
- "M300 58 V101","M300 155 V190","M300 244 V264 H100 V294",
- "M300 244 V294","M300 244 V264 H500 V294"
+ "M300 118 V136","M300 198 V216","M300 278 V286 H100 V295",
+ "M300 278 V295","M300 278 V286 H500 V295"
 ];
 
 export default function NetworkBackdrop(){
