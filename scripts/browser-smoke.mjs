@@ -95,6 +95,12 @@ try{
  await mobile.goto(base+'/fr/',{waitUntil:'domcontentloaded',timeout:30000});
  await mobile.waitForFunction(()=>{const img=document.querySelector('.portrait-photo');return img instanceof HTMLImageElement&&img.complete&&img.naturalWidth>100;},{timeout:15000});
  const mobilePortrait=await mobile.locator('.portrait-frame').boundingBox();
+ const mobileLayout=await mobile.evaluate(()=>{
+  const grid=document.querySelector('.hero-grid'),visual=document.querySelector('.hero-visual'),photo=document.querySelector('.portrait-frame'),scroll=window.scrollY;
+  return {scroll,viewport:window.innerHeight,grid:window.getComputedStyle(grid).display,visualOrder:window.getComputedStyle(visual).order,photoTop:photo?.getBoundingClientRect().top,photoBottom:photo?.getBoundingClientRect().bottom}
+ });
+ console.log('QA MOBILE PORTRAIT GEOMETRY',JSON.stringify({mobilePortrait,mobileLayout}));
+ await mobile.screenshot({path:path.join(root,'screenshots','mobile-fr-debug.png'),animations:'disabled'});
  assert.ok(mobilePortrait&&mobilePortrait.y>=0&&mobilePortrait.y<770,'Authentic portrait must be visible in initial mobile viewport');
 
  await mobile.locator('.nav-toggle').waitFor({timeout:15000});
