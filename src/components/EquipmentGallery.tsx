@@ -1,7 +1,7 @@
 "use client";
 import {useState} from "react";
 import Link from "next/link";
-import {ArrowUpRight,Network,Layers,Server,Shield,GitBranch} from "lucide-react";
+import {ArrowUpRight,Network,Shield} from "lucide-react";
 import {projectPath,type Locale} from "@/data/content";
 
 /** Vendor-inspired equipment silhouettes, hand-drawn as vector art.
