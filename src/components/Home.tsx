@@ -5,6 +5,7 @@ import Reveal from "./Reveal";
 import LocaleSetup from "./LocaleSetup";
 import ProjectExplorer from "./ProjectExplorer";
 import SourceTopology from "./SourceTopology";
+import SolutionMedia from "./SolutionMedia";
 import SkillEvidence from "./SkillEvidence";
 import TechnologyReferences from "./TechnologyReferences";
 import {professional} from "@/data/professional";
@@ -62,6 +63,7 @@ export default function Home({locale}:{locale:Locale}){
      <ProjectExplorer locale={locale} projects={c.projects}/>
    </div></section>
 
+   <SolutionMedia locale={locale}/>
    <SourceTopology locale={locale}/>
 
    <section className="about-section" id="about" aria-labelledby="about-title"><div className="container-xl about-grid">
