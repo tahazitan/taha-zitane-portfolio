@@ -63,3 +63,18 @@ wrangler.jsonc          Cloudflare static-asset configuration
 - Responsive styling: `src/app/globals.css`
 
 The security and infrastructure diagrams represent **documented labs or reference architectures**, not verified production deployments. Never commit credentials, client data or sensitive network configurations.
+
+
+## Interactive infrastructure demonstrations (V4)
+
+The homepage includes three lightweight, client-side features alongside documented professional case studies:
+
+- **Troubleshooting Explorer:** five deterministic, trilingual synthetic scenarios (LAN/VLAN, DNS, IPsec, Active Directory discovery, suspicious network traffic). Visitors select diagnostic probes and see simulated output, likely causes and proposed verification.
+- **Security Operations Desk:** a fixed set of synthetic identity, IDS, firewall, availability and VPN events. Supports severity filters, example log inspection, defensive triage and remediation context. No live SOC connection or customer event claims.
+- **Skill Evidence Explorer:** links technical domains to relevant portfolio projects rather than inventing proficiency percentages.
+
+Source files: src/components/DiagnosticExplorer.tsx, src/components/SecurityOperationsDesk.tsx, src/components/SkillEvidence.tsx.
+
+To extend diagnostic scenarios, add entries with localized en/fr/ar text, safe illustrative outputs and evidence-based decision stages. Add only synthetic event data to the SOC demo using TEST-NET addresses and plausible defensive analysis. Link new skills to already-present project slugs. Verified lab evidence, once created and sanitized, belongs in the relevant case study, not in the synthetic demonstration.
+
+Verification: npm install then npm run check. GitHub Actions also executes scripts/browser-smoke.mjs with real Chromium interactions for diagnostics, SOC filtering, skill links, project search, 2D/3D controls and mobile EN/FR/AR. GitHub success validates the source build and browser test environment; Cloudflare production deployment status requires independent verification. Cloudflare uses Workers Static Assets from ./out, not SSR.
