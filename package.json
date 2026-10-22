@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "tsc --noEmit",
     "check": "npm run lint && npm run build",
-    "prebuild": "node scripts/source-audit.mjs",
+    "prebuild": "node scripts/source-audit.mjs && node scripts/topology-audit.mjs",
     "postbuild": "node scripts/localize-export.mjs"
   },
   "dependencies": {

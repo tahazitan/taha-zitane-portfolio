@@ -1,6 +1,6 @@
 # Taha Zitane — Portfolio V2
 
-A bespoke, multilingual infrastructure engineering portfolio, designed around **professional evidence, restrained interaction and technical depth**. **V2 is the canonical version on `main`**. The former V1 source has been replaced in the working tree; its old commits remain recoverable in Git history.
+A bespoke, multilingual infrastructure engineering portfolio, designed around **professional evidence, restrained interaction and technical depth**. **V2 is a new implementation**; the V1 Cloudflare deployment is not altered by the files in this project.
 
 ## Technology
 
@@ -38,7 +38,7 @@ If install is blocked by a network-restricted environment, run these commands fr
 ## Cloudflare Pages — connect to GitHub
 
 1. In Cloudflare dashboard, open **Workers & Pages**, create a **Pages** project and connect to GitHub.
-2. Select repository `tahazitan/taha-zitane-portfolio` and production branch **`main`**.
+2. Select repository `tahazitan/taha-zitane-portfolio` and the selected V2 branch (preview) or `main` after V2 is approved.
 3. Set **Framework preset** to `Next.js (Static HTML Export)` if offered; otherwise `None` with the values below.
 4. Set build command to `npm run build`, build output directory `out` and project root to `/`.
 5. Set `NODE_VERSION=22` in environment variables if your selected environment defaults to an older Node version.
@@ -54,18 +54,12 @@ The enterprise network lab source is a reproducible **code/configuration package
 
 All localised copy, projects, statuses, links and work history live in `src/data/content.ts`. The portrait is `public/images/taha-portrait.webp`. The main visual direction and breakpoints live in `src/app/globals.css`.
 
-## Canonical deployment checklist
+## Deployment notes
 
-- **Git branch**: `main`
-- **Cloudflare Pages** (not Workers): Connect to GitHub and choose this repository.
-- **Framework preset**: `None` (or `Next.js — Static HTML Export` only when offered with equivalent output).
-- **Root directory**: `/` (repository root).
-- **Build command**: `npm run build`.
-- **Build output directory**: `out`.
-- **Environment variable**: `NODE_VERSION=22` when needed.
-- Check GitHub Actions, then Pages build, then real public URLs on desktop and mobile.
-- The previously deployed Cloudflare **Worker** is a separate service: publishing Pages will not automatically replace or delete that Worker. Once this site is validated, remove the old service or switch your owned custom domain as appropriate.
+**Do not delete V1 or point the production domain to this preview until V2 is visibly reviewed and the Cloudflare build succeeds.**
 
-## Portfolio roadmap
+## Extended engineering platform (V2.3)
 
-The project already includes an evidence-labeled selection of case studies and a timeline of six relevant professional roles/internships. The long-term goal is to add all suitable CV projects, reconstructed internship labs, advanced infrastructure operations, monitoring, NGFW, SOC and authorized pentesting case studies with reproducible implementation details and real test evidence. Keep personal labs distinct from workplace history, and do not publish confidential data.
+The responsive **interactive 3D topology studio** now provides six switchable network reference designs, device-role inspection and an SVG fallback for accessibility. The portfolio spans eight engineering case studies, a professional experience timeline, six technical capabilities, formal education and precisely labeled training attestations in English, French and Arabic.
+
+Long-term lab methodology and build plans: [Engineering Roadmap](docs/ENGINEERING-LAB-ROADMAP.md), [Reference Architectures](docs/REFERENCE-ARCHITECTURES.md), [Cloudflare Deployment & QA](docs/DEPLOY-CLOUDFLARE.md). Keep real implementation evidence in dedicated lab repositories and update case studies as work is validated.
