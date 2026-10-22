@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "tsc --noEmit",
     "check": "npm run lint && npm run build && node scripts/site-smoke.mjs",
-    "prebuild": "node scripts/source-audit.mjs && node scripts/topology-audit.mjs",
+    "prebuild": "node scripts/source-audit.mjs && node scripts/topology-audit.mjs && node scripts/visual-identity-audit.mjs",
     "postbuild": "node scripts/localize-export.mjs"
   },
   "dependencies": {
