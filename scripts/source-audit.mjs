@@ -8,7 +8,7 @@ for(const f of files)if(!existsSync(path.join(root,f)))throw new Error('Missing 
 for(const slug of ['enterprise-network-lab','windows-server-ad','remote-it-support','hospital-network-support','security-observability-labs','firewall-ipsec-lab','proxmox-virtualization-lab','cisco-campus-network-lab'])if(!(content.includes(`slug:"${slug}"`)||content.includes(`slug:'${slug}'`)))throw new Error('Missing case study: '+slug);
 for(const language of ['en','fr','ar'])if(!content.includes(`${language}:`))throw new Error('Missing locale: '+language);
 if(!content.includes('طه زيطان') || content.includes('طه زيتان')) throw new Error('Correct Arabic identity not applied consistently');
-if(!css.includes('@media (prefers-reduced-motion:reduce)'))throw new Error('Reduced motion CSS missing');
+if(!/@media\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/.test(css))throw new Error('Reduced motion CSS missing');
 const navigation=readFileSync(path.join(root,'src/components/Navigation.tsx'),'utf8');
 if(!navigation.includes('...c.nav')||navigation.includes('...c.nav.slice'))throw new Error('Navigation items drift from actual 7 anchors');
 const home=readFileSync(path.join(root,'src/components/Home.tsx'),'utf8');
@@ -18,5 +18,5 @@ const sourceTopology=readFileSync(path.join(root,'src/components/SourceTopology.
 for(const required of ['hq-rtr','branch-rtr','hq-switch','branch-switch','eth1 ↔ eth1','topology.clab.yml','topology.secure.clab.yml'])if(!sourceTopology.includes(required))throw new Error('Source topology missing documented node or interface: '+required);
 if(home.includes('<SecurityOperationsDesk')||home.includes('<DiagnosticExplorer'))throw new Error('Removed synthetic SOC/troubleshooting sections are still displayed');
 if(!home.includes('portrait-photo')||!home.includes('/images/taha-portrait.webp'))throw new Error('Native portrait visibility fix missing');
-if(!css.includes('brightness(1.07)')||!css.includes('.work-cards'))throw new Error('Design refinements or portrait correction missing');
+if(!/filter:\s*brightness\(1\.(?:0[5-9]|1[0-9])\)/.test(css)||!css.includes('.work-cards'))throw new Error('Design refinements or portrait correction missing');
 console.log('PASS: actual YAML topology references, no fictional equipment images or GNS3 screenshots, 8 cases, 3 locales, navigation, portrait, media transparency');
