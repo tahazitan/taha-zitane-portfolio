@@ -5,6 +5,7 @@ import Reveal from "./Reveal";
 import LocaleSetup from "./LocaleSetup";
 import ProjectExplorer from "./ProjectExplorer";
 import SourceTopology from "./SourceTopology";
+import TechnologyMarks from "./TechnologyMarks";
 import {professional} from "@/data/professional";
 import {content,githubUrl,linkedInUrl,mailUrl,phoneNumber,prettyPhoneNumber,Locale} from "@/data/content";
 
@@ -20,6 +21,7 @@ export default function Home({locale}:{locale:Locale}){
       <div className="hero-serial"><span className="index-dot"/>{locale==='ar'?'الأنظمة / الشبكات / العمليات':'SYSTEMS / NETWORKS / OPERATIONS'}<span>— 001</span></div>
       <h1 id="hero-title"><span className="hero-person">{locale==='ar'?'طه زيطان':'Taha Zitane'}</span><span className="hero-serif">{locale==='ar'?'هندسة الأنظمة والشبكات':locale==='fr'?'Systèmes, réseaux & infrastructure.':'Systems, networks & infrastructure.'}</span></h1>
       <div className="hero-lead"><div className="hero-rule"/><div><h2>{c.heroSubtitle}</h2><p>{c.heroLead}</p></div></div>
+      <TechnologyMarks technologies={["Windows Server","Cisco","Linux","Proxmox","Docker","FortiGate","Palo Alto","Wazuh","Wireshark"]} limit={9} variant="hero"/>
       <div className="hero-actions"><a className="btn btn-primary" href="#work">{locale==='fr'?'Études de cas':locale==='ar'?'المشاريع التقنية':'View projects'}<ArrowUpRight size={18}/></a><a className="btn btn-text" href="#contact">{locale==='fr'?'Me contacter':locale==='ar'?'تواصل معي':'Get in touch'}<ArrowRight size={18}/></a></div>
       <a className="hero-resume-link" href="/cv/Taha_Zitane_CV_2026.pdf" download="Taha_Zitane_CV_2026.pdf"><FileDown size={17}/>{locale==='ar'?'تحميل السيرة الذاتية (PDF)':locale==='fr'?'Télécharger mon CV (PDF)':'Download CV (PDF)'}<ArrowUpRight size={16}/></a>
     </div><div className="hero-visual">
@@ -36,7 +38,7 @@ export default function Home({locale}:{locale:Locale}){
 
    <section className="section experience-section" id="experience" aria-labelledby="experience-title"><div className="container-xl">
      <Reveal className="section-heading"><span className="section-number">{c.experienceKicker}</span><div className="heading-row"><h2 id="experience-title">{c.experienceTitle}</h2><p>{c.experienceSub}</p></div></Reveal>
-     <div className="experience-list">{c.experience.map((exp,i)=><Reveal key={i}><div className="experience-item"><div className="experience-period">{exp.period}</div><div className="experience-detail"><h3>{exp.position}</h3><p>{exp.organisation}</p></div><p className="experience-desc">{exp.details}</p><span className="experience-arrow">↗</span></div></Reveal>)}</div>
+     <div className="experience-list">{c.experience.map((exp,i)=><Reveal key={i}><div className="experience-item"><div className="experience-period">{exp.period}</div><div className="experience-detail"><h3>{exp.position}</h3><p>{exp.organisation}</p><TechnologyMarks technologies={[exp.position,exp.details]} limit={3} variant="inline"/></div><p className="experience-desc">{exp.details}</p><span className="experience-arrow">↗</span></div></Reveal>)}</div>
    </div></section>
 
    <section className="section work-section" id="work" aria-labelledby="work-title"><div className="container-xl">
@@ -46,7 +48,7 @@ export default function Home({locale}:{locale:Locale}){
 
    <SourceTopology locale={locale}/>
 
-   <section className="expertise-section" id="expertise" aria-labelledby="expertise-title"><div className="container-xl"><Reveal className="section-heading"><span className="section-number light-number">{c.capabilitiesKicker}</span><div className="heading-row"><h2 id="expertise-title">{c.capabilitiesTitle}</h2><p>{c.capabilitiesSub}</p></div></Reveal><div className="capability-grid">{c.capabilities.map(cap=><Reveal key={cap.n}><article className="capability-card"><span className="cap-no">{cap.n}</span><h3>{cap.title}</h3><p>{cap.description}</p><span className="cap-tech">{cap.tech}</span></article></Reveal>)}</div></div></section>
+   <section className="expertise-section" id="expertise" aria-labelledby="expertise-title"><div className="container-xl"><Reveal className="section-heading"><span className="section-number light-number">{c.capabilitiesKicker}</span><div className="heading-row"><h2 id="expertise-title">{c.capabilitiesTitle}</h2><p>{c.capabilitiesSub}</p></div></Reveal><div className="capability-grid">{c.capabilities.map(cap=><Reveal key={cap.n}><article className="capability-card"><span className="cap-no">{cap.n}</span><h3>{cap.title}</h3><p>{cap.description}</p><TechnologyMarks technologies={[cap.tech]} limit={4} variant="inline"/><span className="cap-tech">{cap.tech}</span></article></Reveal>)}</div></div></section>
 
    <section className="section education-section" id="education"><div className="container-xl">
     <Reveal className="section-heading"><span className="section-number">{credentials.kicker}</span><div className="heading-row"><h2>{credentials.title}</h2><p>{credentials.intro}</p></div></Reveal>
