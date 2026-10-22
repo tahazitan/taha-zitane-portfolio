@@ -406,3 +406,21 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #eaa3
  .schematic-packet{display:none}
  .equipment-card,.equipment-card:hover{transform:none;transition:none}
 }
+
+
+/* Mobile-first identity: place an actual visible portrait ahead of lengthy text.
+   The full engineering 2D/3D atlas remains available further down the document. */
+@media(max-width:800px){
+ .hero-grid{display:flex;flex-direction:column}
+ .hero-visual{order:-1;padding:17px 0 9px}
+ .hero-copy{order:1;padding:24px 0 32px}
+ .hero-visual .portrait-frame{height:335px;width:min(290px,76%);margin:0 auto!important}
+ .hero-visual .portrait-caption{width:min(290px,76%);margin:10px auto 0}
+ .hero-network.hero-network-exhibit{display:none!important}
+}
+@media(max-width:550px){
+ .hero-visual{padding:12px 0 5px}
+ .hero-visual .portrait-frame{height:268px;width:min(230px,73%);border-width:5px}
+ .hero-visual .portrait-caption{width:min(275px,83%);margin:12px auto 0}
+ .hero-copy{padding:23px 0 31px}
+}
