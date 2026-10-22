@@ -25,7 +25,7 @@ const brands:Brand[] = [
  {key:"zabbix",name:"Zabbix",matcher:/\bzabbix\b/i,logo:false},
  {key:"wireguard",name:"WireGuard",matcher:/\bwireguard\b/i,logo:false},
  {key:"cybrary",name:"Cybrary",matcher:/\bcybrary\b/i,logo:false},
- {key:"enova",name:"Enova Santé",matcher:/\benova\s+sant[ée]\b/i,logo:false}
+ {key:"enova",name:"Enova Santé",matcher:/\benova\s+sant[ée]/i,logo:false}
 ];
 export default function TechnologyMarks({technologies,limit=5,variant="inline"}:{technologies:readonly string[];limit?:number;variant?:Variant}){
  const haystack=technologies.join(" | ");
