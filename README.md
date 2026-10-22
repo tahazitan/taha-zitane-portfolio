@@ -22,7 +22,7 @@ npm install
 npm run check
 ```
 
-The production GitHub Actions workflow validates TypeScript, builds the export, checks all localized routes and smoke-tests rendered anchor destinations and contact assets. The `.github/workflows/next-ci.yml` workflow runs on pushes and pull requests.
+The production GitHub Actions workflow validates TypeScript, builds the export, checks all localized routes and smoke-tests rendered anchor destinations and contact assets. A Chromium/Playwright-core browser suite additionally checks interactive desktop/mobile behavior and uploads review screenshots. The `.github/workflows/next-ci.yml` workflow runs on pushes and pull requests.
 
 Cloudflare Workers Git integration:
 

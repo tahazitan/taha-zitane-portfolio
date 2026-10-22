@@ -30,3 +30,13 @@ jobs:
 
       - name: Run link, locale and accessibility smoke checks
         run: node scripts/site-smoke.mjs
+
+      - name: Browser UX, interactions and mobile layout
+        run: node scripts/browser-smoke.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: portfolio-browser-screenshots
+          path: screenshots/
+          if-no-files-found: ignore
+          retention-days: 7
