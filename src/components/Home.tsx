@@ -2,11 +2,9 @@ import Link from "next/link";
 import {ArrowUpRight,ArrowRight,Github,Linkedin,MoveDown,ArrowDown,Phone,Network,ContactRound,FileDown} from "lucide-react";
 import Navigation from "./Navigation";
 import Reveal from "./Reveal";
-import NetworkBackdrop from "./NetworkBackdrop";
 import LocaleSetup from "./LocaleSetup";
-import TopologyStudio from "./TopologyStudio";
 import ProjectExplorer from "./ProjectExplorer";
-import EquipmentGallery from "./EquipmentGallery";
+import SourceTopology from "./SourceTopology";
 import SkillEvidence from "./SkillEvidence";
 import {professional} from "@/data/professional";
 import {content,githubUrl,linkedInUrl,mailUrl,phoneNumber,prettyPhoneNumber,Locale} from "@/data/content";
@@ -52,11 +50,6 @@ export default function Home({locale}:{locale:Locale}){
     </div><div className="hero-visual">
        <div className="portrait-frame"><div className="portrait-image"><img className="portrait-photo" src="/images/taha-portrait.webp" alt={c.portraitAlt} width={630} height={900} fetchPriority="high" decoding="async" /></div><span className="portrait-vertical">{locale==='ar'?'طه زيطان — 2026':'TAHA / ZITANE — 2026'}</span></div>
        <div className="portrait-caption"><div><span className="image-number">FIG. 01</span><strong>{c.portraitLabel}</strong></div><span>{c.portraitCaption}</span></div>
-       <div className="hero-network hero-network-exhibit" role="group" aria-label={locale==='fr'?'Visualisation réseau animée en 3D':locale==='ar'?'تصور ثلاثي الأبعاد لشبكة معلوماتية':'Animated 3D network visualization'}>
-         <div className="hero-exhibit-top"><span className="hero-exhibit-status"/><span>{locale==='fr'?'ARCHITECTURE RÉSEAU / ANIMATION':locale==='ar'?'هندسة شبكات / عرض متحرك':'NETWORK ARCHITECTURE / MOTION'}</span><span>00:NETWORK</span></div>
-         <NetworkBackdrop/>
-         
-       </div>
     </div></div>
     <div className="hero-foot"><span><MoveDown size={14}/>{c.scroll}</span><div className="hero-foot-rule"/><span>35° 10′ N &nbsp; / &nbsp; 05° 16′ W</span></div>
    </div></section>
@@ -68,8 +61,7 @@ export default function Home({locale}:{locale:Locale}){
      <ProjectExplorer locale={locale} projects={c.projects}/>
    </div></section>
 
-   <EquipmentGallery locale={locale}/>
-   <TopologyStudio locale={locale}/>
+   <SourceTopology locale={locale}/>
 
    <section className="about-section" id="about" aria-labelledby="about-title"><div className="container-xl about-grid">
      <Reveal><span className="section-number light-number">{c.aboutKicker}</span><h2 id="about-title">{c.aboutTitle}</h2></Reveal>
