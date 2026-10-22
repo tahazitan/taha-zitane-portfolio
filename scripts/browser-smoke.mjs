@@ -53,7 +53,19 @@ try{
  assert.equal(await desktop.locator('.diagnostic-step-track button').count(),5,'Five structured diagnostic steps');
  await desktop.locator('.diagnostic-step-track button').nth(2).click();
  assert.equal(await desktop.locator('.diagnostic-step-track button[aria-current="step"]').count(),1,'Step selection works');
- assert.equal(await desktop.locator('.work-card .visual-project').count(),8,'Every project includes a visual workflow preview');
+ assert.equal(await desktop.locator('.work-card .visual-project--topology').count(),8,'Every project includes a GNS3-style equipment-and-cable topology');
+ assert.equal(await desktop.locator('.work-card .topology-preview-stage > svg').count(),8,'Project diagrams use scalable source/role graphics');
+ const cardGeometry=await desktop.locator('.work-card').evaluateAll(cards=>cards.map((card,index)=>{
+  const summary=card.querySelector('.work-card-summary')?.getBoundingClientRect();
+  const tags=card.querySelector('.work-tags')?.getBoundingClientRect();
+  const actions=card.querySelector('.work-card-actions')?.getBoundingClientRect();
+  return {index,summaryHeight:summary?.height??0,summaryBottom:summary?.bottom??0,tagsTop:tags?.top??0,tagsBottom:tags?.bottom??0,actionsTop:actions?.top??0};
+ }));
+ for(const card of cardGeometry){
+  assert.ok(card.summaryHeight>32,'Summary must not collapse: project '+card.index);
+  assert.ok(card.tagsTop>=card.summaryBottom-1,'Tooling tags must not overlap text: project '+card.index);
+  assert.ok(card.actionsTop>=card.tagsBottom-1,'Actions must not overlap tags: project '+card.index);
+ }
  assert.equal(await desktop.locator('.lab-roadmap-card').count(),4,'Architecture roadmap distinguishes planned labs');
  assert.equal(await desktop.locator('.experience-proof').count(),6,'Every professional role shows skill evidence');
  // Source-linked connections are traceable to repository YAML, not fictitious equipment images.
@@ -93,7 +105,7 @@ try{
  await desktop.goto(base+'/projects/enterprise-network-lab/',{waitUntil:'domcontentloaded',timeout:30000});
  assert.equal(await desktop.locator('.source-topology-compact .source-edges button').count(),4,'Enterprise case uses actual base-profile wiring');
  assert.equal(await desktop.locator('.design-review-card').count(),3,'Case includes technical review');
- assert.equal(await desktop.locator('.visual-project--large .visual-node').count(),5,'Full enterprise case includes both routers and actual source IP labels');
+ assert.equal(await desktop.locator('.visual-project--large .topology-preview-stage svg g[transform]').count(),5,'Enterprise case diagrams show five correctly connected source nodes');
  assert.equal(await desktop.locator('.related-work-grid a').count(),2,'Case-to-case navigation');
  await desktop.locator('.source-topology-compact').screenshot({path:path.join(root,'screenshots','enterprise-source-topology.png'),animations:'disabled'});
  const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
@@ -116,6 +128,15 @@ try{
  await mobile.locator('.nav-toggle').click();
  const overflowFR=await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
  assert.ok(overflowFR<=2,`French page horizontal overflow: ${overflowFR}px`);
+ const mobileCardGeometry=await mobile.locator('.work-card').evaluateAll(cards=>cards.map((card,index)=>{
+  const copy=card.querySelector('.work-card-summary')?.getBoundingClientRect();
+  const tags=card.querySelector('.work-tags')?.getBoundingClientRect();
+  return {index,summaryHeight:copy?.height??0,summaryBottom:copy?.bottom??0,tagsTop:tags?.top??0};
+ }));
+ for(const card of mobileCardGeometry){
+  assert.ok(card.summaryHeight>32,'Mobile FR summary must have intrinsic height: '+card.index);
+  assert.ok(card.tagsTop>=card.summaryBottom-1,'Mobile FR tags must not cover summary: '+card.index);
+ }
  await mobile.screenshot({path:path.join(root,'screenshots','mobile-fr.png'),animations:'disabled'});
  await mobile.goto(base+'/ar/',{waitUntil:'domcontentloaded',timeout:30000});
  assert.equal(await mobile.locator('html').getAttribute('lang'),'ar');
