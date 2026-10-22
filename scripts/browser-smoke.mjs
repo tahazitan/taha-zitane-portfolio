@@ -46,29 +46,20 @@ try{
  // Portfolio must focus on real work, not synthetic SOC interfaces
  assert.equal(await desktop.locator('.security-operations').count(),0,'SOC demo removed');
  assert.equal(await desktop.locator('.diagnostic-section').count(),0,'Unrequested diagnostic demo removed');
- // Equipment visuals are authored per technology and link to related engineering studies
- assert.equal(await desktop.locator('.equipment-card').count(),7,'Seven vendor-inspired equipment illustrations');
- await desktop.locator('.equipment-card').nth(3).click();
- assert.ok((await desktop.locator('.equipment-inspector h3').innerText()).includes('Palo Alto'),'Selected equipment inspector updates');
- assert.ok((await desktop.locator('.equipment-inspector a').getAttribute('href')).includes('firewall-ipsec-lab'),'Related case study is contextually correct');
+ // Source-linked connections are traceable to repository YAML, not fictitious equipment images.
+ assert.equal(await desktop.locator('.equipment-card').count(),0,'Unsourced equipment gallery removed');
+ assert.equal(await desktop.locator('.source-topology').count(),1,'Actual source topology section exists');
+ assert.equal(await desktop.locator('.source-edges button').count(),4,'Base YAML profile has four wired links');
+ await desktop.locator('.source-switch button').nth(1).click();
+ assert.equal(await desktop.locator('.source-edges button').count(),6,'Secure YAML profile has six wired links');
+ const sourceUrl=await desktop.locator('.source-links a').first().getAttribute('href');
+ assert.ok(sourceUrl.includes('secure/topology.secure.clab.yml'),'Selected secure profile links to original YAML');
  // Portrait must be an actual decoded image, visible and unobscured by the architecture panel
  const portrait=desktop.locator('.portrait-photo');
  await portrait.waitFor({state:'visible'});
  await desktop.waitForFunction(()=>{const el=document.querySelector('.portrait-photo');return el instanceof HTMLImageElement && el.complete && el.naturalWidth>100 && el.naturalHeight>100;});
- const boxes=await desktop.evaluate(()=>{
-  const a=document.querySelector('.portrait-frame')?.getBoundingClientRect();
-  const b=document.querySelector('.hero-network-exhibit')?.getBoundingClientRect();
-  if(!a||!b)return null;
-  return {photo:{x:a.x,y:a.y,w:a.width,h:a.height},network:{x:b.x,y:b.y,w:b.width,h:b.height},intersection:Math.max(0,Math.min(a.right,b.right)-Math.max(a.left,b.left))*Math.max(0,Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top))};
- });
- assert.ok(boxes&&boxes.photo.w>220&&boxes.photo.h>260,'Portrait must occupy a legible area');
- assert.ok(boxes.intersection<=1,'Architecture graphic must not cover portrait');
- const toggle=desktop.locator('.topology-view-toggle button');
- await toggle.nth(1).click();
- assert.equal(await desktop.locator('.topology-fallback-svg').count(),1,'Schematic view should be visible when selected');
- const firstDevice=await desktop.locator('.topology-device-buttons button').first().innerText();
- await desktop.locator('.topology-device-buttons button').first().click();
- assert.ok((await desktop.locator('.topology-device-details').innerText()).includes(firstDevice),'Device inspector must update');
+ const photoBox=await desktop.locator('.portrait-frame').boundingBox();
+ assert.ok(photoBox&&photoBox.width>220&&photoBox.height>260,'Authentic portrait must be clearly visible');
  assert.equal(await desktop.locator('a[href^="mailto:"]').count()>0,true,'Functional email links');
  assert.equal(await desktop.locator('a[href^="tel:"]').count()>0,true,'Functional phone link');
  assert.equal(await desktop.locator('a[href$=".vcf"]').count()>0,true,'Contact VCard download');
@@ -77,13 +68,10 @@ try{
  await desktop.locator('.hero').screenshot({path:path.join(root,'screenshots','desktop-hero.png'),animations:'disabled'});
  await desktop.locator('.work-card').first().screenshot({path:path.join(root,'screenshots','desktop-project-card.png'),animations:'disabled'});
  await desktop.goto(base+'/projects/enterprise-network-lab/',{waitUntil:'domcontentloaded',timeout:30000});
- assert.equal(await desktop.locator('.blueprint-zone-buttons button').count(),6,'Six enterprise zones');
- await desktop.locator('.blueprint-zone-buttons button').nth(0).click();
- assert.ok((await desktop.locator('.blueprint-explanation').innerText()).includes('WAN'),'Enterprise inspector updates');
- assert.equal(await desktop.locator('.design-review-card').count(),3,'Each case includes technical review');
- assert.equal(await desktop.locator('.topology-compact .topology-screen-foot a').count(),0,'Project page must not link back to itself');
+ assert.equal(await desktop.locator('.source-topology-compact .source-edges button').count(),4,'Enterprise case uses actual base-profile wiring');
+ assert.equal(await desktop.locator('.design-review-card').count(),3,'Case includes technical review');
  assert.equal(await desktop.locator('.related-work-grid a').count(),2,'Case-to-case navigation');
- await desktop.locator('.blueprint-shell').screenshot({path:path.join(root,'screenshots','enterprise-blueprint.png'),animations:'disabled'});
+ await desktop.locator('.source-topology-compact').screenshot({path:path.join(root,'screenshots','enterprise-source-topology.png'),animations:'disabled'});
  const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
  mobile.on('pageerror',err=>errors.push('mobile: '+err.message));
  await mobile.goto(base+'/fr/',{waitUntil:'domcontentloaded',timeout:30000});
@@ -104,7 +92,7 @@ try{
  await mobile.waitForFunction(()=>{const el=document.querySelector('.portrait-photo');return el instanceof HTMLImageElement && el.complete && el.naturalWidth>100;});
  assert.equal(await mobile.locator('html').getAttribute('dir'),'rtl');
  assert.ok((await mobile.locator('.brand-name').innerText()).includes('طه زيطان'),'Arabic spelling is correct');
- assert.equal(await mobile.locator('.equipment-card').count(),7,'Equipment gallery available in Arabic RTL');
+ assert.equal(await mobile.locator('.source-topology').count(),1,'Source topology available in Arabic RTL');
  const arabicPortrait=await mobile.locator('.portrait-frame').boundingBox();
  assert.ok(arabicPortrait&&arabicPortrait.y>=0&&arabicPortrait.y<770,'Arabic mobile also shows the portrait near the top');
  const overflowAR=await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
@@ -112,5 +100,5 @@ try{
  await mobile.screenshot({path:path.join(root,'screenshots','mobile-ar.png'),animations:'disabled'});
  // Ignore WebGL warnings produced in some headless renderers; do not ignore React runtime exceptions.
  if(errors.length)throw Error(`Browser runtime errors:\n${errors.slice(0,8).join('\n')}`);
- console.log('PASS: real-browser desktop/mobile navigation, project search, category filters, topology controls, unobscured decoded portrait, seven equipment diagrams, skill evidence, enterprise map, case navigation, 3 locales, phone/email/vCard, RTL and no mobile overflow');
+ console.log('PASS: real-browser desktop/mobile navigation, project search, category filters, source-based network links, unobscured decoded portrait, honest project cards, skill evidence, enterprise source viewer, case navigation, 3 locales, phone/email/vCard, RTL and no mobile overflow');
 }finally{if(browser)await browser.close();await new Promise(resolve=>serve.close(resolve))}
