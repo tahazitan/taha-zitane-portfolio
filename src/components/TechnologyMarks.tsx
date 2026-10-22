@@ -2,7 +2,7 @@
  * Icon files are sourced from Simple Icons, Devicon and Wazuh (see docs).
  * Trademark marks identify technologies only; they do not imply certification or partnership.
  */
-type Variant = "hero" | "card" | "inline" | "case";
+type Variant = "hero" | "card" | "inline" | "case" | "mini";
 type Brand = {key:string;name:string;matcher:RegExp};
 const brands:Brand[] = [
  {key:"windows",name:"Windows Server",matcher:/\b(windows|active directory|ad ds|gpo|iis|microsoft)\b/i},

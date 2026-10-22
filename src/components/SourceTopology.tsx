@@ -47,6 +47,17 @@ export default function SourceTopology({locale,compact=false}:{locale:Locale;com
  const [active,setActive]=useState(0);
  const p=mode==="base"?base:secure,t=copy[locale];
  const nodes=new Map(p.nodes.map(n=>[n.id,n]));
+ const address:Record<string,{role:string;addr:string;zone:string}>={
+  "hq-rtr":{role:"ROUTING / FRR",addr:"10.10.10.1",zone:"network"},
+  "branch-rtr":{role:"ROUTING / FRR",addr:"10.20.30.1",zone:"network"},
+  "hq-switch":{role:"VLAN 10 / 20",addr:"802.1Q",zone:"network"},
+  "branch-switch":{role:"VLAN 30",addr:"802.1Q",zone:"network"},
+  "hq-it":{role:"HQ IT / VLAN 10",addr:"10.10.10.10/24",zone:"users"},
+  "hq-users":{role:"HQ USERS / VLAN 20",addr:"10.10.20.10/24",zone:"users"},
+  "branch-user":{role:"BRANCH / VLAN 30",addr:"10.20.30.10/24",zone:"users"}
+ };
+ const wan=mode==="base"?"OSPF · 10.255.0.0/30":"OSPF · 172.16.255.0/30";
+
  return <section className={"source-topology"+(compact?" source-topology-compact":"")} id={compact?undefined:"topology"} aria-labelledby={compact?undefined:"source-title"}>
   <div className="container-xl">
    {!compact&&<div className="source-heading"><span className="section-number">{t.kicker}</span><h2 id="source-title">{t.title}</h2><p>{t.intro}</p></div>}
@@ -58,11 +69,22 @@ export default function SourceTopology({locale,compact=false}:{locale:Locale;com
     <div className="source-columns">
      <div className="source-figure">
       <div className="source-caption"><span>{p.file}</span><span>{p.nodes.length} {t.nodes} / {p.edges.length} {t.links}</span></div>
-      <svg viewBox="0 0 900 375" role="img" aria-label={p.file+" network diagram"}>
-       <defs><pattern id="yaml-grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#183c50" strokeWidth=".7"/></pattern></defs>
-       <rect width="900" height="375" fill="url(#yaml-grid)"/>
-       {p.edges.map((e,i)=>{const a=nodes.get(e.a)!,b=nodes.get(e.b)!;return <g key={e.a+"-"+e.b}><path d={"M"+a.x+","+a.y+"L"+b.x+","+b.y} fill="none" stroke={active===i?"#edaa80":"#6da7b5"} strokeWidth={active===i?4:2}/><circle cx={(a.x+b.x)/2} cy={(a.y+b.y)/2} r="3.5" fill={active===i?"#edaa80":"#96d8c8"}/></g>})}
-       {p.nodes.map(n=><g key={n.id} transform={"translate("+n.x+","+n.y+")"}><rect x="-90" y="-21" width="180" height="42" rx="4" fill="#224c5d" stroke="#81b8c3"/><text x="0" y="4" textAnchor="middle" fill="#eaf6fa" fontSize="12" fontFamily="ui-monospace,monospace">{n.label}</text></g>)}
+      <svg viewBox="0 0 900 375" role="img" aria-label={p.file+" architecture with source-backed IPv4 addressing and interface links"}>
+       <defs><pattern id="yaml-grid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" fill="none" stroke="#285062" strokeWidth=".65"/></pattern></defs>
+       <rect width="900" height="375" fill="#0b2230"/><rect width="900" height="375" fill="url(#yaml-grid)"/>
+       <rect x="344" y="5" width="213" height="25" rx="3" fill="#173b4e" stroke="#537d87"/>
+       <text x="450" y="22" textAnchor="middle" fill="#c1e2e2" fontSize="11" fontFamily="monospace">{wan}</text>
+       {p.edges.map((e,i)=>{const a=nodes.get(e.a)!,b=nodes.get(e.b)!;return <g key={e.a+"-"+e.b}><path d={"M"+a.x+","+a.y+"L"+b.x+","+b.y} fill="none" stroke={active===i?"#ffbc86":"#6da7b5"} strokeWidth={active===i?5:2.8} strokeLinecap="round"/><circle cx={(a.x+b.x)/2} cy={(a.y+b.y)/2} r={active===i?6:4} fill={active===i?"#ffbc86":"#8cd2c5"}/></g>})}
+       {p.nodes.map(n=>{const m=address[n.id];return <g key={n.id} transform={"translate("+n.x+","+n.y+")"}>
+         <rect x="-83" y="-34" width="166" height="71" rx="8" fill={m.zone==="network"?"#254d67":"#1c514f"} stroke={m.zone==="network"?"#9bbef7":"#7be2c6"} strokeWidth="1.7"/>
+         <rect x="-83" y="-34" width="166" height="8" rx="4" fill={m.zone==="network"?"#5488d2":"#4dc4a1"}/>
+         <rect x="-73" y="-18" width="26" height="26" rx="4" fill="#eff7f8"/>
+         <image href="/tech-logos/linux.svg" x="-70" y="-15" width="20" height="20"/>
+         <text x="-40" y="-8" textAnchor="start" fill="#f1f9fc" fontSize="12" fontWeight="700" fontFamily="Arial, sans-serif">{n.id.toUpperCase().replaceAll("-"," ")}</text>
+         <text x="0" y="17" textAnchor="middle" fill="#c8e1e5" fontSize="11" fontFamily="monospace">{m.addr}</text>
+         <title>{n.label+" · "+m.role+" · "+m.addr}</title>
+        </g>})}
+       {mode==="secure"&&<g><rect x="374" y="344" width="157" height="24" rx="3" fill="#28495a" stroke="#56baad"/><text x="452" y="360" fill="#b9f4dc" fontSize="10.5" textAnchor="middle" fontFamily="monospace">WireGuard 10.254.0.0/30</text></g>}
       </svg>
       <p>{t.note}</p>
      </div>
