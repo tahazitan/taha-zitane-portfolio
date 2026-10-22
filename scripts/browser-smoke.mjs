@@ -48,23 +48,14 @@ try{
  assert.equal(await desktop.locator('.diagnostic-section').count(),0,'Unrequested diagnostic demo removed');
  // Source-linked connections are traceable to repository YAML, not fictitious equipment images.
  assert.equal(await desktop.locator('.equipment-card').count(),0,'Unsourced equipment gallery removed');
- assert.equal(await desktop.locator('.solution-media-card').count(),4,'Four genuinely photographed and licensed solution contexts');
+ assert.equal(await desktop.locator('.solution-media-card').count(),0,'Unreliable remote-image gallery must not appear');
  assert.equal(await desktop.locator('.hero-proof-strip').count(),0,'Vanity counters must be removed');
  assert.equal(await desktop.locator('.engineering-method').count(),0,'No repetitive methodology card grid');
  const primaryCTA=await desktop.locator('.hero-actions a').first().getAttribute('href');
  const secondaryCTA=await desktop.locator('.hero-actions a').last().getAttribute('href');
  assert.equal(primaryCTA,'#work','Primary hero action opens projects');
  assert.equal(secondaryCTA,'#contact','Secondary hero action opens actual contact details');
-
- assert.equal(await desktop.locator('.solution-media-credits a[href*="creativecommons.org"]').count(),4,'Each solution photograph has its original license');
  assert.equal(await desktop.locator('.technology-reference').count(),0,'Redundant technical reference card library is no longer on homepage');
- await desktop.locator('.solution-media-card').first().scrollIntoViewIfNeeded();
- await desktop.waitForFunction(()=>{const image=document.querySelector('.solution-media-card img');return image instanceof HTMLImageElement && image.complete && image.naturalWidth>100;},{timeout:23000});
- // Source image integrity; a remote image missing should fail rather than create an empty portfolio card.
- await desktop.waitForFunction(()=>[...document.querySelectorAll('.solution-media-card img')].every(img=>img instanceof HTMLImageElement&&img.complete),{timeout:24000});
- const broken=await desktop.locator('.solution-media-card img').evaluateAll(imgs=>imgs.filter(img=>img.naturalWidth<50).map(img=>img.src));
- assert.deepEqual(broken,[],'Every publicly attributed image needs to display a real, decoded photograph');
-
 
  assert.equal(await desktop.locator('.source-topology').count(),1,'Actual source topology section exists');
  assert.equal(await desktop.locator('.source-edges button').count(),4,'Base YAML profile has four wired links');
@@ -117,7 +108,7 @@ try{
  assert.equal(await mobile.locator('html').getAttribute('dir'),'rtl');
  assert.ok((await mobile.locator('.brand-name').innerText()).includes('طه زيطان'),'Arabic spelling is correct');
  assert.equal(await mobile.locator('.source-topology').count(),1,'Source topology available in Arabic RTL');
- assert.equal(await mobile.locator('.solution-media-card').count(),4,'Arabic real media section retained');
+ assert.equal(await mobile.locator('.solution-media-card').count(),0,'Arabic layout omits broken third-party images');
  assert.equal(await mobile.locator('.technology-reference').count(),0,'Mobile homepage avoids redundant reference card grid');
  const arabicPortrait=await mobile.locator('.portrait-frame').boundingBox();
  assert.ok(arabicPortrait&&arabicPortrait.y>=0&&arabicPortrait.y<770,'Arabic mobile also shows the portrait near the top');
