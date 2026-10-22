@@ -4,6 +4,23 @@ export type TopologyNode = {id:string; label:string; kind:NodeKind; at:[number,n
 export type TopologyFlow = {id:string; nodes:string[]};
 export type Topology = {id:string; title:string; subtitle:string; protocol:string; nodes:TopologyNode[]; links:[string,string][]; project:string; flows?:TopologyFlow[]};
 export const topologyDesigns: Topology[] = [
+ {id:'frr-ospf',title:'Published FRR / OSPF source topology',subtitle:'Containerlab base · HQ IT + HQ users ↔ Branch · runtime verification pending',protocol:'FRRouting · OSPF area 0 · IPv4',project:'frr-ospf-two-site',nodes:[
+  {id:'hq-it',label:'HQ IT · 10.10.10.10',kind:'client',at:[-3,-1.7,1.5]},
+  {id:'hq-users',label:'HQ users · 10.10.20.10',kind:'client',at:[-1.6,-1.7,1.5]},
+  {id:'hq-frr',label:'HQ FRR · 10.255.0.1',kind:'router',at:[-1.7,.2,0]},
+  {id:'branch-frr',label:'Branch FRR · 10.255.0.2',kind:'router',at:[1.7,.2,0]},
+  {id:'branch-host',label:'Branch · 10.20.30.10',kind:'client',at:[3,-1.7,1.5]}
+ ],links:[['hq-it','hq-frr'],['hq-users','hq-frr'],['hq-frr','branch-frr'],['branch-frr','branch-host']]},
+ {id:'frr-secure',title:'Published VLAN / WireGuard source topology',subtitle:'802.1Q segmentation · FRR underlay · encrypted wg0 overlay · runtime verification pending',protocol:'802.1Q · OSPF · WireGuard · iptables',project:'frr-vlan-wireguard',nodes:[
+  {id:'hq-it',label:'HQ IT · VLAN 10',kind:'client',at:[-3.7,-1.9,1.2]},
+  {id:'hq-users',label:'HQ users · VLAN 20',kind:'client',at:[-2,-1.9,1.2]},
+  {id:'hq-bridge',label:'HQ Linux bridge',kind:'switch',at:[-2.8,-.6,.6]},
+  {id:'hq-frr',label:'HQ FRR + wg0',kind:'router',at:[-1.25,.65,0]},
+  {id:'branch-frr',label:'Branch FRR + wg0',kind:'router',at:[1.25,.65,0]},
+  {id:'branch-bridge',label:'Branch bridge · VLAN 30',kind:'switch',at:[2.6,-.6,.6]},
+  {id:'branch-host',label:'Branch user',kind:'client',at:[2.6,-1.9,1.2]}
+ ],links:[['hq-it','hq-bridge'],['hq-users','hq-bridge'],['hq-bridge','hq-frr'],['hq-frr','branch-frr'],['branch-frr','branch-bridge'],['branch-bridge','branch-host']]},
+
  {id:'enterprise',title:'Enterprise security architecture',subtitle:'HQ · two branches · remote access · segmented services',protocol:'802.1Q · ACL · IPsec · AD/DNS · SIEM · Backup',project:'enterprise-network-lab',nodes:[
   {id:'remote',label:'Remote User',kind:'client',at:[-3.8,1.9,.4]},
   {id:'wan',label:'WAN / Internet',kind:'cloud',at:[0,2.2,-1.2]},
