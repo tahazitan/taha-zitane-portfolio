@@ -286,3 +286,8 @@
  .experience-section .experience-item{transition:none}
  .experience-section .experience-item:hover{transform:none}
 }
+
+.topology-legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:13px 2px;color:#b3d5d8;font:650 10px/1.5 ui-monospace,monospace}
+.topology-legend span{display:inline-flex;align-items:center;gap:7px}
+.topology-legend i{display:inline-block;width:9px;height:9px;border-radius:2px}
+.topology-key-network{background:#679be4}.topology-key-user{background:#4ccba6}.topology-key-link{background:#ffbc86}

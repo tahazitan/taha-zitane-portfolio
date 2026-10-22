@@ -52,9 +52,9 @@ export default function SourceTopology({locale,compact=false}:{locale:Locale;com
   "branch-rtr":{role:"ROUTING / FRR",addr:"10.20.30.1",zone:"network"},
   "hq-switch":{role:"VLAN 10 / 20",addr:"802.1Q",zone:"network"},
   "branch-switch":{role:"VLAN 30",addr:"802.1Q",zone:"network"},
-  "hq-it":{role:"HQ IT / VLAN 10",addr:"10.10.10.10/24",zone:"users"},
-  "hq-users":{role:"HQ USERS / VLAN 20",addr:"10.10.20.10/24",zone:"users"},
-  "branch-user":{role:"BRANCH / VLAN 30",addr:"10.20.30.10/24",zone:"users"}
+  "hq-it":{role:mode==="secure"?"HQ IT / VLAN 10":"HQ IT",addr:"10.10.10.10/24",zone:"users"},
+  "hq-users":{role:mode==="secure"?"HQ USERS / VLAN 20":"HQ USERS",addr:"10.10.20.10/24",zone:"users"},
+  "branch-user":{role:mode==="secure"?"BRANCH / VLAN 30":"BRANCH",addr:"10.20.30.10/24",zone:"users"}
  };
  const wan=mode==="base"?"OSPF · 10.255.0.0/30":"OSPF · 172.16.255.0/30";
 
@@ -86,6 +86,11 @@ export default function SourceTopology({locale,compact=false}:{locale:Locale;com
         </g>})}
        {mode==="secure"&&<g><rect x="374" y="344" width="157" height="24" rx="3" fill="#28495a" stroke="#56baad"/><text x="452" y="360" fill="#b9f4dc" fontSize="10.5" textAnchor="middle" fontFamily="monospace">WireGuard 10.254.0.0/30</text></g>}
       </svg>
+      <div className="topology-legend" aria-label="Topology color key">
+       <span><i className="topology-key-network"/>{locale==="fr"?"Routage / commutation":locale==="ar"?"التوجيه والتبديل":"Routing / switching"}</span>
+       <span><i className="topology-key-user"/>{locale==="fr"?"Postes et VLAN":locale==="ar"?"أجهزة المستخدمين":"Endpoints / subnets"}</span>
+       <span><i className="topology-key-link"/>{locale==="fr"?"Liaison sélectionnée":locale==="ar"?"الرابط المحدد":"Selected link"}</span>
+      </div>
       <p>{t.note}</p>
      </div>
      <aside className="source-aside"><h3>{t.inventory}</h3>
