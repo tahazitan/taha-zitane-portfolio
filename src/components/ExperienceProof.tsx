@@ -3,7 +3,7 @@ import TechnologyMarks from "./TechnologyMarks";
 import {ClipboardCheck,Shield,Router,Headphones,TicketCheck,GraduationCap} from "lucide-react";
 type RecordProof={scope:string;keywords:string[];technologies:string[];kind:string};
 const en:RecordProof[]=[
- {scope:"REMOTE SUPPORT / FREELANCE",kind:"USER OPERATIONS",keywords:["Windows support","LAN / Wi-Fi","Remote diagnosis","Peripherals"],technologies:["Windows Server"],},
+ {scope:"REMOTE SUPPORT / FREELANCE",kind:"USER OPERATIONS",keywords:["Windows support","LAN / Wi-Fi","Remote diagnosis","Peripherals"],technologies:["Windows","AnyDesk"],},
  {scope:"HOSPITAL / INTERNSHIP",kind:"APPLICATION & LAN",keywords:["Enova Santé","User guidance","Connectivity","Escalation"],technologies:[]},
  {scope:"TRAINING / PRACTICAL LABS",kind:"KNOWLEDGE TRANSFER",keywords:["Networking labs","Systems basics","Hands-on exercises","Troubleshooting"],technologies:[]},
  {scope:"IT SUPPORT / ITSM",kind:"INCIDENT WORKFLOW",keywords:["Ticket triage","Emailing platforms","Incident follow-up","User support"],technologies:[]},
@@ -11,7 +11,7 @@ const en:RecordProof[]=[
  {scope:"PUBLIC SECTOR / INTERNSHIP",kind:"ENDPOINT SUPPORT",keywords:["Workstations","Printer diagnosis","Software setup"],technologies:["Windows Server"]}
 ];
 const fr:RecordProof[]=[
- {scope:"SUPPORT À DISTANCE / FREELANCE",kind:"SUPPORT UTILISATEUR",keywords:["Support Windows","LAN / Wi-Fi","Diagnostic distant","Périphériques"],technologies:["Windows Server"]},
+ {scope:"SUPPORT À DISTANCE / FREELANCE",kind:"SUPPORT UTILISATEUR",keywords:["Support Windows","LAN / Wi-Fi","Diagnostic distant","Périphériques"],technologies:["Windows","AnyDesk"]},
  {scope:"HÔPITAL / STAGE",kind:"APPLICATION & LAN",keywords:["Enova Santé","Aide utilisateurs","Connectivité","Escalade"],technologies:[]},
  {scope:"FORMATION / TP",kind:"TRANSMISSION",keywords:["TP réseaux","Bases systèmes","Exercices pratiques","Diagnostic"],technologies:[]},
  {scope:"SUPPORT IT / ITSM",kind:"TRAITEMENT D'INCIDENTS",keywords:["Qualification tickets","Emailing","Suivi d’incident","Support"],technologies:[]},
@@ -19,7 +19,7 @@ const fr:RecordProof[]=[
  {scope:"COLLECTIVITÉ / STAGE",kind:"SUPPORT POSTES",keywords:["Postes clients","Imprimantes","Installation logiciels"],technologies:["Windows Server"]}
 ];
 const ar:RecordProof[]=[
- {scope:"دعم عن بُعد / مستقل",kind:"دعم المستخدمين",keywords:["Windows","شبكات LAN / Wi-Fi","تشخيص عن بُعد","ملحقات الحاسوب"],technologies:["Windows Server"]},
+ {scope:"دعم عن بُعد / مستقل",kind:"دعم المستخدمين",keywords:["Windows","شبكات LAN / Wi-Fi","تشخيص عن بُعد","ملحقات الحاسوب"],technologies:["Windows","AnyDesk"]},
  {scope:"مستشفى / تدريب",kind:"دعم التطبيقات والشبكة",keywords:["Enova Santé","مساعدة المستخدمين","الاتصال","التصعيد"],technologies:[]},
  {scope:"تكوين وتطبيقات",kind:"تأطير تقني",keywords:["تمارين الشبكات","أساسيات الأنظمة","تطبيق عملي","تشخيص"],technologies:[]},
  {scope:"الدعم / ITSM",kind:"تدبير الحوادث",keywords:["تذاكر الدعم","منصات البريد","متابعة الحوادث","المستخدمون"],technologies:[]},

@@ -5,7 +5,8 @@
 type Variant = "hero" | "card" | "inline" | "case" | "mini";
 type Brand = {key:string;name:string;matcher:RegExp};
 const brands:Brand[] = [
- {key:"windows",name:"Windows Server",matcher:/\b(windows|active directory|ad ds|gpo|iis|microsoft)\b/i},
+ {key:"windows",name:"Microsoft Windows",matcher:/\b(windows|active directory|ad ds|gpo|iis|microsoft)\b/i},
+ {key:"anydesk",name:"AnyDesk",matcher:/\banydesk\b/i},
  {key:"cisco",name:"Cisco",matcher:/\b(cisco|packet tracer)\b/i},
  {key:"linux",name:"Linux",matcher:/\blinux\b/i},
  {key:"ubuntu",name:"Ubuntu",matcher:/\bubuntu\b/i},
