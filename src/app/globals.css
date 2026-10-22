@@ -415,3 +415,144 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #eaa3
 .hero-resume-link:hover{background:#275c68;border-color:#9be1e5}
 @media(max-width:900px){.hero-resume-link{margin-inline-start:0}}
 @media(max-width:520px){.hero-resume-link{width:100%;justify-content:space-between}}
+
+
+/* V4.1 — editorial layout and authentic photo visibility.
+   Intentional final overrides after older incremental CSS. */
+.hero-grid{
+ display:grid;
+ grid-template-columns:minmax(0,1.05fr) minmax(330px,.95fr);
+ align-items:start;
+ gap:clamp(28px,5vw,84px);
+ min-height:0;
+}
+.hero-visual{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:0;padding:42px 0 56px;min-width:0}
+.hero-visual .portrait-frame{
+ order:1;position:relative;isolation:isolate;z-index:3;
+ display:block;flex:none;
+ width:min(380px,100%);height:455px;
+ margin:0!important;border:7px solid #fff;
+ background:#dce7e7;box-shadow:0 28px 70px rgba(24,53,67,.16),17px 18px 0 #d9e6df;
+ overflow:visible;
+ transition:transform .45s cubic-bezier(.2,.75,.3,1),box-shadow .45s;
+ animation:portrait-arrive .9s both;
+}
+.hero-visual .portrait-frame:hover{transform:translateY(-4px);box-shadow:0 35px 80px rgba(24,53,67,.19),19px 20px 0 #d9e6df}
+.portrait-image{position:absolute!important;inset:0;width:100%;height:100%;overflow:hidden;z-index:1}
+.portrait-image .portrait-photo{
+ display:block;position:absolute!important;inset:0!important;
+ width:100%!important;height:100%!important;
+ max-width:none!important;object-fit:cover;object-position:50% 23%;
+ filter:brightness(1.12) contrast(.99) saturate(1.04);
+ opacity:1!important;visibility:visible!important;
+ background:#dce7e7;
+}
+.portrait-vertical{z-index:3}
+.hero-visual .portrait-caption{
+ order:2;position:relative!important;inset:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
+ display:flex;width:min(380px,100%);transform:none!important;margin:18px 0 0;gap:14px;
+ color:#3b5b66;justify-content:space-between;
+}
+.hero-network.hero-network-exhibit{
+ order:3;position:relative!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
+ width:min(430px,100%)!important;height:auto!important;
+ aspect-ratio:600/370; margin:30px 0 0!important;
+ flex:none;z-index:1;opacity:1;overflow:hidden;
+ border-radius:13px;transform:none!important;
+ background:linear-gradient(130deg,#153449,#102b3d);box-shadow:0 18px 40px rgba(25,54,70,.21);
+}
+.hero-network.hero-network-exhibit:hover{box-shadow:0 25px 56px rgba(25,54,70,.26)}
+.network-schematic{position:absolute;inset:0;overflow:hidden;z-index:0}
+.network-schematic svg{display:block;width:100%;height:100%;overflow:visible}
+.schematic-grid path{stroke:rgba(125,170,186,.12);stroke-width:.6}
+.hero-exhibit-top{padding:13px 15px;pointer-events:none}
+.hero-exhibit-bottom{z-index:2;position:absolute!important;bottom:0;inset-inline:0}
+.hero-copy{padding:64px 0 34px}
+.hero-resume-link{
+ color:#163a49!important;background:#fff!important;border:1px solid #9bbbc1!important;
+ margin:18px 0 6px 58px!important;font-weight:750;
+}
+.hero-resume-link:hover{background:#e7f4f1!important;border-color:#4d9b9c!important}
+@keyframes portrait-arrive{from{opacity:.3;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes exhibit-enter{from{opacity:.7;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.hero-network-exhibit{animation:exhibit-enter .85s both .15s}
+
+/* Seven original equipment illustrations with consistent engineering semantics. */
+.equipment-section{padding:106px 0 108px;background:#f0f4f3;color:#15323e;scroll-margin-top:86px}
+.equipment-heading{max-width:880px;margin:0 0 32px}
+.equipment-heading h2{font-size:clamp(36px,4.7vw,66px);letter-spacing:-.057em;line-height:1.07;font-weight:620;margin:18px 0}
+.equipment-heading p{font-size:15px;max-width:780px;line-height:1.82;color:#526c73}
+.equipment-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.equipment-card{
+ position:relative;min-width:0;cursor:pointer;text-align:start;
+ background:#fff;border:1px solid #c9dadd;padding:16px 16px 12px;
+ display:flex;flex-direction:column;gap:10px;color:#16333f;
+ transition:border-color .25s,transform .25s,box-shadow .25s;
+}
+.equipment-card:hover{transform:translateY(-3px);border-color:#6aa4aa;box-shadow:0 15px 30px rgba(17,61,72,.09)}
+.equipment-card.is-selected{border-color:#3b8d90;box-shadow:inset 0 0 0 1px #3b8d90,0 12px 28px rgba(17,61,72,.08)}
+.equipment-card:focus-visible{outline:3px solid #cf794f;outline-offset:3px}
+.equipment-card-top{display:flex;flex-direction:column;gap:6px}
+.equipment-card-top strong{font-size:15px;font-weight:750}
+.equipment-card-top small{font:800 10px ui-monospace,monospace;color:#55838d;letter-spacing:.08em}
+.equipment-drawing{width:100%;height:auto;display:block;aspect-ratio:360/194}
+.equipment-card:hover .equipment-drawing{filter:drop-shadow(0 7px 8px rgba(22,62,76,.16))}
+.equipment-tags{display:flex;gap:5px;flex-wrap:wrap}
+.equipment-tags span{font:700 10px ui-monospace,monospace;background:#eef6f5;color:#40656c;padding:6px 7px;border:1px solid #daebea}
+.equipment-inspector{margin-top:20px;display:grid;grid-template-columns:minmax(280px,.85fr) minmax(0,1.15fr);background:#0f2a3b;color:#fff;overflow:hidden;border:1px solid #456475}
+.equipment-inspector-image{display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 45%,#345b6c,#16374a 62%,#0d2736);padding:15px 28px}
+.equipment-drawing-large{width:min(480px,100%)}
+.equipment-inspector-copy{padding:36px clamp(23px,3vw,48px)}
+.equipment-inspector-copy>span{font:800 10px ui-monospace,monospace;letter-spacing:.1em;display:inline-flex;align-items:center;gap:8px;color:#8cd8d2}
+.equipment-inspector-copy h3{font-size:clamp(28px,3vw,43px);letter-spacing:-.05em;margin:14px 0}
+.equipment-inspector-copy p{font-size:14px;line-height:1.78;color:#d0e2e6;max-width:660px}
+.equipment-inspector-tags{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}
+.equipment-inspector-tags small{font:750 11px ui-monospace,monospace;border:1px solid #618993;padding:8px 12px;color:#b7dad9}
+.equipment-inspector-copy a{display:inline-flex;align-items:center;gap:10px;padding:13px 17px;margin-top:10px;background:#e4f6f1;color:#174757;font-size:13px;font-weight:750;transition:background .2s}
+.equipment-inspector-copy a:hover{background:#fff}
+.equipment-caption{display:flex;align-items:center;gap:9px;font-size:11px;color:#648087;line-height:1.5;margin:15px 0 0}
+.topology-reference-label{font-size:11px;letter-spacing:.1em;font-weight:800;color:#cdebe7;border:1px solid #598999;padding:12px 16px;white-space:nowrap}
+
+@media(max-width:1080px){
+ .equipment-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .hero-grid{grid-template-columns:minmax(0,1fr) minmax(285px,.9fr);gap:26px}
+ .hero-visual .portrait-frame{height:415px;width:min(350px,100%)}
+ .hero-visual .portrait-caption{width:min(350px,100%)}
+}
+@media(max-width:800px){
+ .hero-grid{display:flex;flex-direction:column;align-items:stretch;gap:0}
+ .hero-copy{padding:42px 0 18px}
+ .hero-visual{padding:24px 0 40px;justify-content:center}
+ .hero-visual .portrait-frame{height:460px;width:min(370px,100%)}
+ .hero-visual .portrait-caption{width:min(370px,100%)}
+ .hero-network.hero-network-exhibit{width:min(470px,100%)!important}
+ .hero-resume-link{margin-inline-start:0!important}
+ .equipment-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .equipment-inspector{grid-template-columns:1fr}
+ .equipment-inspector-image{min-height:230px}
+}
+@media(max-width:550px){
+ .hero-visual{padding-top:24px}
+ .hero-visual .portrait-frame{height:420px;width:min(325px,100%);border-width:6px}
+ .hero-visual .portrait-caption{width:min(325px,100%);padding-inline:4px}
+ .hero-network.hero-network-exhibit{width:100%!important}
+ .hero-resume-link{width:100%;justify-content:space-between}
+ .equipment-section{padding:66px 0 74px}
+ .equipment-grid{grid-template-columns:1fr 1fr;gap:10px}
+ .equipment-card{padding:12px 10px 9px}
+ .equipment-card-top strong{font-size:12px}
+ .equipment-card-top small{font-size:8px}
+ .equipment-tags span{font-size:8px;padding:4px}
+ .equipment-inspector-copy{padding:24px 20px}
+ .equipment-caption{align-items:flex-start}
+}
+@media(max-width:360px){
+ .equipment-grid{grid-template-columns:1fr}
+ .equipment-card-top strong{font-size:15px}
+ .equipment-card-top small{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+ .hero-visual .portrait-frame,.hero-network-exhibit{animation:none!important;transition:none!important}
+ .schematic-packet{display:none}
+ .equipment-card,.equipment-card:hover{transform:none;transition:none}
+}
