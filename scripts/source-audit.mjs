@@ -3,7 +3,7 @@ import path from 'node:path';
 const root=path.resolve(import.meta.dirname,'..');
 const content=readFileSync(path.join(root,'src/data/content.ts'),'utf8')+readFileSync(path.join(root,'src/data/additionalProjects.ts'),'utf8');
 const css=readFileSync(path.join(root,'src/app/globals.css'),'utf8');
-const files=['src/app/page.tsx','src/app/[locale]/page.tsx','src/components/Home.tsx','src/components/CasePage.tsx','src/components/NetworkScene.tsx','src/components/TopologyCanvas.tsx','src/components/TopologyStudio.tsx','src/components/ProjectExplorer.tsx','src/components/EnterpriseBlueprint.tsx','src/components/DesignReview.tsx','src/data/projectReviews.ts','public/contact/taha-zitane.vcf','scripts/site-smoke.mjs','scripts/browser-smoke.mjs','src/data/professional.ts','public/images/taha-portrait.webp','public/meta/mark.svg','public/meta/portfolio-social.png','src/app/sitemap.ts'];
+const files=['src/app/page.tsx','src/app/[locale]/page.tsx','src/components/Home.tsx','src/components/CasePage.tsx','src/components/NetworkScene.tsx','src/components/TopologyCanvas.tsx','src/components/TopologyStudio.tsx','src/components/ProjectExplorer.tsx','src/components/EnterpriseBlueprint.tsx','src/components/DesignReview.tsx','src/components/DiagnosticExplorer.tsx','src/components/SecurityOperationsDesk.tsx','src/components/SkillEvidence.tsx','src/data/projectReviews.ts','public/contact/taha-zitane.vcf','scripts/site-smoke.mjs','scripts/browser-smoke.mjs','src/data/professional.ts','public/images/taha-portrait.webp','public/meta/mark.svg','public/meta/portfolio-social.png','src/app/sitemap.ts'];
 for(const f of files)if(!existsSync(path.join(root,f)))throw new Error('Missing required file: '+f);
 for(const slug of ['enterprise-network-lab','windows-server-ad','remote-it-support','hospital-network-support','security-observability-labs','firewall-ipsec-lab','proxmox-virtualization-lab','cisco-campus-network-lab'])if(!(content.includes(`slug:"${slug}"`)||content.includes(`slug:'${slug}'`)))throw new Error('Missing case study: '+slug);
 for(const language of ['en','fr','ar'])if(!content.includes(`${language}:`))throw new Error('Missing locale: '+language);
@@ -12,6 +12,6 @@ if(!css.includes('@media (prefers-reduced-motion:reduce)'))throw new Error('Redu
 const navigation=readFileSync(path.join(root,'src/components/Navigation.tsx'),'utf8');
 if(!navigation.includes('...c.nav')||navigation.includes('...c.nav.slice'))throw new Error('Navigation items drift from actual 7 anchors');
 const home=readFileSync(path.join(root,'src/components/Home.tsx'),'utf8');
-if(!home.includes('<ProjectExplorer')||!home.includes('<TopologyStudio'))throw new Error('Portfolio sections missing');
+if(!home.includes('<ProjectExplorer')||!home.includes('<TopologyStudio')||!home.includes('<DiagnosticExplorer')||!home.includes('<SecurityOperationsDesk')||!home.includes('<SkillEvidence'))throw new Error('Portfolio sections missing');
 if(!css.includes('brightness(1.07)')||!css.includes('.work-cards'))throw new Error('Design refinements or portrait correction missing');
-console.log('PASS: 8 cases, 3 locales, correct navigation, full 3D + 2D, expert project explorer, Arabic brand, SEO, natural portrait and contact assets');
+console.log('PASS: 5 diagnostic scenarios, 5 synthetic SOC events, evidence-linked skills; 8 cases, 3 locales, correct navigation, full 3D + 2D, expert project explorer, Arabic brand, SEO, natural portrait and contact assets');
