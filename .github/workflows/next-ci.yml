@@ -27,3 +27,6 @@ jobs:
               test -f "out/${prefix}projects/${slug}/index.html"
             done
           done
+
+      - name: Run link, locale and accessibility smoke checks
+        run: node scripts/site-smoke.mjs

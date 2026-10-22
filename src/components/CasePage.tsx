@@ -4,14 +4,18 @@ import Navigation from "./Navigation";
 import ProjectGraphic from "./ProjectGraphic";
 import LocaleSetup from "./LocaleSetup";
 import TopologyStudio from "./TopologyStudio";
+import EnterpriseBlueprint from "./EnterpriseBlueprint";
+import DesignReview from "./DesignReview";
 import {topologyForProject} from "@/data/labTopologies";
 import {enterpriseCase} from "@/data/enterpriseCase";
-import {content,homePath,Locale,mailUrl} from "@/data/content";
+import {content,homePath,projectPath,Locale,mailUrl} from "@/data/content";
 
 export default function CasePage({locale,slug}:{locale:Locale;slug:string}){
  const c=content[locale], project=c.projects.find(p=>p.slug===slug);if(!project)return null;
  const rtl=locale==='ar';
  const enterprise = slug === 'enterprise-network-lab' ? enterpriseCase[locale] : null;
+ const index=c.projects.findIndex(p=>p.slug===slug);
+ const related=[1,2].map(offset=>c.projects[(index+offset)%c.projects.length]);
  const enterpriseUi={
   en:{scopeValue:'HQ + Branch A + Branch B + Remote users',choicesValue:'Segmentation, perimeter, access control, observability and recoverability',criteriaValue:'Security, cost and operational clarity drive the design choices below.',walkthroughTitle:'Traffic walkthroughs',walkthroughBody:'Interactive topology and narrative paths that explain how selected flows should traverse the architecture.',acceptanceBody:'Proposed validation objectives for the practical implementation stage. They are design targets, not passed results.',tradeoffBody:'Key design decisions and the main trade-offs considered for security, cost and operations.',altLabel:'Alternative / trade-off'},
   fr:{scopeValue:'Siège + agence A + agence B + utilisateurs distants',choicesValue:'Segmentation, périmètre, contrôle d’accès, supervision et reprise',criteriaValue:'Sécurité, coût et exploitation guident les choix ci-dessous.',walkthroughTitle:'Parcours de trafic',walkthroughBody:'Topologie interactive et scénarios décrivant le trajet attendu de certains flux dans l’architecture.',acceptanceBody:'Objectifs de validation proposés pour la phase d’implémentation pratique. Ils ne représentent pas des tests réussis.',tradeoffBody:'Principales décisions de conception et compromis étudiés du point de vue sécurité, coût et exploitation.',altLabel:'Alternative / compromis'},
@@ -21,6 +25,7 @@ export default function CasePage({locale,slug}:{locale:Locale;slug:string}){
   <div className="case-breadcrumb"><Link href={`${homePath(locale)}#work`}><ArrowLeft size={16}/>{c.backToWork}</Link><span>{project.number} / {String(c.projects.length).padStart(2,"0")}</span></div>
   <div className="case-heading"><span className="section-number">{project.type}</span><h1>{project.title}<span>.</span></h1><p>{project.summary}</p><span className={`status-pill status-${project.statusKind}`}>{project.status}</span></div>
   <div className="case-cover"><ProjectGraphic slug={project.slug}/></div>
+  {enterprise&&<EnterpriseBlueprint locale={locale}/>}
   {topologyForProject(slug)&&<TopologyStudio locale={locale} compact project={slug}/>} 
   <div className="case-info-bar"><div><small>{c.projectRole}</small><strong>{project.role}</strong></div><div><small>{c.statusLabel}</small><strong>{project.status}</strong></div><div><small>TECHNOLOGIES</small><strong>{project.tech.join(" / ")}</strong></div></div>
 
@@ -30,6 +35,7 @@ export default function CasePage({locale,slug}:{locale:Locale;slug:string}){
     <div className="case-intro"><span className="section-number">/ 03</span><h2>{c.projectProof}</h2><p>{project.evidence}</p><div className="case-proof"><span>↳</span> {c.proofBadge}</div></div>
   </div>
 
+  <DesignReview locale={locale} slug={slug}/>
   {enterprise && <>
     <section className="enterprise-section">
       <div className="enterprise-header"><span className="section-number">/ 04</span><div><h2>{enterprise.scenario}</h2><p>{enterprise.context}</p></div></div>
@@ -59,6 +65,7 @@ export default function CasePage({locale,slug}:{locale:Locale;slug:string}){
     </section>
   </>}
 
+  <aside className="related-work" aria-label={locale==='ar'?'مشاريع أخرى':locale==='fr'?'Autres projets':'Explore more work'}><div className="related-work-top"><span className="section-number">{locale==='ar'?'مشاريع أخرى':locale==='fr'?'DÉCOUVRIR PLUS':'OTHER CASE STUDIES'}</span><h2>{locale==='ar'?'واصل الاستكشاف.':locale==='fr'?'Poursuivre la découverte.':'Continue exploring.'}</h2></div><div className="related-work-grid">{related.map(next=><Link href={projectPath(locale,next.slug)} key={next.slug}><small>{next.type}</small><strong>{next.title}</strong><span><ArrowUpRight size={22}/></span></Link>)}</div></aside>
   <div className="case-bottom-links">{project.link&&<a className="btn btn-primary" href={project.link} target="_blank" rel="noopener noreferrer"><Github size={19}/>{c.viewRepo}<ArrowUpRight size={17}/></a>}<Link href={`${homePath(locale)}#work`} className="btn btn-outline">{c.backToWork}<ArrowUpRight size={17}/></Link><a className="btn btn-outline" href={mailUrl}><Mail size={18}/>{c.contact}</a></div>
   </div></main><footer className="case-footer"><div className="container-xl"><span>© 2026 TAHA ZITANE</span><span>{c.footerNote}</span></div></footer></div>;
 }
