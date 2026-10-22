@@ -1276,6 +1276,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 @media (max-width: 760px) {
   .container-xl { width: calc(100% - 36px); }
   .hero-grid { display: flex; flex-direction: column; }
+  .hero-visual { order: -1; padding: 18px 0 7px; }
+  .hero-copy { order: 1; padding: 22px 0 36px; }
   .work-cards { grid-template-columns: 1fr; }
   .hero-copy { padding-top: 48px; }
   .hero-resume-link { margin-inline-start: 0 !important; }
@@ -1290,8 +1292,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 @media (max-width: 550px) {
   .hero-visual { padding-top: 24px; }
-  .hero-visual .portrait-frame { width: min(325px, 100%); height: 420px; border-width: 6px; }
-  .hero-visual .portrait-caption { width: min(325px, 100%); }
+  .hero-visual .portrait-frame { width: min(255px, 74vw); height: 305px; border-width: 5px; }
+  .hero-visual .portrait-caption { width: min(290px, 86vw); }
   .hero-proof-strip { flex-direction: column; padding: 10px 0; }
   .hero-proof-strip > div { border: 0; padding: 10px 0; }
   .work-tags { gap: 5px; }
