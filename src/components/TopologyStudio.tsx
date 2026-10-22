@@ -10,9 +10,9 @@ import TopologyFallback from './TopologyFallback';
 import {enterpriseCase} from '@/data/enterpriseCase';
 const Canvas=dynamic(()=>import('./TopologyCanvas'),{ssr:false,loading:()=>null});
 const label={
- en:{kicker:'INTERACTIVE NETWORK ATLAS',title:'Infrastructure, explained in 3D.',sub:'Select a reference design. Inspect each device and follow its connections in an interactive 3D network model.',info:'ARCHITECTURE / 3D',instruction:'Move the pointer to orbit · Select a device',open:'Explore the project',roadmap:'TOPOLOGY  /  SECURITY ZONES  /  TRAFFIC FLOWS'},
- fr:{kicker:'ATLAS RÉSEAU INTERACTIF',title:'Explorer les architectures.',sub:'Choisissez une topologie, explorez les connexions 3D et inspectez le rôle de chaque équipement.',info:'ARCHITECTURE / 3D',instruction:'Déplacez le pointeur · Sélectionnez un équipement',open:'Voir le projet',roadmap:'TOPOLOGIE  /  SEGMENTATION  /  FLUX RÉSEAU'},
- ar:{kicker:'أطلس الشبكات التفاعلي',title:'استكشف هندسة الشبكات.',sub:'اختر تصميم شبكة، وحرّك المنظور ثلاثي الأبعاد، ثم تعرف على دور كل جهاز واتصالاته.',info:'تصميم هندسي / 3D',instruction:'حرّك المؤشر لتغيير المنظور · اختر جهازاً',open:'استكشف المشروع',roadmap:'الطوبولوجيا  /  العزل  /  تدفق البيانات'}
+ en:{kicker:'INTERACTIVE NETWORK ATLAS',title:'Infrastructure, explained in 3D.',sub:'Select a reference design. Inspect each device and follow its connections in an interactive 3D network model.',info:'ARCHITECTURE / 3D',instruction:'Drag to orbit · Scroll to zoom · Select a device',open:'Explore the project',roadmap:'TOPOLOGY  /  SECURITY ZONES  /  TRAFFIC FLOWS'},
+ fr:{kicker:'ATLAS RÉSEAU INTERACTIF',title:'Explorer les architectures.',sub:'Choisissez une topologie, explorez les connexions 3D et inspectez le rôle de chaque équipement.',info:'ARCHITECTURE / 3D',instruction:'Glissez pour tourner · Molette pour zoomer · Sélectionnez un appareil',open:'Voir le projet',roadmap:'TOPOLOGIE  /  SEGMENTATION  /  FLUX RÉSEAU'},
+ ar:{kicker:'أطلس الشبكات التفاعلي',title:'استكشف هندسة الشبكات.',sub:'اختر تصميم شبكة، وحرّك المنظور ثلاثي الأبعاد، ثم تعرف على دور كل جهاز واتصالاته.',info:'تصميم هندسي / 3D',instruction:'اسحب لتدوير النموذج · قرّب بإصبعين · اختر جهازاً',open:'استكشف المشروع',roadmap:'الطوبولوجيا  /  العزل  /  تدفق البيانات'}
 };
 export default function TopologyStudio({locale,compact=false,project}:{locale:Locale;compact?:boolean;project?:string}){
  const choices=project?topologyDesigns.filter(t=>t.project===project):topologyDesigns;
@@ -22,7 +22,7 @@ export default function TopologyStudio({locale,compact=false,project}:{locale:Lo
  const [view,setView]=useState<'3d'|'2d'>('3d');
  useEffect(()=>{const m=window.matchMedia('(prefers-reduced-motion: reduce)');const sync=()=>setReduce(m.matches);sync();m.addEventListener('change',sync);
   try{const canvas=document.createElement('canvas');setWebgl(Boolean(canvas.getContext('webgl2')||canvas.getContext('webgl')))}catch{setWebgl(false)}
-  if(window.matchMedia('(max-width: 680px)').matches)setView('2d');
+  // WebGL-capable phones can explore the real 3D scene; users can always switch to 2D.
   return()=>m.removeEventListener('change',sync)},[]);
  useEffect(()=>{setId(choices[0]?.id||'enterprise');setSelected('');setActiveFlow('branch')},[project]);
  const current=choices.find(t=>t.id===id)||choices[0];if(!current)return null;
