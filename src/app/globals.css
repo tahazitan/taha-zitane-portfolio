@@ -424,3 +424,67 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #eaa3
  .hero-visual .portrait-caption{width:min(275px,83%);margin:12px auto 0}
  .hero-copy{padding:23px 0 31px}
 }
+
+
+/* V4.2 — restrained editorial engineering layout and stronger responsive equipment atlas */
+.equipment-section{
+ background:linear-gradient(180deg,#e9eff1 0%,#f5f7f6 56%,#eaf0f1 100%);
+}
+.equipment-heading{max-width:900px}
+.equipment-heading h2{max-width:770px;text-wrap:balance}
+.equipment-grid{gap:16px}
+.equipment-card{
+ border-radius:14px;
+ background:linear-gradient(145deg,#ffffff,#f5f8f8);
+ border:1px solid #cddce0;
+ box-shadow:0 5px 20px rgba(12,37,54,.045);
+ min-height:250px;
+ overflow:hidden;
+}
+.equipment-card:before{
+ content:"";height:3px;position:absolute;inset:0 0 auto;
+ background:linear-gradient(90deg,#2b788e,#93cdd0);
+ opacity:0;transition:opacity .2s;
+}
+.equipment-card:hover:before,.equipment-card.is-selected:before{opacity:1}
+.equipment-card-top{position:relative;z-index:1}
+.equipment-card-top strong{font-size:clamp(13px,1.1vw,16px);letter-spacing:-.02em}
+.equipment-card .equipment-drawing{
+ flex:1;min-height:105px;
+ filter:drop-shadow(0 10px 12px rgba(20,55,72,.1));
+ transition:transform .35s ease;
+}
+.equipment-card:hover .equipment-drawing{transform:translateY(-3px) scale(1.035)}
+.equipment-tags{margin-top:auto}
+.equipment-tags span{border-radius:4px}
+.equipment-inspector{
+ border-radius:18px;
+ box-shadow:0 25px 55px rgba(9,32,50,.13);
+ border-color:#234e62;
+}
+.equipment-inspector-image{
+ min-height:310px;
+ background:radial-gradient(circle at 48% 34%,#45687b 0%,#203f51 43%,#0b2334 86%);
+ position:relative;
+}
+.equipment-inspector-image:after{
+ content:"REFERENCE HARDWARE / ARCHITECTURE";
+ position:absolute;bottom:14px;left:20px;
+ color:#acc7d0;letter-spacing:.13em;
+ font:700 10px ui-monospace,monospace;
+}
+.equipment-inspector-copy a{border-radius:6px}
+@media(max-width:1100px){.equipment-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:740px){
+ .equipment-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+ .equipment-card{min-height:205px}
+ .equipment-inspector{border-radius:12px}
+ .equipment-inspector-image{min-height:230px}
+}
+@media(max-width:440px){
+ .equipment-card{min-height:180px;padding:13px 10px}
+ .equipment-card-top strong{font-size:12px}
+ .equipment-card .equipment-drawing{min-height:80px}
+ .equipment-inspector-image:after{font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){.equipment-card .equipment-drawing{transition:none!important;transform:none!important}}
