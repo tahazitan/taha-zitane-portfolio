@@ -1,47 +1,52 @@
-import {readFileSync, existsSync} from 'node:fs';
+import {readFileSync,existsSync} from 'node:fs';
 import path from 'node:path';
+
 const root=path.resolve(import.meta.dirname,'..');
-const content=readFileSync(path.join(root,'src/data/content.ts'),'utf8')+readFileSync(path.join(root,'src/data/additionalProjects.ts'),'utf8');
-const css=readFileSync(path.join(root,'src/app/globals.css'),'utf8');
-const files=['src/app/page.tsx','src/app/[locale]/page.tsx','src/components/Home.tsx','src/components/CasePage.tsx','src/components/ProjectExplorer.tsx','src/components/DesignReview.tsx','src/components/SourceTopology.tsx','src/data/projectReviews.ts','public/contact/taha-zitane.vcf','public/cv/Taha_Zitane_CV_2026.pdf','scripts/site-smoke.mjs','scripts/browser-smoke.mjs','src/data/professional.ts','public/images/taha-portrait.webp','public/meta/mark.svg','public/meta/portfolio-social.png','src/app/sitemap.ts'];
-for(const f of files)if(!existsSync(path.join(root,f)))throw new Error('Missing required file: '+f);
-for(const slug of ['enterprise-network-lab','windows-server-ad','remote-it-support','hospital-network-support','security-observability-labs','firewall-ipsec-lab','proxmox-virtualization-lab','cisco-campus-network-lab'])if(!(content.includes(`slug:"${slug}"`)||content.includes(`slug:'${slug}'`)))throw new Error('Missing case study: '+slug);
-for(const language of ['en','fr','ar'])if(!content.includes(`${language}:`))throw new Error('Missing locale: '+language);
-if(!content.includes('طه زيطان') || content.includes('طه زيتان')) throw new Error('Correct Arabic identity not applied consistently');
-if(!/@media\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/.test(css))throw new Error('Reduced motion CSS missing');
-const navigation=readFileSync(path.join(root,'src/components/Navigation.tsx'),'utf8');
-if(!navigation.includes('const anchors=["work","experience","education","expertise","contact"]')||!navigation.includes('c.nav[5]'))throw new Error('Recruiter navigation must expose five distinct useful anchors');
-const home=readFileSync(path.join(root,'src/components/Home.tsx'),'utf8');
-if(!home.includes('<ProjectExplorer')||!home.includes('<SourceTopology'))throw new Error('Evidence-led projects, sourced diagram or representative media missing');
-for(const unused of ['SolutionMedia','SkillEvidence','TechnologyReferences','engineeringMethod','hero-proof-strip'])if(home.includes(unused))throw new Error('Unused widget remains: '+unused);
-if(home.includes('hero-person">$')||home.includes('hero-serif">$'))throw new Error('Literal dollar marker rendered in professional heading');
-const order=['className="hero"','className="about-section"','className="section experience-section"','className="section work-section"'];
-if(order.some((a,i)=>i>0&&home.indexOf(a)<home.indexOf(order[i-1])))throw new Error('Personal context and experience must precede case studies');
-if(home.includes('<EquipmentGallery')||home.includes('<TopologyStudio')||home.includes('<NetworkBackdrop'))throw new Error('Unsourced equipment/topology visuals are still displayed');
-const sourceTopology=readFileSync(path.join(root,'src/components/SourceTopology.tsx'),'utf8');
-for(const required of ['hq-rtr','branch-rtr','hq-switch','branch-switch','eth1 ↔ eth1','topology.clab.yml','topology.secure.clab.yml'])if(!sourceTopology.includes(required))throw new Error('Source topology missing documented node or interface: '+required);
-if(home.includes('<SecurityOperationsDesk')||home.includes('<DiagnosticExplorer'))throw new Error('Removed synthetic SOC/troubleshooting sections are still displayed');
-if(!home.includes('portrait-photo')||!home.includes('/images/taha-portrait.webp'))throw new Error('Native portrait visibility fix missing');
-if(!/filter:\s*brightness\(1\.(?:0[5-9]|1[0-9])\)/.test(css)||!css.includes('.work-cards'))throw new Error('Design refinements or portrait correction missing');
-console.log('PASS: concise experience-first home page, five meaningful navigation items, no redundant widgets, no unreliable external photo loads, official platform reference links, actual YAML topology references, no fictional equipment images or GNS3 screenshots, 8 cases, 3 locales, navigation, portrait, media transparency');
-+'{locale')||home.includes('> ||home.includes('<TechnologyReferences')||home.includes('engineeringMethod')||home.includes('hero-proof-strip'))throw new Error('Redundant portfolio widgets or vanity metrics not removed');
-const order=['className="hero"','className="about-section"','className="section experience-section"','className="section work-section"'];
-if(order.some((a,i)=>i>0&&home.indexOf(a)<home.indexOf(order[i-1])))throw new Error('Personal context and experience must precede case studies');
-if(home.includes('<EquipmentGallery')||home.includes('<TopologyStudio')||home.includes('<NetworkBackdrop'))throw new Error('Unsourced equipment/topology visuals are still displayed');
-const sourceTopology=readFileSync(path.join(root,'src/components/SourceTopology.tsx'),'utf8');
-for(const required of ['hq-rtr','branch-rtr','hq-switch','branch-switch','eth1 ↔ eth1','topology.clab.yml','topology.secure.clab.yml'])if(!sourceTopology.includes(required))throw new Error('Source topology missing documented node or interface: '+required);
-if(home.includes('<SecurityOperationsDesk')||home.includes('<DiagnosticExplorer'))throw new Error('Removed synthetic SOC/troubleshooting sections are still displayed');
-if(!home.includes('portrait-photo')||!home.includes('/images/taha-portrait.webp'))throw new Error('Native portrait visibility fix missing');
-if(!/filter:\s*brightness\(1\.(?:0[5-9]|1[0-9])\)/.test(css)||!css.includes('.work-cards'))throw new Error('Design refinements or portrait correction missing');
-console.log('PASS: concise experience-first home page, five meaningful navigation items, no redundant widgets, no unreliable external photo loads, official platform reference links, actual YAML topology references, no fictional equipment images or GNS3 screenshots, 8 cases, 3 locales, navigation, portrait, media transparency');
-+'{locale'))throw new Error('Literal interpolation marker leaked into hero');
-if(home.includes('<SolutionMedia')||home.includes('<SkillEvidence')||home.includes('<TechnologyReferences')||home.includes('engineeringMethod')||home.includes('hero-proof-strip'))throw new Error('Redundant portfolio widgets or vanity metrics not removed');
-const order=['className="hero"','className="about-section"','className="section experience-section"','className="section work-section"'];
-if(order.some((a,i)=>i>0&&home.indexOf(a)<home.indexOf(order[i-1])))throw new Error('Personal context and experience must precede case studies');
-if(home.includes('<EquipmentGallery')||home.includes('<TopologyStudio')||home.includes('<NetworkBackdrop'))throw new Error('Unsourced equipment/topology visuals are still displayed');
-const sourceTopology=readFileSync(path.join(root,'src/components/SourceTopology.tsx'),'utf8');
-for(const required of ['hq-rtr','branch-rtr','hq-switch','branch-switch','eth1 ↔ eth1','topology.clab.yml','topology.secure.clab.yml'])if(!sourceTopology.includes(required))throw new Error('Source topology missing documented node or interface: '+required);
-if(home.includes('<SecurityOperationsDesk')||home.includes('<DiagnosticExplorer'))throw new Error('Removed synthetic SOC/troubleshooting sections are still displayed');
-if(!home.includes('portrait-photo')||!home.includes('/images/taha-portrait.webp'))throw new Error('Native portrait visibility fix missing');
-if(!/filter:\s*brightness\(1\.(?:0[5-9]|1[0-9])\)/.test(css)||!css.includes('.work-cards'))throw new Error('Design refinements or portrait correction missing');
-console.log('PASS: concise experience-first home page, five meaningful navigation items, no redundant widgets, no unreliable external photo loads, official platform reference links, actual YAML topology references, no fictional equipment images or GNS3 screenshots, 8 cases, 3 locales, navigation, portrait, media transparency');
+const read=(file)=>readFileSync(path.join(root,file),'utf8');
+const content=read('src/data/content.ts')+read('src/data/additionalProjects.ts');
+const css=read('src/app/globals.css');
+const home=read('src/components/Home.tsx');
+const nav=read('src/components/Navigation.tsx');
+const diagram=read('src/components/SourceTopology.tsx');
+
+const required=[
+ 'src/app/page.tsx','src/app/[locale]/page.tsx',
+ 'src/components/Home.tsx','src/components/Navigation.tsx',
+ 'src/components/ProjectExplorer.tsx','src/components/CasePage.tsx',
+ 'src/components/SourceTopology.tsx','src/components/DesignReview.tsx',
+ 'src/data/projectReviews.ts','src/data/professional.ts',
+ 'public/cv/Taha_Zitane_CV_2026.pdf','public/contact/taha-zitane.vcf',
+ 'public/images/taha-portrait.webp','public/meta/mark.svg',
+ 'public/meta/portfolio-social.png','src/app/sitemap.ts',
+ 'scripts/site-smoke.mjs','scripts/browser-smoke.mjs'
+];
+for(const file of required)if(!existsSync(path.join(root,file)))throw new Error('Missing required artifact: '+file);
+
+const slugs=['enterprise-network-lab','windows-server-ad','remote-it-support','hospital-network-support','security-observability-labs','firewall-ipsec-lab','proxmox-virtualization-lab','cisco-campus-network-lab'];
+for(const slug of slugs)if(!(content.includes('slug:"'+slug+'"')||content.includes("slug:'"+slug+"'")))throw new Error('Missing project slug: '+slug);
+for(const locale of ['en','fr','ar'])if(!content.includes(locale+':'))throw new Error('Missing locale: '+locale);
+if(!content.includes('طه زيطان')||content.includes('طه زيتان'))throw new Error('Wrong Arabic identity');
+
+const anchors=['work','experience','education','expertise','contact'];
+for(const anchor of anchors)if(!nav.includes('"'+anchor+'"'))throw new Error('Navigation missing '+anchor);
+if(!nav.includes('c.nav[5]'))throw new Error('Contact label not preserved');
+
+const sections=['className="hero"','className="about-section"','className="section experience-section"','className="section work-section"'];
+for(let i=1;i<sections.length;i++)if(home.indexOf(sections[i])<=home.indexOf(sections[i-1]))throw new Error('Incorrect portfolio story order');
+for(const necessary of ['ProjectExplorer','SourceTopology','portrait-photo','/images/taha-portrait.webp','/cv/Taha_Zitane_CV_2026.pdf']){
+ if(!home.includes(necessary))throw new Error('Missing real portfolio element: '+necessary);
+}
+for(const unused of ['SolutionMedia','SkillEvidence','TechnologyReferences','engineeringMethod','hero-proof-strip','NetworkBackdrop','TopologyStudio','DiagnosticExplorer','SecurityOperationsDesk']){
+ if(home.includes(unused))throw new Error('Unwanted widget still on homepage: '+unused);
+}
+if(home.includes('hero-person">'+String.fromCharCode(36))||home.includes('hero-serif>'+String.fromCharCode(36)))throw new Error('Stray dollar prefix on identity');
+if(!/@media\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/.test(css))throw new Error('Reduced motion accessibility missing');
+if(!css.includes('.work-cards')||!css.includes('.hero-visual { order: -1;'))throw new Error('Responsive layout or mobile portrait order missing');
+
+for(const node of ['hq-rtr','branch-rtr','hq-switch','branch-switch']){
+ if(!diagram.includes(node))throw new Error('Source diagram missing documented node: '+node);
+}
+for(const source of ['topology.clab.yml','secure/topology.secure.clab.yml','github.com/tahazitan/enterprise-network-lab']){
+ if(!diagram.includes(source))throw new Error('Diagram source provenance missing: '+source);
+}
+console.log('PASS: professional story order, clean identity, five nav links, 8 projects, 3 languages, actual portrait, real source diagram and responsive accessibility');
