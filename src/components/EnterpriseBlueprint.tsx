@@ -45,6 +45,12 @@ export default function EnterpriseBlueprint({locale}:{locale:Locale}){
   <g fill="#476a78" fontSize="13" fontFamily="Arial, sans-serif" letterSpacing="1"><text x="549" y="184">IPsec / SSL VPN</text><text x="333" y="234">site-to-site</text><text x="549" y="318">L3 / ACL</text><text x="650" y="363">DNS / apps / logs</text><text x="879" y="459">backup</text></g>
   <g fill="#f7fafb" stroke="#b3c6cd"><rect x="68" y="308" width="220" height="180" rx="9" fill="#edf7f5" strokeDasharray="5 5"/><rect x="420" y="320" width="226" height="150" rx="9" fill="#eef3f8" strokeDasharray="5 5"/></g>
   <g fontSize="15" fontWeight="700" fontFamily="Arial, sans-serif" fill="#284653"><text x="86" y="341">BRANCH SEGMENTATION</text><text x="438" y="448">10 USERS · 20 SERVERS</text><text x="438" y="462">30 MGMT · 40 GUESTS</text></g>
+  <g fill="none" stroke="#7eaaa5" strokeWidth="2"><path d="M205 277V357M135 357H246M135 357V372M246 357V372"/></g>
+  <g fontFamily="Arial, sans-serif" textAnchor="middle" fontWeight="700" fontSize="13">
+   <rect x="86" y="371" width="102" height="50" rx="7" fill="#ffffff" stroke="#83ada8"/><text x="137" y="401" fill="#2f6565">LAN A</text>
+   <rect x="196" y="371" width="86" height="50" rx="7" fill="#ffffff" stroke="#83ada8"/><text x="239" y="401" fill="#2f6565">LAN B</text>
+   <text x="184" y="451" fontSize="11" fill="#60827e">ACL / SEGMENT POLICY</text>
+  </g>
   {nodes.map(n=><g key={n.id} onClick={()=>setActive(n.id)} style={{cursor:'pointer'}} role="button" tabIndex={0} aria-label={`${t.hint}: ${t.zones[n.id][0]}`} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setActive(n.id)}}}>
    <rect x={n.x} y={n.y} width={n.w} height={n.h} rx="9" stroke={active===n.id?'#df8553':'#648b99'} strokeWidth={active===n.id?4:1.5} fill={active===n.id?'#fff2e7':'#ffffff'}/>
    <rect x={n.x+12} y={n.y+15} width="32" height="32" rx="5" fill={n.id===1?'#f8d2bc':n.id===5?'#d8d4fa':'#d8eeea'}/>
