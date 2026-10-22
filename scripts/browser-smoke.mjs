@@ -46,7 +46,16 @@ try{
  await desktop.locator('.work-filter button').first().click();
  // Portfolio must focus on real work, not synthetic SOC interfaces
  assert.equal(await desktop.locator('.security-operations').count(),0,'SOC demo removed');
- assert.equal(await desktop.locator('.diagnostic-section').count(),0,'Unrequested diagnostic demo removed');
+ assert.equal(await desktop.locator('.diagnostic-section').count(),1,'User-requested recruiter-friendly troubleshooting section is present');
+ assert.equal(await desktop.locator('.diagnostic-tabs button').count(),4,'Four diagnostic scenarios are available');
+ await desktop.locator('.diagnostic-tabs button').nth(1).click();
+ assert.equal(await desktop.locator('.diagnostic-tabs button[aria-pressed="true"]').count(),1,'Diagnostic scenario selection updates');
+ assert.equal(await desktop.locator('.diagnostic-step-track button').count(),5,'Five structured diagnostic steps');
+ await desktop.locator('.diagnostic-step-track button').nth(2).click();
+ assert.equal(await desktop.locator('.diagnostic-step-track button[aria-current="step"]').count(),1,'Step selection works');
+ assert.equal(await desktop.locator('.work-card .visual-project').count(),8,'Every project includes a visual workflow preview');
+ assert.equal(await desktop.locator('.lab-roadmap-card').count(),4,'Architecture roadmap distinguishes planned labs');
+ assert.equal(await desktop.locator('.experience-proof').count(),6,'Every professional role shows skill evidence');
  // Source-linked connections are traceable to repository YAML, not fictitious equipment images.
  assert.equal(await desktop.locator('.equipment-card').count(),0,'Unsourced equipment gallery removed');
  assert.equal(await desktop.locator('.solution-media-card').count(),0,'Unreliable remote-image gallery must not appear');
@@ -59,6 +68,8 @@ try{
  assert.equal(await desktop.locator('.technology-reference').count(),0,'Redundant technical reference card library is no longer on homepage');
 
  assert.equal(await desktop.locator('.source-topology').count(),1,'Actual source topology section exists');
+ assert.equal(await desktop.locator('.source-figure svg image').count(),5,'Topology displays Linux technology marks within source-backed nodes');
+ assert.ok((await desktop.locator('.source-figure svg').getAttribute('aria-label')).includes('IPv4'),'Topology communicates source IP context');
  assert.equal(await desktop.locator('.source-edges button').count(),4,'Base YAML profile has four wired links');
  await desktop.locator('.source-switch button').nth(1).click();
  assert.equal(await desktop.locator('.source-edges button').count(),6,'Secure YAML profile has six wired links');
@@ -80,6 +91,7 @@ try{
  await desktop.goto(base+'/projects/enterprise-network-lab/',{waitUntil:'domcontentloaded',timeout:30000});
  assert.equal(await desktop.locator('.source-topology-compact .source-edges button').count(),4,'Enterprise case uses actual base-profile wiring');
  assert.equal(await desktop.locator('.design-review-card').count(),3,'Case includes technical review');
+ assert.equal(await desktop.locator('.visual-project--large .visual-node').count(),5,'Full enterprise case includes both routers and actual source IP labels');
  assert.equal(await desktop.locator('.related-work-grid a').count(),2,'Case-to-case navigation');
  await desktop.locator('.source-topology-compact').screenshot({path:path.join(root,'screenshots','enterprise-source-topology.png'),animations:'disabled'});
  const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
@@ -110,6 +122,8 @@ try{
  assert.ok((await mobile.locator('.brand-name').innerText()).includes('طه زيطان'),'Arabic spelling is correct');
  assert.equal(await mobile.locator('.hero-person').innerText(),'طه زيطان','Arabic identity must render naturally with no stray symbols');
  assert.equal(await mobile.locator('.source-topology').count(),1,'Source topology available in Arabic RTL');
+ assert.equal(await mobile.locator('.diagnostic-tabs button').count(),4,'Arabic diagnostic controls available');
+ assert.equal(await mobile.locator('.lab-roadmap-card').count(),4,'Arabic lab roadmap available');
  assert.equal(await mobile.locator('.solution-media-card').count(),0,'Arabic layout omits broken third-party images');
  assert.equal(await mobile.locator('.technology-reference').count(),0,'Mobile homepage avoids redundant reference card grid');
  const arabicPortrait=await mobile.locator('.portrait-frame').boundingBox();
