@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import {ArrowUpRight,ArrowRight,Github,Linkedin,MoveDown,ArrowDown,Phone,Network,ContactRound} from "lucide-react";
+import {ArrowUpRight,ArrowRight,Github,Linkedin,MoveDown,ArrowDown,Phone,Network,ContactRound,FileDown} from "lucide-react";
 import Navigation from "./Navigation";
 import Reveal from "./Reveal";
 import NetworkBackdrop from "./NetworkBackdrop";
@@ -44,6 +44,7 @@ export default function Home({locale}:{locale:Locale}){
       <h1 id="hero-title">{c.heroLine1}<br/><span className="hero-serif">{c.heroLine2}</span></h1>
       <div className="hero-lead"><div className="hero-rule"/><div><h2>{c.heroSubtitle}</h2><p>{c.heroLead}</p></div></div>
       <div className="hero-actions"><a className="btn btn-primary" href="#work">{locale==='fr'?'Voir mes projets':locale==='ar'?'تصفح المشاريع':'Explore case studies'}<ArrowUpRight size={18}/></a><a className="btn btn-text" href="#experience">{locale==='fr'?'Mon parcours':locale==='ar'?'الخبرات المهنية':'Professional experience'}<ArrowRight size={18}/></a></div>
+      <a className="hero-resume-link" href="/cv/Taha_Zitane_CV_2026.pdf" download="Taha_Zitane_CV_2026.pdf"><FileDown size={17}/>{locale==='ar'?'تحميل السيرة الذاتية (PDF)':locale==='fr'?'Télécharger mon CV (PDF)':'Download CV (PDF)'}<ArrowUpRight size={16}/></a>
       <a className="hero-3d-link" href="#topology"><Network size={18}/>{c.seeWork}<ArrowUpRight size={16}/></a>
       <div className="hero-proof-strip" aria-label={locale==='ar'?'ملخص ملف الأعمال':locale==='fr'?'Portfolio en chiffres':'Portfolio overview'}>
         <div><strong>{String(c.projects.length).padStart(2,'0')}</strong><span>{locale==='ar'?'دراسات مشاريع':locale==='fr'?'études de cas':'case studies'}</span></div>
