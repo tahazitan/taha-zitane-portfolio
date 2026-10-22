@@ -7,7 +7,7 @@ import {projectPath,type Locale} from "@/data/content";
  * not photos from any user-owned deployment or customer engagement.
  */
 const media=[
- {key:"rack",src:"https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Servers_in_a_Rack.jpg/500px-Servers_in_a_Rack.jpg",
+ {key:"rack",src:"https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Servers_in_a_Rack.jpg/500px-Servers_in_a_Rack.jpg",
   title:{en:"Server infrastructure",fr:"Infrastructure serveur",ar:"البنية التحتية للخوادم"},
   detail:{en:"Physical server racks, virtualization and operations",fr:"Racks physiques, virtualisation et exploitation",ar:"خوادم فعلية وافتراضية وعمليات التشغيل"},
   slug:"proxmox-virtualization-lab",credit:"Abigor · CC BY-SA 3.0",license:"https://creativecommons.org/licenses/by-sa/3.0/",
