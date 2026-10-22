@@ -3,6 +3,7 @@ import type {ReactNode} from "react";
 import "./globals.css";
 import "./portfolio-polish.css";
 import "./evidence-design.css";
+import "./visual-identity.css";
 
 const siteUrl = "https://taha-zitane-engineering.zitanet44.workers.dev";
 
