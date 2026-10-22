@@ -5,6 +5,7 @@ import ProjectGraphic from "./ProjectGraphic";
 import LocaleSetup from "./LocaleSetup";
 import TopologyStudio from "./TopologyStudio";
 import EnterpriseBlueprint from "./EnterpriseBlueprint";
+import EngineeringBrief from "./EngineeringBrief";
 import DesignReview from "./DesignReview";
 import {topologyForProject} from "@/data/labTopologies";
 import {enterpriseCase} from "@/data/enterpriseCase";
@@ -64,6 +65,8 @@ export default function CasePage({locale,slug}:{locale:Locale;slug:string}){
       <div className="acceptance-grid">{enterprise.acceptance.map((test,idx)=><article key={idx} className="acceptance-card"><h3>{test.name}</h3><p>{test.expectation}</p></article>)}</div>
     </section>
   </>}
+
+  <EngineeringBrief locale={locale} slug={slug} testsOnly={Boolean(enterprise)}/>
 
   <aside className="related-work" aria-label={locale==='ar'?'مشاريع أخرى':locale==='fr'?'Autres projets':'Explore more work'}><div className="related-work-top"><span className="section-number">{locale==='ar'?'مشاريع أخرى':locale==='fr'?'DÉCOUVRIR PLUS':'OTHER CASE STUDIES'}</span><h2>{locale==='ar'?'واصل الاستكشاف.':locale==='fr'?'Poursuivre la découverte.':'Continue exploring.'}</h2></div><div className="related-work-grid">{related.map(next=><Link href={projectPath(locale,next.slug)} key={next.slug}><small>{next.type}</small><strong>{next.title}</strong><span><ArrowUpRight size={22}/></span></Link>)}</div></aside>
   <div className="case-bottom-links">{project.link&&<a className="btn btn-primary" href={project.link} target="_blank" rel="noopener noreferrer"><Github size={19}/>{c.viewRepo}<ArrowUpRight size={17}/></a>}<Link href={`${homePath(locale)}#work`} className="btn btn-outline">{c.backToWork}<ArrowUpRight size={17}/></Link><a className="btn btn-outline" href={mailUrl}><Mail size={18}/>{c.contact}</a></div>
