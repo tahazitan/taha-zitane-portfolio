@@ -32,7 +32,7 @@ try{
  await desktop.goto(base+'/',{waitUntil:'domcontentloaded',timeout:30000});
  await desktop.locator('.work-card').first().waitFor({timeout:30000});
  await desktop.waitForTimeout(900); // allow React hydration before exercising client-side filters
- assert.equal(await desktop.locator('.nav-links a').count(),7,'Navigation must point to seven unique sections');
+ assert.equal(await desktop.locator('.nav-links a').count(),5,'Five deliberate navigation links with distinct purposes');
  assert.equal(await desktop.locator('.work-card').count(),8,'All eight case studies visible by default');
  const search=desktop.locator('.work-search input');
  await search.fill('Proxmox');
@@ -49,10 +49,22 @@ try{
  // Source-linked connections are traceable to repository YAML, not fictitious equipment images.
  assert.equal(await desktop.locator('.equipment-card').count(),0,'Unsourced equipment gallery removed');
  assert.equal(await desktop.locator('.solution-media-card').count(),4,'Four genuinely photographed and licensed solution contexts');
+ assert.equal(await desktop.locator('.hero-proof-strip').count(),0,'Vanity counters must be removed');
+ assert.equal(await desktop.locator('.engineering-method').count(),0,'No repetitive methodology card grid');
+ const primaryCTA=await desktop.locator('.hero-actions a').first().getAttribute('href');
+ const secondaryCTA=await desktop.locator('.hero-actions a').last().getAttribute('href');
+ assert.equal(primaryCTA,'#work','Primary hero action opens projects');
+ assert.equal(secondaryCTA,'#contact','Secondary hero action opens actual contact details');
+
  assert.equal(await desktop.locator('.solution-media-credits a[href*="creativecommons.org"]').count(),4,'Each solution photograph has its original license');
- assert.equal(await desktop.locator('.technology-reference').count(),9,'Official technology references cover systems and security');
+ assert.equal(await desktop.locator('.technology-reference').count(),0,'Redundant technical reference card library is no longer on homepage');
  await desktop.locator('.solution-media-card').first().scrollIntoViewIfNeeded();
  await desktop.waitForFunction(()=>{const image=document.querySelector('.solution-media-card img');return image instanceof HTMLImageElement && image.complete && image.naturalWidth>100;},{timeout:23000});
+ // Source image integrity; a remote image missing should fail rather than create an empty portfolio card.
+ await desktop.waitForFunction(()=>[...document.querySelectorAll('.solution-media-card img')].every(img=>img instanceof HTMLImageElement&&img.complete),{timeout:24000});
+ const broken=await desktop.locator('.solution-media-card img').evaluateAll(imgs=>imgs.filter(img=>img.naturalWidth<50).map(img=>img.src));
+ assert.deepEqual(broken,[],'Every publicly attributed image needs to display a real, decoded photograph');
+
 
  assert.equal(await desktop.locator('.source-topology').count(),1,'Actual source topology section exists');
  assert.equal(await desktop.locator('.source-edges button').count(),4,'Base YAML profile has four wired links');
@@ -88,7 +100,7 @@ try{
  await mobile.locator('.nav-toggle').waitFor({timeout:15000});
  await mobile.waitForTimeout(650);
  await mobile.locator('.nav-toggle').click();
- assert.equal(await mobile.locator('#mobile-nav a').count()>=7,true,'Responsive menu must expose navigation');
+ assert.equal(await mobile.locator('#mobile-nav a').count(),8,'Five destinations and three language choices');
  await mobile.locator('.nav-toggle').click();
  const overflowFR=await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
  assert.ok(overflowFR<=2,`French page horizontal overflow: ${overflowFR}px`);
@@ -100,7 +112,7 @@ try{
  assert.ok((await mobile.locator('.brand-name').innerText()).includes('طه زيطان'),'Arabic spelling is correct');
  assert.equal(await mobile.locator('.source-topology').count(),1,'Source topology available in Arabic RTL');
  assert.equal(await mobile.locator('.solution-media-card').count(),4,'Arabic real media section retained');
- assert.equal(await mobile.locator('.technology-reference').count(),9,'Arabic technical references retained');
+ assert.equal(await mobile.locator('.technology-reference').count(),0,'Mobile homepage avoids redundant reference card grid');
  const arabicPortrait=await mobile.locator('.portrait-frame').boundingBox();
  assert.ok(arabicPortrait&&arabicPortrait.y>=0&&arabicPortrait.y<770,'Arabic mobile also shows the portrait near the top');
  const overflowAR=await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
@@ -108,5 +120,5 @@ try{
  await mobile.screenshot({path:path.join(root,'screenshots','mobile-ar.png'),animations:'disabled'});
  // Ignore WebGL warnings produced in some headless renderers; do not ignore React runtime exceptions.
  if(errors.length)throw Error(`Browser runtime errors:\n${errors.slice(0,8).join('\n')}`);
- console.log('PASS: real-browser desktop/mobile navigation, project search, category filters, source-based network links, unobscured decoded portrait, honest project cards, skill evidence, enterprise source viewer, case navigation, 3 locales, phone/email/vCard, RTL and no mobile overflow');
+ console.log('PASS: real-browser desktop/mobile navigation, project search, category filters, source-based network links, unobscured decoded portrait, honest project cards, actual portrait and real-media integrity, enterprise source viewer, case navigation, 3 locales, phone/email/vCard, RTL and no mobile overflow');
 }finally{if(browser)await browser.close();await new Promise(resolve=>serve.close(resolve))}
