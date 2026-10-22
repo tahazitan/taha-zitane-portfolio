@@ -1,11 +1,11 @@
 import {readFileSync, existsSync} from 'node:fs';
 import path from 'node:path';
 const root=path.resolve(import.meta.dirname,'..');
-const content=readFileSync(path.join(root,'src/data/content.ts'),'utf8');
+const content=readFileSync(path.join(root,'src/data/content.ts'),'utf8')+readFileSync(path.join(root,'src/data/additionalProjects.ts'),'utf8');
 const css=readFileSync(path.join(root,'src/app/globals.css'),'utf8');
-const files=['src/app/page.tsx','src/app/[locale]/page.tsx','src/components/Home.tsx','src/components/CasePage.tsx','src/components/NetworkScene.tsx','public/images/taha-portrait.webp'];
+const files=['src/app/page.tsx','src/app/[locale]/page.tsx','src/components/Home.tsx','src/components/CasePage.tsx','src/components/NetworkScene.tsx','src/components/TopologyCanvas.tsx','src/components/TopologyStudio.tsx','src/data/professional.ts','public/images/taha-portrait.webp'];
 for(const f of files)if(!existsSync(path.join(root,f)))throw new Error('Missing required file: '+f);
-for(const slug of ['enterprise-network-lab','windows-server-ad','remote-it-support','hospital-network-support','security-observability-labs'])if(!content.includes(`slug:"${slug}"`))throw new Error('Missing case study: '+slug);
+for(const slug of ['enterprise-network-lab','windows-server-ad','remote-it-support','hospital-network-support','security-observability-labs','firewall-ipsec-lab','proxmox-virtualization-lab','cisco-campus-network-lab'])if(!(content.includes(`slug:"${slug}"`)||content.includes(`slug:'${slug}'`)))throw new Error('Missing case study: '+slug);
 for(const language of ['en','fr','ar'])if(!content.includes(`${language}:`))throw new Error('Missing locale: '+language);
 if(!css.includes('@media (prefers-reduced-motion:reduce)'))throw new Error('Reduced motion CSS missing');
-console.log('PASS: source, 5 case studies, 3 locales, mobile CSS and portrait present');
+console.log('PASS: source, 8 case studies, 3 locales, mobile CSS and portrait present');
