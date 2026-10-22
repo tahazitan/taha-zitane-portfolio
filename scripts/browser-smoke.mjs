@@ -46,11 +46,12 @@ try{
  // Portfolio must focus on real work, not synthetic SOC interfaces
  assert.equal(await desktop.locator('.security-operations').count(),0,'SOC demo removed');
  assert.equal(await desktop.locator('.diagnostic-section').count(),0,'Unrequested diagnostic demo removed');
- // Equipment visuals are authored per technology and link to related engineering studies
- assert.equal(await desktop.locator('.equipment-card').count(),7,'Seven vendor-inspired equipment illustrations');
- await desktop.locator('.equipment-card').nth(3).click();
- assert.ok((await desktop.locator('.equipment-inspector h3').innerText()).includes('Palo Alto'),'Selected equipment inspector updates');
- assert.ok((await desktop.locator('.equipment-inspector a').getAttribute('href')).includes('firewall-ipsec-lab'),'Related case study is contextually correct');
+ // Technical solution workflows replace the former equipment-only gallery.
+ assert.equal(await desktop.locator('.solution-tab').count(),6,'Six technical solution workflows');
+ await desktop.locator('.solution-tab').nth(4).click();
+ assert.ok((await desktop.locator('.solution-detail h3').innerText()).includes('Palo Alto'),'Selected solution detail updates');
+ assert.equal(await desktop.locator('.solution-flow-step').count(),3,'Selected solution shows its three service stages');
+ assert.ok((await desktop.locator('.solution-link').getAttribute('href')).includes('firewall-ipsec-lab'),'Solution opens the related case study');
  // Portrait must be an actual decoded image, visible and unobscured by the architecture panel
  const portrait=desktop.locator('.portrait-photo');
  await portrait.waitFor({state:'visible'});
@@ -83,6 +84,7 @@ try{
  assert.equal(await desktop.locator('.design-review-card').count(),3,'Each case includes technical review');
  assert.equal(await desktop.locator('.topology-compact .topology-screen-foot a').count(),0,'Project page must not link back to itself');
  assert.equal(await desktop.locator('.related-work-grid a').count(),2,'Case-to-case navigation');
+ assert.equal(await desktop.locator('.engineering-brief .acceptance-tests article').count(),5,'Enterprise acceptance procedures are present');
  await desktop.locator('.blueprint-shell').screenshot({path:path.join(root,'screenshots','enterprise-blueprint.png'),animations:'disabled'});
  const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
  mobile.on('pageerror',err=>errors.push('mobile: '+err.message));
@@ -104,7 +106,7 @@ try{
  await mobile.waitForFunction(()=>{const el=document.querySelector('.portrait-photo');return el instanceof HTMLImageElement && el.complete && el.naturalWidth>100;});
  assert.equal(await mobile.locator('html').getAttribute('dir'),'rtl');
  assert.ok((await mobile.locator('.brand-name').innerText()).includes('طه زيطان'),'Arabic spelling is correct');
- assert.equal(await mobile.locator('.equipment-card').count(),7,'Equipment gallery available in Arabic RTL');
+ assert.equal(await mobile.locator('.solution-tab').count(),6,'Solution workflows available in Arabic RTL');
  const arabicPortrait=await mobile.locator('.portrait-frame').boundingBox();
  assert.ok(arabicPortrait&&arabicPortrait.y>=0&&arabicPortrait.y<770,'Arabic mobile also shows the portrait near the top');
  const overflowAR=await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
@@ -112,5 +114,5 @@ try{
  await mobile.screenshot({path:path.join(root,'screenshots','mobile-ar.png'),animations:'disabled'});
  // Ignore WebGL warnings produced in some headless renderers; do not ignore React runtime exceptions.
  if(errors.length)throw Error(`Browser runtime errors:\n${errors.slice(0,8).join('\n')}`);
- console.log('PASS: real-browser desktop/mobile navigation, project search, category filters, topology controls, unobscured decoded portrait, seven equipment diagrams, skill evidence, enterprise map, case navigation, 3 locales, phone/email/vCard, RTL and no mobile overflow');
+ console.log('PASS: real-browser desktop/mobile navigation, project search, category filters, topology controls, unobscured decoded portrait, six solution workflows, skill evidence, enterprise map, case navigation, 3 locales, phone/email/vCard, RTL and no mobile overflow');
 }finally{if(browser)await browser.close();await new Promise(resolve=>serve.close(resolve))}
