@@ -43,6 +43,27 @@ try{
  await desktop.waitForFunction(()=>document.querySelectorAll('.work-card').length===3);
  assert.equal(await desktop.locator('.work-card').count(),3,'Professional experience category filters correctly');
  await desktop.locator('.work-filter button').first().click();
+ // Simulated diagnostics: actual client-side state transitions and case-specific evidence
+ assert.equal(await desktop.locator('.diagnostic-cases button').count(),5,'Five troubleshooting scenarios are offered');
+ await desktop.locator('.diagnostic-cases button').nth(1).click();
+ assert.equal(await desktop.locator('.diagnostic-options button').count(),3,'Diagnostic has three meaningful checks');
+ await desktop.locator('.diagnostic-options button').first().click();
+ assert.equal(await desktop.locator('.diagnostic-feedback.good').count(),1,'Evidence-based choice must update feedback');
+ await desktop.locator('.diagnostic-observation .demo-action').click();
+ await desktop.locator('.diagnostic-options button').first().click();
+ await desktop.locator('.diagnostic-observation .demo-action').click();
+ assert.equal(await desktop.locator('.diagnostic-results').count(),1,'Case result must include cause and proposed validation');
+ // Security desk is unambiguously synthetic, filterable, and event details are inspectable
+ assert.equal(await desktop.locator('.security-stream > button').count(),5,'Five synthetic SOC events displayed');
+ await desktop.locator('.security-filter button').nth(3).click();
+ assert.equal(await desktop.locator('.security-stream > button').count(),2,'Medium severity filters relevant events');
+ await desktop.locator('.security-stream > button').last().click();
+ assert.equal(await desktop.locator('.security-raw pre').count(),1,'Selected synthetic event exposes illustrative evidence');
+ await desktop.locator('.security-filter button').first().click();
+ // A technical domain maps to concrete case studies instead of speculative proficiency percentages
+ await desktop.locator('.skill-selectors button').nth(1).click();
+ assert.equal(await desktop.locator('.skill-linked-work a').count(),2,'Systems domain points to two real portfolio studies');
+ assert.equal(await desktop.locator('.skill-linked-work a[href*="windows-server-ad"]').count(),1);
  const toggle=desktop.locator('.topology-view-toggle button');
  await toggle.nth(1).click();
  assert.equal(await desktop.locator('.topology-fallback-svg').count(),1,'Schematic view should be visible when selected');
@@ -77,10 +98,12 @@ try{
  assert.equal(await mobile.locator('html').getAttribute('lang'),'ar');
  assert.equal(await mobile.locator('html').getAttribute('dir'),'rtl');
  assert.ok((await mobile.locator('.brand-name').innerText()).includes('طه زيطان'),'Arabic spelling is correct');
+ assert.equal(await mobile.locator('#diagnostics').count(),1,'Arabic diagnostics section is present');
+ assert.equal(await mobile.locator('#security-operations').count(),1,'Arabic SOC section is present');
  const overflowAR=await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
  assert.ok(overflowAR<=2,`Arabic page horizontal overflow: ${overflowAR}px`);
  await mobile.screenshot({path:path.join(root,'screenshots','mobile-ar.png'),animations:'disabled'});
  // Ignore WebGL warnings produced in some headless renderers; do not ignore React runtime exceptions.
  if(errors.length)throw Error(`Browser runtime errors:\n${errors.slice(0,8).join('\n')}`);
- console.log('PASS: real-browser desktop/mobile navigation, project search, category filters, topology controls, enterprise map, case navigation, 3 locales, phone/email/vCard, RTL and no mobile overflow');
+ console.log('PASS: real-browser desktop/mobile navigation, project search, category filters, topology controls, diagnostic workflows, SOC severity and inspection, skill evidence, enterprise map, case navigation, 3 locales, phone/email/vCard, RTL and no mobile overflow');
 }finally{if(browser)await browser.close();await new Promise(resolve=>serve.close(resolve))}
