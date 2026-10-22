@@ -48,3 +48,16 @@ These are external educational/technical references linked from the on-site expe
 - Cisco enterprise networking: https://www.cisco.com/c/en/us/solutions/enterprise-networks/index.html
 
 **Images remain excluded until usage rights are verified**, despite official screenshots being viewable. Docker's trademark guidelines in particular limit logo reproduction and require permission for some visual uses: https://www.docker.com/legal/trademark-guidelines/. The interface links to original manuals instead of copying copyrighted screenshots.
+
+## Additional representative images researched and included in Solutions
+
+External Wikimedia Commons thumbnails (not imported as local binary assets). Public photo credit and license links are printed directly underneath each image. None depicts Taha's own work or hardware.
+
+| Display | Original author | License | Source |
+| --- | --- | --- | --- |
+| Server rack | Abigor | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) | https://commons.wikimedia.org/wiki/File:Servers_in_a_Rack.jpg |
+| Cisco SG 200-08P switch | Антон Пищулин | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | https://commons.wikimedia.org/wiki/File:Cisco_SG_200-08P_front.jpg |
+| Fortinet FortiGate 6501F | Premeditated | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | https://commons.wikimedia.org/wiki/File:Fortinet_FortiGate_6501F.png |
+| Wireshark DNS interface | Oluwatobi TJ | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) | https://commons.wikimedia.org/wiki/File:Screenshots_of_the_Wireshark_interface,_showing_captured_packets_data_-_DNS.png |
+
+The artwork is shown as representative context in a distinct gallery, not attached as claimed screenshots/equipment for a finished lab. The CC BY-SA frames are responsively cropped within the layout; attribution, licence, source and crop indication are retained. Because downloads cannot currently be fetched into this session's working container, the deployed gallery uses Wikimedia's thumbnail service over HTTPS, with a neutral background and readable alternative text. When reliable licensed local copies become available, replace remote references with optimized files, preserving attribution.
