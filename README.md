@@ -59,22 +59,27 @@ wrangler.jsonc          Cloudflare static-asset configuration
 - Site text and project summaries: `src/data/content.ts`, `src/data/additionalProjects.ts`
 - Education and training: `src/data/professional.ts`
 - Project evidence and network models: `src/data/enterpriseCase.ts`, `src/data/projectReviews.ts`, `src/data/labTopologies.ts`
-- 3D scenes: `src/components/NetworkScene.tsx`, `src/components/TopologyCanvas.tsx`
+- 3D engineering scenes: `src/components/TopologyCanvas.tsx`; hand-authored hero schematic: `src/components/NetworkBackdrop.tsx`
 - Responsive styling: `src/app/globals.css`
 
 The security and infrastructure diagrams represent **documented labs or reference architectures**, not verified production deployments. Never commit credentials, client data or sensitive network configurations.
 
 
-## Interactive infrastructure demonstrations (V4)
+## V4.1 — human-directed visual engineering
 
-The homepage includes three lightweight, client-side features alongside documented professional case studies:
+The public site is a professional portfolio, **not** a live SOC or fake demonstration dashboard.
+The synthetic SOC desk and tutorial-style diagnostic demo were removed from the homepage in response to a design review.
 
-- **Troubleshooting Explorer:** five deterministic, trilingual synthetic scenarios (LAN/VLAN, DNS, IPsec, Active Directory discovery, suspicious network traffic). Visitors select diagnostic probes and see simulated output, likely causes and proposed verification.
-- **Security Operations Desk:** a fixed set of synthetic identity, IDS, firewall, availability and VPN events. Supports severity filters, example log inspection, defensive triage and remediation context. No live SOC connection or customer event claims.
-- **Skill Evidence Explorer:** links technical domains to relevant portfolio projects rather than inventing proficiency percentages.
+The hero renders the user's **original portrait** from `public/images/taha-portrait.webp` in a native HTML image. No 3D scene overlays the face. The hand-built animated SVG network architecture directly below the portrait is intentionally separate from the 3D atlas.
 
-Source files: src/components/DiagnosticExplorer.tsx, src/components/SecurityOperationsDesk.tsx, src/components/SkillEvidence.tsx.
+The new `EquipmentGallery` uses seven custom SVG engineering illustrations (Cisco-inspired switching and routing, FortiGate-style and Palo Alto-style firewall appliances, Windows Server racks, Linux systems and a GNS3 topology board). These are **illustrative equipment classes**, not photographs of actual owned hardware or claims about specific commercial products. Each illustration has a trilingual functional explanation and a link to a related case study.
 
-To extend diagnostic scenarios, add entries with localized en/fr/ar text, safe illustrative outputs and evidence-based decision stages. Add only synthetic event data to the SOC demo using TEST-NET addresses and plausible defensive analysis. Link new skills to already-present project slugs. Verified lab evidence, once created and sanitized, belongs in the relevant case study, not in the synthetic demonstration.
+The case-study 3D viewer still links to a project when rendered on the homepage; in a project detail page, the self-link has been replaced with a non-interactive overview label.
 
-Verification: npm install then npm run check. GitHub Actions also executes scripts/browser-smoke.mjs with real Chromium interactions for diagnostics, SOC filtering, skill links, project search, 2D/3D controls and mobile EN/FR/AR. GitHub success validates the source build and browser test environment; Cloudflare production deployment status requires independent verification. Cloudflare uses Workers Static Assets from ./out, not SSR.
+Every page is statically exported for Cloudflare Workers; no live device connections, private network exports or backend claims.
+
+## QA and deployment
+
+Install dependencies with `npm install`, then run `npm run check`. GitHub Actions runs the production build, source and topology audits, checks 27 localized case-study routes, and launches real Chromium integration tests for photo decoding and viewport visibility, project search, 2D/3D navigation, technical equipment selection, and RTL mobile layouts.
+
+Do not describe the Cloudflare-hosted URL as updated until its deployment has been confirmed separately. The source repository is wired to Workers Static Assets via `wrangler.jsonc` with `assets.directory=./out`.
