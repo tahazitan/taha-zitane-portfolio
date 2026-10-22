@@ -43,27 +43,26 @@ try{
  await desktop.waitForFunction(()=>document.querySelectorAll('.work-card').length===3);
  assert.equal(await desktop.locator('.work-card').count(),3,'Professional experience category filters correctly');
  await desktop.locator('.work-filter button').first().click();
- // Simulated diagnostics: actual client-side state transitions and case-specific evidence
- assert.equal(await desktop.locator('.diagnostic-cases button').count(),5,'Five troubleshooting scenarios are offered');
- await desktop.locator('.diagnostic-cases button').nth(1).click();
- assert.equal(await desktop.locator('.diagnostic-options button').count(),3,'Diagnostic has three meaningful checks');
- await desktop.locator('.diagnostic-options button').first().click();
- assert.equal(await desktop.locator('.diagnostic-feedback.good').count(),1,'Evidence-based choice must update feedback');
- await desktop.locator('.diagnostic-observation .demo-action').click();
- await desktop.locator('.diagnostic-options button').first().click();
- await desktop.locator('.diagnostic-observation .demo-action').click();
- assert.equal(await desktop.locator('.diagnostic-results').count(),1,'Case result must include cause and proposed validation');
- // Security desk is unambiguously synthetic, filterable, and event details are inspectable
- assert.equal(await desktop.locator('.security-stream > button').count(),5,'Five synthetic SOC events displayed');
- await desktop.locator('.security-filter button').nth(3).click();
- assert.equal(await desktop.locator('.security-stream > button').count(),2,'Medium severity filters relevant events');
- await desktop.locator('.security-stream > button').last().click();
- assert.equal(await desktop.locator('.security-raw pre').count(),1,'Selected synthetic event exposes illustrative evidence');
- await desktop.locator('.security-filter button').first().click();
- // A technical domain maps to concrete case studies instead of speculative proficiency percentages
- await desktop.locator('.skill-selectors button').nth(1).click();
- assert.equal(await desktop.locator('.skill-linked-work a').count(),2,'Systems domain points to two real portfolio studies');
- assert.equal(await desktop.locator('.skill-linked-work a[href*="windows-server-ad"]').count(),1);
+ // Portfolio must focus on real work, not synthetic SOC interfaces
+ assert.equal(await desktop.locator('.security-operations').count(),0,'SOC demo removed');
+ assert.equal(await desktop.locator('.diagnostic-section').count(),0,'Unrequested diagnostic demo removed');
+ // Equipment visuals are authored per technology and link to related engineering studies
+ assert.equal(await desktop.locator('.equipment-card').count(),7,'Seven vendor-inspired equipment illustrations');
+ await desktop.locator('.equipment-card').nth(3).click();
+ assert.ok((await desktop.locator('.equipment-inspector h3').innerText()).includes('Palo Alto'),'Selected equipment inspector updates');
+ assert.ok((await desktop.locator('.equipment-inspector a').getAttribute('href')).includes('firewall-ipsec-lab'),'Related case study is contextually correct');
+ // Portrait must be an actual decoded image, visible and unobscured by the architecture panel
+ const portrait=desktop.locator('.portrait-photo');
+ await portrait.waitFor({state:'visible'});
+ await desktop.waitForFunction(()=>{const el=document.querySelector('.portrait-photo');return el instanceof HTMLImageElement && el.complete && el.naturalWidth>100 && el.naturalHeight>100;});
+ const boxes=await desktop.evaluate(()=>{
+  const a=document.querySelector('.portrait-frame')?.getBoundingClientRect();
+  const b=document.querySelector('.hero-network-exhibit')?.getBoundingClientRect();
+  if(!a||!b)return null;
+  return {photo:{x:a.x,y:a.y,w:a.width,h:a.height},network:{x:b.x,y:b.y,w:b.width,h:b.height},intersection:Math.max(0,Math.min(a.right,b.right)-Math.max(a.left,b.left))*Math.max(0,Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top))};
+ });
+ assert.ok(boxes&&boxes.photo.w>220&&boxes.photo.h>260,'Portrait must occupy a legible area');
+ assert.ok(boxes.intersection<=1,'Architecture graphic must not cover portrait');
  const toggle=desktop.locator('.topology-view-toggle button');
  await toggle.nth(1).click();
  assert.equal(await desktop.locator('.topology-fallback-svg').count(),1,'Schematic view should be visible when selected');
@@ -82,6 +81,7 @@ try{
  await desktop.locator('.blueprint-zone-buttons button').nth(0).click();
  assert.ok((await desktop.locator('.blueprint-explanation').innerText()).includes('WAN'),'Enterprise inspector updates');
  assert.equal(await desktop.locator('.design-review-card').count(),3,'Each case includes technical review');
+ assert.equal(await desktop.locator('.topology-compact .topology-screen-foot a').count(),0,'Project page must not link back to itself');
  assert.equal(await desktop.locator('.related-work-grid a').count(),2,'Case-to-case navigation');
  await desktop.locator('.blueprint-shell').screenshot({path:path.join(root,'screenshots','enterprise-blueprint.png'),animations:'disabled'});
  const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
@@ -97,14 +97,14 @@ try{
  await mobile.screenshot({path:path.join(root,'screenshots','mobile-fr.png'),animations:'disabled'});
  await mobile.goto(base+'/ar/',{waitUntil:'domcontentloaded',timeout:30000});
  assert.equal(await mobile.locator('html').getAttribute('lang'),'ar');
+ await mobile.waitForFunction(()=>{const el=document.querySelector('.portrait-photo');return el instanceof HTMLImageElement && el.complete && el.naturalWidth>100;});
  assert.equal(await mobile.locator('html').getAttribute('dir'),'rtl');
  assert.ok((await mobile.locator('.brand-name').innerText()).includes('طه زيطان'),'Arabic spelling is correct');
- assert.equal(await mobile.locator('#diagnostics').count(),1,'Arabic diagnostics section is present');
- assert.equal(await mobile.locator('#security-operations').count(),1,'Arabic SOC section is present');
+ assert.equal(await mobile.locator('.equipment-card').count(),7,'Equipment gallery available in Arabic RTL');
  const overflowAR=await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
  assert.ok(overflowAR<=2,`Arabic page horizontal overflow: ${overflowAR}px`);
  await mobile.screenshot({path:path.join(root,'screenshots','mobile-ar.png'),animations:'disabled'});
  // Ignore WebGL warnings produced in some headless renderers; do not ignore React runtime exceptions.
  if(errors.length)throw Error(`Browser runtime errors:\n${errors.slice(0,8).join('\n')}`);
- console.log('PASS: real-browser desktop/mobile navigation, project search, category filters, topology controls, diagnostic workflows, SOC severity and inspection, skill evidence, enterprise map, case navigation, 3 locales, phone/email/vCard, RTL and no mobile overflow');
+ console.log('PASS: real-browser desktop/mobile navigation, project search, category filters, topology controls, unobscured decoded portrait, seven equipment diagrams, skill evidence, enterprise map, case navigation, 3 locales, phone/email/vCard, RTL and no mobile overflow');
 }finally{if(browser)await browser.close();await new Promise(resolve=>serve.close(resolve))}
