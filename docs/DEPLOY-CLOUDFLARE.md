@@ -21,7 +21,7 @@ If configuring **Pages** rather than Workers, set the output directory to `out`,
 - [ ] GitHub Actions reports success for the deployed SHA.
 - [ ] Cloudflare Build and Deploy phases report success for the same SHA.
 - [ ] English `/`, French `/fr/`, Arabic `/ar/` load in a new incognito session.
-- [ ] Each of the 8 case studies loads in each language.
+- [ ] Each of the 10 case studies loads in each language.
 - [ ] 3D canvas displays when WebGL is supported, and a readable diagram is visible without WebGL or with reduced motion.
 - [ ] Mobile widths 360px, 390px, 768px and desktop 1440px have no unwanted horizontal scrolling.
 - [ ] Portrait loads with correct identity and without distortion.
@@ -30,3 +30,8 @@ If configuring **Pages** rather than Workers, set the output directory to `out`,
 - [ ] Search metadata, `robots.txt` and social sharing preview work.
 
 Cloudflare external deploy status **cannot** be established merely from a passing GitHub Actions build. Review the real deployment and visit its public `workers.dev` URL before announcing publication.
+
+
+### Branch rollout safety
+
+This feature branch adds evidence-led public network-lab pages; it does not deploy to the production Worker until merged into the configured production branch. Review the PR CI and a Cloudflare preview before merging. No secrets are included in the repository.

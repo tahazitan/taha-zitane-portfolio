@@ -132,9 +132,14 @@ const arabic: Content = {
  {period:"أبريل 2022",position:"تدريب إدارة الأنظمة والشبكات",organisation:"المديرية الإقليمية للتعليم · شفشاون",details:"المشاركة في إعداد خوادم فعلية تعمل بـWindows Server، والمساعدة في خدمات Active Directory ومشاركة الملفات ودعم الشبكة المحلية تحت إشراف المؤسسة."},
  {period:"ماي — يونيو 2021",position:"تدريب التدبير المعلوماتي",organisation:"جماعة شفشاون",details:"المساهمة في صيانة الحواسيب والطابعات وتثبيت البرامج وتنفيذ مهام الدعم المكتبي الروتينية داخل مصلحة المعلوميات."}]
 };
-english.projects.push(...additionalProjects.en);
-french.projects.push(...additionalProjects.fr);
-arabic.projects.push(...additionalProjects.ar);
+// Published code is not the same as a validated running lab. Lead with source-backed work.
+for (const [locale, target] of [
+  ['en', english], ['fr', french], ['ar', arabic]
+] as const) {
+  const additional = additionalProjects[locale];
+  target.projects.unshift(...additional.filter(p => p.slug.startsWith('frr-')));
+  target.projects.push(...additional.filter(p => !p.slug.startsWith('frr-')));
+}
 export const content: Record<Locale, Content> = {en:english,fr:french,ar:arabic};
 export const allSlugs = english.projects.map(p=>p.slug);
 export const githubUrl = "https://github.com/tahazitan";
