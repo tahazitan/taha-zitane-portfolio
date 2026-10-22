@@ -48,6 +48,12 @@ try{
  assert.equal(await desktop.locator('.diagnostic-section').count(),0,'Unrequested diagnostic demo removed');
  // Source-linked connections are traceable to repository YAML, not fictitious equipment images.
  assert.equal(await desktop.locator('.equipment-card').count(),0,'Unsourced equipment gallery removed');
+ assert.equal(await desktop.locator('.solution-media-card').count(),4,'Four genuinely photographed and licensed solution contexts');
+ assert.equal(await desktop.locator('.solution-media-credits a[href*="creativecommons.org"]').count(),4,'Each solution photograph has its original license');
+ assert.equal(await desktop.locator('.technology-reference').count(),9,'Official technology references cover systems and security');
+ await desktop.locator('.solution-media-card').first().scrollIntoViewIfNeeded();
+ await desktop.waitForFunction(()=>{const image=document.querySelector('.solution-media-card img');return image instanceof HTMLImageElement && image.complete && image.naturalWidth>100;},{timeout:23000});
+
  assert.equal(await desktop.locator('.source-topology').count(),1,'Actual source topology section exists');
  assert.equal(await desktop.locator('.source-edges button').count(),4,'Base YAML profile has four wired links');
  await desktop.locator('.source-switch button').nth(1).click();
@@ -93,6 +99,8 @@ try{
  assert.equal(await mobile.locator('html').getAttribute('dir'),'rtl');
  assert.ok((await mobile.locator('.brand-name').innerText()).includes('طه زيطان'),'Arabic spelling is correct');
  assert.equal(await mobile.locator('.source-topology').count(),1,'Source topology available in Arabic RTL');
+ assert.equal(await mobile.locator('.solution-media-card').count(),4,'Arabic real media section retained');
+ assert.equal(await mobile.locator('.technology-reference').count(),9,'Arabic technical references retained');
  const arabicPortrait=await mobile.locator('.portrait-frame').boundingBox();
  assert.ok(arabicPortrait&&arabicPortrait.y>=0&&arabicPortrait.y<770,'Arabic mobile also shows the portrait near the top');
  const overflowAR=await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
