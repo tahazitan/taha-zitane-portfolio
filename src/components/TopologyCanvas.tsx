@@ -1,5 +1,6 @@
 "use client";
-import {Canvas, useFrame} from '@react-three/fiber';
+import {Canvas, useFrame, useThree} from '@react-three/fiber';
+import {OrbitControls as ThreeOrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {useEffect, useMemo, useRef} from 'react';
 import * as THREE from 'three';
 import type {NodeKind,Topology,TopologyNode} from '@/data/labTopologies';
@@ -13,6 +14,32 @@ const tone:Record<NodeKind,string>={
   monitor:'#dcaaff',
   cloud:'#8eddb6'
 };
+
+/** Native Three.js controls: drag/touch rotation, wheel/pinch zoom and slow idle orbit. */
+function CameraRig({reduced}:{reduced:boolean}){
+  const {camera,gl}=useThree();
+  const rig=useRef<ThreeOrbitControls|null>(null);
+  useEffect(()=>{
+    const controls=new ThreeOrbitControls(camera,gl.domElement);
+    controls.enableDamping=!reduced;
+    controls.dampingFactor=.075;
+    controls.enablePan=false;
+    controls.enableZoom=true;
+    controls.zoomSpeed=.75;
+    controls.autoRotate=!reduced;
+    controls.autoRotateSpeed=.42;
+    controls.minDistance=6.2;
+    controls.maxDistance=15;
+    controls.minPolarAngle=Math.PI*.16;
+    controls.maxPolarAngle=Math.PI*.78;
+    controls.target.set(0,-.05,0);
+    controls.update();
+    rig.current=controls;
+    return ()=>{rig.current=null;controls.dispose()};
+  },[camera,gl,reduced]);
+  useFrame((_,delta)=>{rig.current?.update(delta)});
+  return null;
+}
 
 function Label({value,color}:{value:string;color:string}){
   const tex=useMemo(()=>{
@@ -174,10 +201,10 @@ function Network({topology,reduced,selected,onSelected,activeFlow}:{topology:Top
   const flowNodes=topology.flows?.find(f=>f.id===activeFlow)?.nodes ?? [];
   const highlight=new Set(flowNodes.slice(1).map((node,i)=>[flowNodes[i],node].sort().join(":")));
   const dimmed=flowNodes.length>1;
-  useFrame(({clock,pointer},delta)=>{
+  useFrame(({clock},delta)=>{
     if(group.current && !reduced){
-      group.current.rotation.y=THREE.MathUtils.damp(group.current.rotation.y,pointer.x*.12+Math.sin(clock.elapsedTime*.1)*.07,1.4,delta);
-      group.current.rotation.x=THREE.MathUtils.damp(group.current.rotation.x,pointer.y*-.05,1.4,delta);
+      group.current.rotation.y=THREE.MathUtils.damp(group.current.rotation.y,Math.sin(clock.elapsedTime*.27)*.022,1.2,delta);
+      group.current.rotation.x=THREE.MathUtils.damp(group.current.rotation.x,Math.cos(clock.elapsedTime*.21)*.015,1.2,delta);
     }
   });
   return <group ref={group} rotation={[.08,0,0]}>
@@ -189,6 +216,7 @@ function Network({topology,reduced,selected,onSelected,activeFlow}:{topology:Top
 
 export default function TopologyCanvas({topology,reduced=false,selected='',onSelected,activeFlow}:{topology:Topology;reduced?:boolean;selected?:string;onSelected:(id:string)=>void;activeFlow?:string}){
   return <Canvas key={topology.id} dpr={[1,1.5]} camera={{position:[0,1.0,10.5],fov:44}} gl={{alpha:true,antialias:true,powerPreference:'low-power'}}>
+    <CameraRig reduced={reduced}/>
     <ambientLight intensity={1.55}/>
     <directionalLight intensity={2.6} position={[4,5,6]}/>
     <pointLight intensity={18} color="#97c5ff" position={[-4,2,2]}/>
