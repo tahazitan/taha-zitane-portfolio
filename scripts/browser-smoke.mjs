@@ -73,6 +73,7 @@ try{
  assert.equal(await desktop.locator('a[href^="mailto:"]').count()>0,true,'Functional email links');
  assert.equal(await desktop.locator('a[href^="tel:"]').count()>0,true,'Functional phone link');
  assert.equal(await desktop.locator('a[href$=".vcf"]').count()>0,true,'Contact VCard download');
+ assert.equal(await desktop.locator('a[href="/cv/Taha_Zitane_CV_2026.pdf"]').count(),1,'Genuine PDF CV download link');
  mkdirSync(path.join(root,'screenshots'),{recursive:true});
  await desktop.locator('.hero').screenshot({path:path.join(root,'screenshots','desktop-hero.png'),animations:'disabled'});
  await desktop.locator('.work-card').first().screenshot({path:path.join(root,'screenshots','desktop-project-card.png'),animations:'disabled'});
