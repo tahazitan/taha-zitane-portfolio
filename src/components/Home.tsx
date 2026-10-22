@@ -55,7 +55,7 @@ export default function Home({locale}:{locale:Locale}){
        <div className="hero-network hero-network-exhibit" role="group" aria-label={locale==='fr'?'Visualisation réseau animée en 3D':locale==='ar'?'تصور ثلاثي الأبعاد لشبكة معلوماتية':'Animated 3D network visualization'}>
          <div className="hero-exhibit-top"><span className="hero-exhibit-status"/><span>{locale==='fr'?'ARCHITECTURE RÉSEAU / ANIMATION':locale==='ar'?'هندسة شبكات / عرض متحرك':'NETWORK ARCHITECTURE / MOTION'}</span><span>00:NETWORK</span></div>
          <NetworkBackdrop/>
-         <a className="hero-exhibit-bottom" href="#topology"><span>{locale==='fr'?'Ouvrir le laboratoire interactif':locale==='ar'?'افتح مختبر الشبكات التفاعلي':'Explore the interactive network lab'}</span><ArrowUpRight size={17}/></a>
+         
        </div>
     </div></div>
     <div className="hero-foot"><span><MoveDown size={14}/>{c.scroll}</span><div className="hero-foot-rule"/><span>35° 10′ N &nbsp; / &nbsp; 05° 16′ W</span></div>
