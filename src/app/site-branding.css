@@ -97,3 +97,23 @@
 @media(max-width:740px){.landing-overview-heading{align-items:start;flex-direction:column;gap:10px}.overview-card{min-height:305px}.overview-projects{min-height:550px}.process-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.detail-next .container-xl{align-items:start;flex-direction:column}.contact-detail-grid{grid-template-columns:1fr}.detail-headerline span:last-child{display:none}}
 @media(max-width:520px){.landing-overview{padding:60px 0}.overview-card{padding:21px;gap:18px;min-height:0}.overview-projects{min-height:0}.overview-circuit{margin:44px auto 53px;gap:0}.circuit-node{width:85px;height:86px;border-radius:8px;gap:10px}.circuit-node span{font-size:7px}.circuit-node svg{width:22px;height:22px}.circuit-join{width:15px}.overview-card-bottom{flex-direction:column;align-items:start}.detail-hero{padding:62px 0}.detail-hero h1{font-size:clamp(38px,10vw,55px)}.detail-hero-body{margin-top:29px}.section-site .services-intro p{min-width:0}.contact-route-list a{padding:17px}.process-steps{grid-template-columns:1fr}.process-steps>div{min-height:95px;gap:17px}}
 @media(prefers-reduced-motion:reduce){.hero .hero-schematic,.overview-circuit{animation:none!important}.overview-card,.overview-card-top svg{transition:none!important}.overview-card:hover{transform:none!important}}
+
+/* A consistent business identity from the first viewport to the last footer. */
+.footer-branded{background:#0a2231!important;border-top:1px solid #355468;color:#dbecef}
+.footer-branded>.container-xl{display:block}
+.footer-brand-main{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(170px,.8fr) minmax(170px,.8fr);gap:clamp(25px,5vw,80px);padding:75px 0 64px}
+.footer-signature>a{display:flex;align-items:center;gap:16px;color:#fff;font-size:clamp(23px,2.6vw,35px);font-weight:850;letter-spacing:-.04em}
+.footer-signature p{font-size:14px;color:#bdd5dc;line-height:1.8;margin:15px 0 24px;max-width:310px}
+.footer-location,.footer-overline{display:block;font:750 10px ui-monospace,monospace;letter-spacing:.07em;color:#89b3be}
+.footer-overline{margin-bottom:21px}
+.footer-directory nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.footer-directory nav a{font-size:12px;display:flex;align-items:center;gap:7px;color:#d9e9ed;min-width:0}
+.footer-directory nav a:hover,.footer-email:hover{color:#90e0db}
+.footer-channel>a{display:inline-flex;align-items:center;gap:9px;font-size:12px;color:#edf6f7;overflow-wrap:anywhere}
+.footer-social{display:flex;align-items:center;gap:10px;margin-top:20px}
+.footer-social a{display:grid;place-items:center;width:44px;height:44px;border-radius:6px;border:1px solid #476879;color:#d8e8e9}
+.footer-social a:hover{background:#245468}
+.footer-copyright{display:flex;align-items:center;justify-content:space-between;gap:18px;border-top:1px solid #37586a;padding:24px 0;font:700 10px ui-monospace,monospace;letter-spacing:.035em;color:#aac5ce}
+.footer-copyright a{color:#d2e6e9}
+@media(max-width:900px){.footer-brand-main{grid-template-columns:1fr 1fr}.footer-signature{grid-column:1/-1}}
+@media(max-width:590px){.footer-brand-main{grid-template-columns:1fr;padding:50px 0 35px}.footer-signature{grid-column:auto}.footer-copyright{flex-wrap:wrap;font-size:9px}}

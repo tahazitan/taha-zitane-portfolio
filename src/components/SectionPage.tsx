@@ -2,6 +2,7 @@ import Link from "next/link";
 import {ArrowUpRight, ArrowLeft, Mail, Phone, Github, Linkedin, ShieldCheck, Layers3} from "lucide-react";
 import Navigation from "./Navigation";
 import BrandMark from "./BrandMark";
+import FooterBrand from "./FooterBrand";
 import Reveal from "./Reveal";
 import ProjectExplorer from "./ProjectExplorer";
 import ExperienceVisual from "./ExperienceVisual";
@@ -84,6 +85,6 @@ export default function SectionPage({locale,section}:{locale:Locale;section:Sect
    {section==="contact"&&<section id="contact" className="contact-detail-section"><div className="container-xl"><div className="contact-detail-grid"><div><span className="section-number">REACH OUT</span><h2>{locale==="fr"?"Construisons une solution adaptée.":rtl?"لنحدد الحل التقني المناسب.":"Start with the problem. Build the solution."}</h2><p>{c.contactBody}</p><a href={mailUrl} className="contact-big-email">{locale==="ar"?"راسلني":locale==="fr"?"Écrivez-moi":"Email me"}<ArrowUpRight size={22}/></a></div><div className="contact-route-list"><a href={mailUrl}><Mail size={20}/>zitanet44@gmail.com<ArrowUpRight size={16}/></a><a href={`tel:${phoneNumber}`}><Phone size={20}/>{prettyPhoneNumber}</a><a href={githubUrl} target="_blank" rel="noopener noreferrer"><Github size={20}/>GitHub<ArrowUpRight size={16}/></a><a href={linkedInUrl} target="_blank" rel="noopener noreferrer"><Linkedin size={20}/>LinkedIn<ArrowUpRight size={16}/></a></div></div></div></section>}
    {section!=="contact"&&<section className="detail-next"><div className="container-xl"><div><span className="section-number">NEXT / COLLABORATE</span><h2>{locale==="fr"?"Un projet ou un besoin technique ?":rtl?"عندك مشروع أو احتياج تقني؟":"Have a technical challenge?"}</h2><p>{c.contactBody}</p></div><Link className="btn btn-primary" href={route(locale,"contact")}>{c.emailMe}<ArrowUpRight size={18}/></Link></div></section>}
   </main>
-  <footer className="site-footer"><div className="container-xl"><Link href={homePath(locale)}><BrandMark size={31}/></Link><span>© 2026 TAHA ZITANE · SYSTEMS & NETWORKS</span><a href={homePath(locale)}>{locale==="fr"?"RETOUR À L'ACCUEIL":rtl?"العودة إلى الرئيسية":"BACK HOME"} <ArrowUpRight size={15}/></a></div></footer>
+  <FooterBrand locale={locale}/>
  </div>;
 }
