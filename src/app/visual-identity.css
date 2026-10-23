@@ -35,3 +35,27 @@
 @media(max-width:760px){.source-figure svg{width:720px;max-width:none}.source-figure{overflow-x:auto}.study-item{grid-template-columns:1fr;gap:8px}.study-item>small{margin:0}.service-tool-strip{margin-top:18px}.source-technology .tech-mark{font-size:10px}}
 @media(max-width:550px){.institution-name{padding:8px 10px;font-size:15px}.service-item{min-height:0}.source-figure svg{width:640px}.source-technology{padding-bottom:10px}.training-item{grid-template-columns:1fr}.training-item small{text-align:start}.tech-marks--hero .tech-mark--wordmark .tech-mark-label{display:inline!important;font-size:10px}}
 @media(prefers-reduced-motion:reduce){.service-item{transition:none}.service-item:hover{transform:none}}
+
+/* Education: an academic timeline and institution-led training cards. */
+.education-section{background:linear-gradient(155deg,#f8faf9,#eef4f3);padding:clamp(76px,8vw,115px) 0}
+.education-section .education-grid{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(25px,4vw,70px)}
+.education-section .education-grid>div{min-width:0}
+.education-section .education-grid>div>h3{font-weight:750;color:#174153;border-bottom:1px solid #ccdddf;padding-bottom:15px}
+.education-section .study-list{position:relative;display:grid;gap:14px;padding-inline-start:23px}
+.education-section .study-list:before{content:"";position:absolute;inset-inline-start:7px;top:18px;bottom:18px;width:2px;background:linear-gradient(#70bdc4,#88abd1,#dec09e)}
+.education-section .study-item{--timeline:#76bfc3;position:relative;display:flex;flex-direction:column;gap:9px;padding:19px;border:1px solid #d0e0e1;border-inline-start:3px solid var(--timeline);border-radius:9px;background:white;box-shadow:0 9px 23px rgba(14,49,64,.06)}
+.education-section .study-item:nth-child(2){--timeline:#88b2e5}
+.education-section .study-item:nth-child(3){--timeline:#d4ac82}
+.education-section .study-item:nth-child(4){--timeline:#92c8b4}
+.education-section .study-item:before{content:"";position:absolute;inset-inline-start:-23px;top:23px;width:10px;height:10px;border:2px solid white;border-radius:50%;background:var(--timeline);box-shadow:0 0 0 2px #c5dbdd}
+.education-section .study-item>small{font:800 12px/1.45 ui-monospace,monospace;color:#3b7181;letter-spacing:.045em}
+.education-section .institution-name{max-width:100%;padding:9px 11px;background:#f2f7f8;border-color:#d2e2e3;border-inline-start-color:var(--timeline);border-radius:5px;box-shadow:none;color:#153d4e;overflow-wrap:anywhere}
+.education-section .study-item h4{font-size:16px;color:#143a4b;line-height:1.4}
+.education-section .study-item p{font-size:13px;color:#55727c}
+.education-section .training-list{gap:11px}
+.education-section .training-item{display:flex;flex-direction:column;gap:9px;padding:16px 18px;border:1px solid #d3e2e3;border-radius:8px;background:#fff;box-shadow:0 5px 15px rgba(15,49,65,.035)}
+.education-section .training-item strong{color:#1a4254}
+.education-section .training-item>small{max-width:none;text-align:start;align-self:flex-start;color:#4d7480;padding:5px 8px;border-radius:4px;background:#eff5f5}
+.education-section .education-footnote{background:transparent;border-inline-start:2px solid #88bec0;color:#51747f}
+@media(max-width:960px){.education-section .education-grid{grid-template-columns:minmax(0,1fr);gap:38px}}
+@media(max-width:550px){.education-section .study-list{padding-inline-start:20px}.education-section .study-list:before{inset-inline-start:6px}.education-section .study-item:before{inset-inline-start:-21px}.education-section .study-item{padding:15px}.education-section .institution-name{font-size:13px}.education-section .training-item{padding:15px}}
