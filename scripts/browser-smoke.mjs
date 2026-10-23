@@ -36,7 +36,8 @@ try{
  assert.equal(await d.locator('.overview-card').count(),4,'Homepage is a focused four-path overview');
  assert.equal(await d.locator('.work-card').count(),0,'Engineering diagrams belong to Projects, not homepage');
  assert.equal(await d.locator('.source-topology').count(),0,'Source-specific diagram only on project page');
- assert.equal(await d.locator('.overview-circuit .circuit-node').count(),3,'Hero preview uses meaningful network/security/system nodes');
+ assert.equal(await d.locator('.overview-project-preview .visual-project--topology').count(),1,'Homepage previews the documented enterprise topology');
+ assert.equal(await d.locator('.overview-project-preview svg[aria-label]').count(),1,'Home network topology remains accessible and labelled');
  const photo=d.locator('.portrait-photo');
  await d.waitForFunction(()=>{const el=document.querySelector('.portrait-photo');return el instanceof HTMLImageElement&&el.complete&&el.naturalWidth>100},{timeout:18000});
  const pb=await d.locator('.portrait-frame').boundingBox();assert.ok(pb&&pb.width>220,'Portrait prominent on desktop');
@@ -92,6 +93,15 @@ try{
  await d.waitForTimeout(400);
  await d.locator('.source-switch button').nth(1).click();
  assert.equal(await d.locator('.source-topology-compact .source-edges button').count(),6,'Secure source profile uses six links');
+
+ const tablet=await browser.newPage({viewport:{width:1024,height:768},deviceScaleFactor:1});
+ await tablet.goto(base+'/',{waitUntil:'domcontentloaded'});
+ assert.ok(await tablet.locator('.nav-toggle').isVisible(),'Tablet hamburger must be visible');
+ await tablet.locator('.nav-toggle').click();
+ assert.ok(await tablet.locator('#mobile-nav').isVisible(),'Tablet menu must expand visibly at 1024px');
+ assert.equal(await tablet.locator('#mobile-nav a').count(),9,'Tablet menu has six sections and three languages');
+ await overflow(tablet,'tablet home');
+ await tablet.close();
 
  const m=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
  m.on('pageerror',e=>errors.push('mobile: '+e.message));

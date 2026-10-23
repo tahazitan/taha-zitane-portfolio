@@ -5,13 +5,13 @@
 .nav-links{gap:clamp(8px,1.25vw,21px)}
 .nav-links a{font-size:clamp(10px,.8vw,12px);letter-spacing:.012em}
 .nav-links a[aria-current="page"]{color:#a4e3df;border-bottom:1px solid #80ccc7}
-@media(max-width:1200px){.nav-links{display:none}.nav-toggle{display:grid}}
+@media(max-width:1200px){.nav-links{display:none}.nav-toggle{display:grid}.mobile-menu{display:block}}
 /* Homepage: genuine portrait, light motion, restrained brand accents. */
 .hero{background:radial-gradient(ellipse at 65% 40%,rgba(27,80,108,.32),transparent 58%),#091d2d}
 .hero .hero-visual{perspective:1000px}
-.hero .hero-schematic{transform:rotateY(-8deg) rotateX(3deg);animation:subtle-diagram-float 12s ease-in-out infinite}
+.hero .hero-schematic{transform:translateX(-50%) rotateY(-8deg) rotateX(3deg);animation:subtle-diagram-float 12s ease-in-out infinite}
 .hero .portrait-frame{box-shadow:0 25px 60px rgba(2,15,25,.3)}
-@keyframes subtle-diagram-float{0%,100%{transform:rotateY(-8deg) translateY(0)}50%{transform:rotateY(-5deg) translateY(-9px)}}
+@keyframes subtle-diagram-float{0%,100%{transform:translateX(-50%) rotateY(-8deg) rotateX(3deg) translateY(0)}50%{transform:translateX(-50%) rotateY(-5deg) rotateX(3deg) translateY(-9px)}}
 .landing-overview{background:linear-gradient(160deg,#eef5f5 0%,#fbfcfb 65%,#f0f5f3 100%);padding:clamp(82px,9vw,140px) 0}
 .landing-overview-heading{display:flex;justify-content:space-between;align-items:end;gap:35px;margin-bottom:clamp(32px,5vw,68px)}
 .landing-overview-heading h2{font-size:clamp(34px,4.2vw,66px);letter-spacing:-.055em;line-height:1.09;max-width:700px;margin:17px 0 0;color:#0e3140}
@@ -40,12 +40,6 @@
 .overview-card-bottom .tech-mark{background:#eef6f6!important;border-color:#c6dfe0!important;color:#285268!important;font-size:9px;padding:5px}
 .overview-projects .overview-card-bottom .tech-mark{background:#234e5e!important;border-color:#527f91!important;color:#edf9f8!important}
 .overview-cta{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:750;white-space:nowrap}
-.overview-circuit{position:relative;display:flex;align-items:center;justify-content:center;gap:0;transform:rotateX(13deg) rotateZ(-3deg);transform-style:preserve-3d;margin:58px 0 60px;filter:drop-shadow(0 23px 17px rgba(0,0,0,.15));animation:circuit-hover 9s ease-in-out infinite}
-.circuit-node{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;text-align:center;width:139px;height:120px;border-radius:13px;border:1px solid #75a7b5;background:linear-gradient(155deg,#2b5e75,#18374c);box-shadow:inset 0 1px rgba(255,255,255,.15),0 8px 0 #0a2638;color:#e0faf8}
-.circuit-node span{font:750 9px ui-monospace,monospace;letter-spacing:.05em}
-.circuit-node svg{width:28px;height:28px}
-.circuit-join{width:34px;height:2px;background:#93d6d4;box-shadow:0 0 12px rgba(124,216,207,.4)}
-@keyframes circuit-hover{0%,100%{transform:rotateX(13deg) rotateZ(-3deg) translateY(0)}50%{transform:rotateX(13deg) rotateZ(-3deg) translateY(-7px)}}
 /* Dedicated content landing: typography first, contextual tools second. */
 .detail-hero{position:relative;background:radial-gradient(ellipse at 78% 25%,rgba(57,115,145,.26),transparent 58%),#0a2233;color:#f4fcfd;padding:clamp(70px,7vw,105px) 0 clamp(62px,6vw,90px)}
 .detail-hero-inner{position:relative}
@@ -92,11 +86,11 @@
 .contact-route-list a:hover{border-color:#6ca4b1;background:#f8fcfb}
 .section-site .site-footer .container-xl{align-items:center}
 .rtl .detail-hero h1,.rtl .landing-overview-heading h2{letter-spacing:normal}
-.rtl .circuit-node{direction:ltr}
-@media(max-width:1020px){.overview-grid{grid-template-columns:1fr}.overview-projects{grid-row:auto;min-height:0}.overview-education{grid-column:auto}.overview-circuit{margin:50px auto;max-width:470px}.detail-hero-body{grid-template-columns:1fr}.detail-brand-panel{display:none}}
+
+@media(max-width:1020px){.overview-grid{grid-template-columns:1fr}.overview-projects{grid-row:auto;min-height:0}.overview-education{grid-column:auto}.detail-hero-body{grid-template-columns:1fr}.detail-brand-panel{display:none}}
 @media(max-width:740px){.landing-overview-heading{align-items:start;flex-direction:column;gap:10px}.overview-card{min-height:305px}.overview-projects{min-height:550px}.process-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.detail-next .container-xl{align-items:start;flex-direction:column}.contact-detail-grid{grid-template-columns:1fr}.detail-headerline span:last-child{display:none}}
-@media(max-width:520px){.landing-overview{padding:60px 0}.overview-card{padding:21px;gap:18px;min-height:0}.overview-projects{min-height:0}.overview-circuit{margin:44px auto 53px;gap:0}.circuit-node{width:85px;height:86px;border-radius:8px;gap:10px}.circuit-node span{font-size:7px}.circuit-node svg{width:22px;height:22px}.circuit-join{width:15px}.overview-card-bottom{flex-direction:column;align-items:start}.detail-hero{padding:62px 0}.detail-hero h1{font-size:clamp(38px,10vw,55px)}.detail-hero-body{margin-top:29px}.section-site .services-intro p{min-width:0}.contact-route-list a{padding:17px}.process-steps{grid-template-columns:1fr}.process-steps>div{min-height:95px;gap:17px}}
-@media(prefers-reduced-motion:reduce){.hero .hero-schematic,.overview-circuit{animation:none!important}.overview-card,.overview-card-top svg{transition:none!important}.overview-card:hover{transform:none!important}}
+@media(max-width:520px){.landing-overview{padding:60px 0}.overview-card{padding:21px;gap:18px;min-height:0}.overview-projects{min-height:0}.overview-card-bottom{flex-direction:column;align-items:start}.detail-hero{padding:62px 0}.detail-hero h1{font-size:clamp(38px,10vw,55px)}.detail-hero-body{margin-top:29px}.section-site .services-intro p{min-width:0}.contact-route-list a{padding:17px}.process-steps{grid-template-columns:1fr}.process-steps>div{min-height:95px;gap:17px}}
+@media(prefers-reduced-motion:reduce){.hero .hero-schematic{animation:none!important}.overview-card,.overview-card-top svg{transition:none!important}.overview-card:hover{transform:none!important}}
 
 /* A consistent business identity from the first viewport to the last footer. */
 .footer-branded{background:#0a2231!important;border-top:1px solid #355468;color:#dbecef}
@@ -117,3 +111,21 @@
 .footer-copyright a{color:#d2e6e9}
 @media(max-width:900px){.footer-brand-main{grid-template-columns:1fr 1fr}.footer-signature{grid-column:1/-1}}
 @media(max-width:590px){.footer-brand-main{grid-template-columns:1fr;padding:50px 0 35px}.footer-signature{grid-column:auto}.footer-copyright{flex-wrap:wrap;font-size:9px}}
+
+/* The homepage shows a documented technical topology, not a decorative node chain. */
+.overview-project-preview{width:100%;min-width:0;margin:clamp(25px,3.8vw,54px) 0;direction:ltr}
+.overview-project-preview .visual-project--topology{border-color:#5b8b9b;background:#0a2434;box-shadow:0 18px 35px rgba(4,19,29,.18)}
+.overview-project-preview .visual-project-top{color:#d7f0f2}
+.overview-project-preview .visual-project-caption{color:#b3d6dc}
+.overview-project-preview .topology-preview-stage{background:#0e293b}
+.overview-card:focus-visible{outline:3px solid #e5ab7d;outline-offset:4px}
+.overview-card:focus-visible .overview-card-top svg{transform:translate(3px,-3px)}
+@media(max-width:760px){
+ .overview-project-preview{margin:22px 0}
+}
+@media(max-width:550px){
+ .overview-project-preview .visual-project--topology{padding:8px}
+ .overview-project-preview .visual-project-top{gap:4px}
+ .overview-project-preview .visual-project-top>span{font-size:9px}
+ .overview-project-preview .visual-project-caption{font-size:9px}
+}
