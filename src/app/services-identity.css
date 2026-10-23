@@ -102,3 +102,16 @@
  .service-action svg{transition:none}
  .service-action:hover svg{transform:none}
 }
+
+/* Education: room for original institutional marks; never substitute invented art. */
+.education-section .institution-logo{
+ width:30px;height:30px;object-fit:contain;flex:0 0 auto;
+ background:white;border:1px solid #d5e3e3;border-radius:5px;padding:3px;
+}
+.education-section .institution-issuer{
+ display:block;width:fit-content;max-width:100%;margin:0 0 11px;
+ padding:5px 9px;border:1px solid #d3e1e2;border-radius:5px;
+ background:#f2f7f7;color:#52727c;
+ font-size:11px;font-weight:650;line-height:1.5;
+}
+.rtl .education-section .institution-issuer{text-align:start}
