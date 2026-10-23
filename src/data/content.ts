@@ -29,7 +29,7 @@ export type Content = {
 };
 
 const english: Content = {
-  label:"EN", localeName:"English", nav:["Work","Experience","Education","Expertise","Services","Contact"],
+  label:"EN", localeName:"English", nav:["Projects","Experience","Education","Expertise","Services","Contact"],
   availability:"SYSTEMS / NETWORKS / CYBERSECURITY", eyebrow:"TAHA ZITANE  /  SYSTEMS & NETWORKS", 
   heroLine1:"Systems that work.", heroLine2:"Networks that endure.",
   heroSubtitle:"Systems & Network Infrastructure · Cybersecurity",
