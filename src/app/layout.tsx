@@ -11,6 +11,7 @@ import "./projects-identity.css";
 import "./expertise-identity.css";
 import "./services-identity.css";
 import "./education-training.css";
+import "./site-branding.css";
 
 const siteUrl = "https://taha-zitane-engineering.zitanet44.workers.dev";
 
