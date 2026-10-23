@@ -1,0 +1,104 @@
+/* Services and contact — scoped, infrastructure-led design. */
+.service-section{
+ background:linear-gradient(170deg,#f5f8f7 0%,#eff4f4 100%);
+ padding:clamp(80px,8vw,120px) 0;
+}
+.service-section .section-heading h2{color:#133648}
+.service-section .section-heading p{color:#536e78}
+.service-section .services-grid{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:16px;margin-top:35px;background:transparent;border:0;
+}
+.service-section .services-grid>div{min-width:0;background:none}
+.service-section .service-item{
+ --service-accent:#72b9bc;
+ display:flex;flex-direction:column;gap:14px;min-height:390px;
+ padding:clamp(18px,2.2vw,28px);
+ border:1px solid #d3e1e2;border-radius:11px;
+ background:linear-gradient(148deg,#fff,#f9fbfb);
+ box-shadow:0 9px 26px rgba(12,44,59,.045);
+}
+.service-section .services-grid>div:nth-child(2) .service-item{--service-accent:#8aabe0}
+.service-section .services-grid>div:nth-child(3) .service-item{--service-accent:#c5a5da}
+.service-section .services-grid>div:nth-child(4) .service-item{--service-accent:#dcb18a}
+.service-section .service-item>svg{display:none}
+.service-section .service-item .service-number{
+ display:flex;align-items:center;justify-content:center;
+ width:38px;height:27px;border-radius:5px;
+ color:#2d6373;background:#eef5f5;border:1px solid #cfdfdf;
+ font:750 11px ui-monospace,monospace;
+}
+.service-section .service-item h3{
+ margin:0;font-size:clamp(21px,2vw,29px);
+ line-height:1.2;letter-spacing:-.035em;color:#153848;
+}
+.service-section .service-item p{
+ max-width:unset;flex:1;margin:0;font-size:13px;
+ line-height:1.8;color:#546d79;
+}
+.service-diagram{
+ width:100%;aspect-ratio:480/165;min-height:105px;
+ border:1px solid #32566a;border-radius:8px;
+ background:radial-gradient(ellipse at 74% 6%,rgba(83,137,164,.22),transparent 75%),#0b2233;
+ overflow:hidden;
+}
+.service-diagram svg{display:block;width:100%;height:100%}
+.service-diagram-node{fill:#1b4055;stroke:#698e9c;stroke-width:1.5}
+.service-diagram-label{fill:#e6f5f5;font:750 12px ui-monospace,monospace}
+.service-diagram-sub,.service-diagram-annotation{fill:#a4c7d0;font:650 10px ui-monospace,monospace}
+.service-diagram-link{fill:none;stroke:#5e8497;stroke-width:2.3;stroke-linecap:round}
+.service-diagram-packets{fill:none;stroke:var(--service-accent);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:9 11;animation:service-packets 13s linear infinite}
+.service-diagram-marker{stroke:var(--service-accent);stroke-width:2.4;stroke-linecap:round;fill:none}
+.service-diagram-wave{stroke:var(--service-accent);stroke-width:2.4;stroke-linejoin:round;fill:none}
+@keyframes service-packets{to{stroke-dashoffset:-160}}
+.service-section .service-tool-strip{
+ border-top:1px solid #dce7e6;margin-top:4px;padding-top:14px;
+}
+.service-section .service-tool-strip .tech-mark{
+ border-color:#d5e2e2;background:#f2f7f8;color:#234f60;border-radius:5px;
+}
+.service-section .service-tool-strip .tech-mark--wordmark{
+ background:#f2f7f8!important;color:#234f60!important;
+}
+.service-action{
+ display:flex;align-items:center;justify-content:space-between;gap:12px;
+ margin-top:1px;padding:10px 2px 0;
+ font-size:12px;font-weight:750;color:#1f6471;
+ border-top:1px solid #e1eaea;
+}
+.service-action svg{transition:transform .2s ease}
+.service-action:hover{color:#104654}
+.service-action:hover svg{transform:translate(3px,-3px)}
+.contact-section{
+ background:radial-gradient(ellipse at 75% 30%,rgba(57,107,131,.27),transparent 50%),linear-gradient(140deg,#091a2b,#102f40);
+}
+.contact-section .contact-row h2{color:#f5fafb}
+.contact-section .contact-row p{color:#b7d0d9}
+.contact-section .contact-circle{background:#c1eae4;color:#0d3042;border-color:#bce8e0}
+.contact-flow{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.contact-flow>span{display:inline-flex;align-items:center;gap:10px}
+.contact-flow b{
+ display:inline-flex;padding:8px 11px;
+ font:750 10px/1.5 ui-monospace,monospace;
+ letter-spacing:.04em;border:1px solid rgba(177,220,226,.3);
+ border-radius:5px;background:rgba(255,255,255,.04);color:#cfe6e9;
+}
+.contact-flow svg{color:#7cbdc9}
+.rtl .contact-flow b{letter-spacing:normal}
+@media(max-width:850px){
+ .service-section .services-grid{grid-template-columns:1fr}
+ .service-section .service-item{min-height:0}
+}
+@media(max-width:550px){
+ .service-section{padding:72px 0}
+ .service-section .service-item{padding:18px}
+ .contact-flow{gap:7px}
+ .contact-flow>span{gap:7px}
+ .contact-flow b{font-size:9px;padding:6px 8px}
+ .service-diagram-packets{animation:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .service-diagram-packets{animation:none}
+ .service-action svg{transition:none}
+ .service-action:hover svg{transform:none}
+}
