@@ -1,5 +1,6 @@
 import {Activity, ArrowRight, BookOpen, ClipboardCheck, Cloud, FileCheck2, HardDrive, Headset, Laptop, Mail, Network, Printer, Router, Server, ShieldCheck, TicketCheck, Users} from "lucide-react";
 import type {Locale} from "@/data/content";
+import type {ReactNode} from "react";
 
 /** Editorial infrastructure illustrations for the six roles; not vendor screenshots or live telemetry. */
 const labels={
@@ -29,7 +30,7 @@ const labels={
  }
 } as const;
 
-function Flow({children}:{children:React.ReactNode}){
+function Flow({children}:{children:ReactNode}){
  return <span className="experience-visual-flow" aria-hidden="true"><span/>{children}</span>;
 }
 function Freelance({t}:{t:typeof labels[Locale]}){
