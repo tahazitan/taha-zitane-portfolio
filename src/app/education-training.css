@@ -1,0 +1,73 @@
+/* Education: a distinct continuous-learning timeline; no unverified training dates. */
+.education-section .training-list.training-timeline{
+ position:relative;display:grid;gap:14px;list-style:none;
+ padding:0 0 0 0;padding-inline-start:42px;margin:0;
+ counter-reset:course;
+}
+.education-section .training-timeline::before{
+ content:"";position:absolute;top:19px;bottom:19px;
+ inset-inline-start:19px;width:2px;
+ background:linear-gradient(to bottom,#8aaccf 0%,#77b5c4 58%,#bbd2d5 100%);
+}
+.education-section .training-timeline .training-item{
+ --course-accent:#79b4c7;
+ position:relative;display:flex;flex-direction:column;gap:10px;
+ min-height:0;margin:0;padding:19px 18px;
+ border:1px solid #d2e1e3;border-inline-start:3px solid var(--course-accent);
+ border-radius:9px;background:#fff;
+ box-shadow:0 7px 20px rgba(16,50,67,.045);
+}
+.education-section .training-timeline .training-item:nth-child(2){--course-accent:#91b3dd}
+.education-section .training-timeline .training-item:nth-child(3){--course-accent:#88c4b8}
+.education-section .training-timeline .training-item:nth-child(4){--course-accent:#aab7d8}
+.education-section .training-timeline .training-item:nth-child(5){--course-accent:#d5b18a}
+.education-section .training-timeline .training-index{
+ position:absolute;inset-inline-start:-36px;top:19px;
+ display:grid;place-items:center;width:28px;height:28px;
+ border:2px solid #f7fbfa;border-radius:50%;
+ background:#1a4659;color:#f4fbfc;
+ box-shadow:0 0 0 2px var(--course-accent);
+ font:800 10px ui-monospace,monospace;letter-spacing:0;
+}
+.education-section .training-timeline .training-details{
+ display:flex;flex-direction:column;min-width:0;gap:8px;
+}
+.education-section .training-timeline .training-item strong{
+ color:#143b4d;font-size:clamp(14px,1.5vw,17px);
+ line-height:1.4;overflow-wrap:anywhere;
+}
+.education-section .training-timeline .training-item .training-details>span{
+ color:#587784;font-size:12px;
+}
+.education-section .training-timeline .training-item>small{
+ align-self:flex-start;max-width:100%;text-align:start;
+ background:#eef5f5;border:1px solid #dce7e7;
+ border-radius:4px;padding:6px 8px;
+ color:#416c78;font-size:10px;line-height:1.5;
+}
+.education-section .training-timeline .tech-marks{
+ margin:0;gap:8px;
+}
+.education-section .training-timeline .tech-mark{
+ padding:6px 8px;border:1px solid #d1e1e2;
+ background:#f4f8f8;color:#244b5c;
+ border-radius:5px;font-size:10px;
+}
+.education-section .training-timeline .tech-mark--wordmark{
+ border-style:solid!important;background:#f4f8f8!important;
+ color:#244b5c!important;
+}
+.rtl .education-section .training-timeline .training-details>span{
+ direction:ltr;text-align:start;align-self:flex-start;
+}
+@media(max-width:550px){
+ .education-section .training-list.training-timeline{padding-inline-start:38px;gap:12px}
+ .education-section .training-timeline::before{inset-inline-start:17px}
+ .education-section .training-timeline .training-index{
+  inset-inline-start:-34px;top:17px;width:26px;height:26px
+ }
+ .education-section .training-timeline .training-item{padding:16px}
+}
+@media(prefers-reduced-motion:reduce){
+ .education-section .training-timeline *{scroll-behavior:auto}
+}
