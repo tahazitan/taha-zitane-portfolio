@@ -7,6 +7,7 @@ import ProjectExplorer from "./ProjectExplorer";
 import SourceTopology from "./SourceTopology";
 import TechnologyMarks from "./TechnologyMarks";
 import ExperienceProof from "./ExperienceProof";
+import EngineeringFocus from "./EngineeringFocus";
 import DiagnosticSection from "./DiagnosticSection";
 import {professional} from "@/data/professional";
 import {content,githubUrl,linkedInUrl,mailUrl,phoneNumber,prettyPhoneNumber,Locale} from "@/data/content";
@@ -28,15 +29,27 @@ export default function Home({locale}:{locale:Locale}){
       <div className="hero-actions"><a className="btn btn-primary" href="#work">{locale==='fr'?'Voir les projets':locale==='ar'?'المشاريع التقنية':'View projects'}<ArrowUpRight size={18}/></a><a className="btn btn-text" href="#contact">{locale==='fr'?'Me contacter':locale==='ar'?'تواصل معي':'Get in touch'}<ArrowRight size={18}/></a></div>
 
     </div><div className="hero-visual">
+       <div className="hero-schematic" aria-hidden="true"><svg viewBox="0 0 660 640" preserveAspectRatio="xMidYMid meet">
+        <path className="schematic-guide" d="M65 166 H174 V75 H460 V158 H603 M56 452 H154 V563 H488 V461 H606"/>
+        <path className="schematic-guide" d="M92 285 H150 V229 H511 V282 H586 M85 352 H188 V401 H474 V338 H594"/>
+        <path className="schematic-route" d="M65 166 H174 V75 H460 V158 H603"/>
+        <path className="schematic-route schematic-route--blue" d="M56 452 H154 V563 H488 V461 H606"/>
+        <circle className="schematic-anchor" cx="65" cy="166" r="7"/><circle className="schematic-anchor" cx="603" cy="158" r="7"/>
+        <circle className="schematic-anchor schematic-anchor--secondary" cx="56" cy="452" r="7"/><circle className="schematic-anchor schematic-anchor--secondary" cx="606" cy="461" r="7"/>
+        <circle className="schematic-ring" cx="65" cy="166" r="22"/><circle className="schematic-ring" cx="603" cy="158" r="22"/>
+       </svg></div>
        <div className="portrait-frame"><div className="portrait-image"><img className="portrait-photo" src="/images/taha-portrait.webp" alt={c.portraitAlt} width={630} height={900} fetchPriority="high" decoding="async" /></div><span className="portrait-vertical">{locale==='ar'?'طه زيطان — 2026':'TAHA / ZITANE — 2026'}</span></div>
        <div className="portrait-caption"><div><span className="image-number">{locale==='ar'?'شفشاون، المغرب':locale==='fr'?'Chefchaouen, Maroc':'Chefchaouen, Morocco'}</span><strong>{c.portraitLabel}</strong></div><span>{c.portraitCaption}</span></div>
     </div></div>
     <div className="hero-foot"><span><MoveDown size={14}/>{c.scroll}</span><div className="hero-foot-rule"/><span>{locale==='ar'?'البنية التحتية · التشغيل والدعم':locale==='fr'?'Infrastructure · Exploitation & support':'Infrastructure · Operations & support'}</span></div>
    </div></section>
 
-   <section className="about-section" id="about" aria-labelledby="about-title"><div className="container-xl about-grid">
-     <Reveal><span className="section-number light-number">{c.aboutKicker}</span><h2 id="about-title">{c.aboutTitle}</h2></Reveal>
-     <Reveal className="about-right" delay={.08}><p className="about-paragraph">{c.aboutBody}</p><div className="facts-grid">{c.profileFacts.map(f=><div key={f.label} className="fact"><span>{f.label}</span><strong>{f.value}</strong></div>)}</div></Reveal>
+   <section className="about-section" id="about" aria-labelledby="about-title"><div className="container-xl">
+     <div className="about-grid">
+      <Reveal><span className="section-number light-number">{c.aboutKicker}</span><h2 id="about-title">{c.aboutTitle}</h2></Reveal>
+      <Reveal className="about-right" delay={.08}><p className="about-paragraph">{c.aboutBody}</p><div className="facts-grid">{c.profileFacts.map(f=><div key={f.label} className="fact"><span>{f.label}</span><strong>{f.value}</strong></div>)}</div></Reveal>
+     </div>
+     <EngineeringFocus locale={locale}/>
    </div></section>
 
    <section className="section experience-section" id="experience" aria-labelledby="experience-title"><div className="container-xl">
