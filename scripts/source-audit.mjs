@@ -8,6 +8,10 @@ const css=read('src/app/globals.css');
 const home=read('src/components/Home.tsx');
 const nav=read('src/components/Navigation.tsx');
 const diagram=read('src/components/SourceTopology.tsx');
+const casePage=read('src/components/CasePage.tsx');
+const gallery=read('src/components/ProjectExplorer.tsx');
+if(!casePage.includes('<SourceTopology locale={locale} compact/>'))throw new Error('Real source topology must remain in enterprise project');
+if(!gallery.includes('View project')||gallery.includes('Explore case study'))throw new Error('Project wording must be clear');
 
 const required=[
  'src/app/page.tsx','src/app/[locale]/page.tsx',
@@ -33,10 +37,10 @@ if(!nav.includes('c.nav[5]'))throw new Error('Contact label not preserved');
 
 const sections=['className="hero"','className="about-section"','className="section experience-section"','className="section work-section"'];
 for(let i=1;i<sections.length;i++)if(home.indexOf(sections[i])<=home.indexOf(sections[i-1]))throw new Error('Incorrect portfolio story order');
-for(const necessary of ['ProjectExplorer','SourceTopology','portrait-photo','/images/taha-portrait.webp']){
+for(const necessary of ['ProjectExplorer','portrait-photo','/images/taha-portrait.webp']){
  if(!home.includes(necessary))throw new Error('Missing real portfolio element: '+necessary);
 }
-if(home.includes('hero-resume-link')||home.includes('<LabRoadmap')||home.includes('cv/Taha_Zitane_CV_2026.pdf'))throw new Error('CV download and lab roadmap must stay off the homepage');
+if(home.includes('<SourceTopology')||home.includes('hero-resume-link')||home.includes('<LabRoadmap')||home.includes('cv/Taha_Zitane_CV_2026.pdf'))throw new Error('CV download and lab roadmap must stay off the homepage');
 for(const unused of ['SolutionMedia','SkillEvidence','TechnologyReferences','engineeringMethod','hero-proof-strip','NetworkBackdrop','TopologyStudio','DiagnosticExplorer','SecurityOperationsDesk']){
  if(home.includes(unused))throw new Error('Unwanted widget still on homepage: '+unused);
 }
