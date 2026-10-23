@@ -4,7 +4,6 @@ import Navigation from "./Navigation";
 import Reveal from "./Reveal";
 import LocaleSetup from "./LocaleSetup";
 import ProjectExplorer from "./ProjectExplorer";
-import SourceTopology from "./SourceTopology";
 import TechnologyMarks from "./TechnologyMarks";
 import ExperienceProof from "./ExperienceProof";
 import ExperienceVisual from "./ExperienceVisual";
@@ -64,7 +63,6 @@ export default function Home({locale}:{locale:Locale}){
    </div></section>
 
    <DiagnosticSection locale={locale}/>
-   <SourceTopology locale={locale}/>
 
    <section className="expertise-section" id="expertise" aria-labelledby="expertise-title"><div className="container-xl"><Reveal className="section-heading"><span className="section-number light-number">{c.capabilitiesKicker}</span><div className="heading-row"><h2 id="expertise-title">{c.capabilitiesTitle}</h2><p>{c.capabilitiesSub}</p></div></Reveal><div className="capability-grid">{c.capabilities.map(cap=><Reveal key={cap.n}><article className="capability-card"><span className="cap-no">{cap.n}</span><h3>{cap.title}</h3><p>{cap.description}</p><TechnologyMarks technologies={[cap.tech]} limit={4} variant="inline"/><div className="capability-keywords">{cap.tech.split("  /  ").map(x=><span key={x}>{x}</span>)}</div></article></Reveal>)}</div></div></section>
 
