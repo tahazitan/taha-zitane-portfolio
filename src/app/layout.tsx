@@ -9,6 +9,7 @@ import "./engineering-identity.css";
 import "./experience-polish.css";
 import "./projects-identity.css";
 import "./expertise-identity.css";
+import "./services-identity.css";
 
 const siteUrl = "https://taha-zitane-engineering.zitanet44.workers.dev";
 
