@@ -18,11 +18,14 @@ export default function Home({locale}:{locale:Locale}){
  const c=content[locale];const rtl=locale==="ar";const credentials=professional[locale];
  // Stable IDs avoid assigning the wrong institution to a year when entries change.
  // Only attach a logoPath after an authentic institutional logo has been source-verified.
- const institutionMarks:Record<string,{name:string;location:string;full:string;logoPath?:string}>={
+ const institutionMarks:Record<string,{name:string;location:string;full:string}>={
   "2024 — 2025":{name:"EMSI",location:"TANGER",full:"EMSI Tanger"},
   "2020 — 2022":{name:"OFPPT / ISMO",location:"TÉTOUAN",full:"Institut Spécialisé dans les Métiers de l’Offshoring · OFPPT Tétouan"},
   "2019 — 2020":{name:"FACULTÉ DES SCIENCES",location:"ABDELMALEK ESSAÂDI",full:"Faculté des Sciences · Université Abdelmalek Essaâdi"},
   "2018":{name:"AL-KHAWARIZMI",location:"CHEFCHAOUEN",full:"Lycée Al-Khawarizmi · Chefchaouen"}
+ };
+ const institutionLogoByYear:Record<string,"emsi"|"ofppt"|"university"|"ministry">={
+  "2024 — 2025":"emsi","2020 — 2022":"ofppt","2019 — 2020":"university","2018":"ministry"
  };
  const baccalaureateIssuer={en:"Moroccan Ministry of National Education",fr:"Ministère de l’Éducation nationale",ar:"وزارة التربية الوطنية"}[locale];
 
@@ -82,7 +85,7 @@ export default function Home({locale}:{locale:Locale}){
 
    <section className="section education-section" id="education"><div className="container-xl">
     <Reveal className="section-heading"><span className="section-number">{credentials.kicker}</span><div className="heading-row"><h2>{credentials.title}</h2><p>{credentials.intro}</p></div></Reveal>
-    <div className="education-grid"><Reveal><h3>{credentials.studyTitle}</h3><div className="study-list">{credentials.studies.map((item,i)=><article key={item.year} className="study-item"><small>{item.year}</small><div className="study-body"><span className="institution-name" aria-label={institutionMarks[item.year].full}>{institutionMarks[item.year].logoPath&&<img className="institution-logo" src={institutionMarks[item.year].logoPath} alt="" width={30} height={30} loading="lazy"/>}{institutionMarks[item.year].name}<small>{institutionMarks[item.year].location}</small></span>{item.year==="2018"&&<span className="institution-issuer">{baccalaureateIssuer}</span>}<h4>{item.title}</h4><p>{item.detail}</p></div></article>)}</div></Reveal>
+    <div className="education-grid"><Reveal><h3>{credentials.studyTitle}</h3><div className="study-list">{credentials.studies.map((item,i)=><article key={item.year} className="study-item"><small>{item.year}</small><div className="study-body"><div className="institution-head"><span className={"institution-crest institution-crest--"+institutionLogoByYear[item.year]} role="img" aria-label={item.year==="2018"?baccalaureateIssuer:institutionMarks[item.year].full}/><span className="institution-name" aria-label={institutionMarks[item.year].full}>{institutionMarks[item.year].name}<small>{institutionMarks[item.year].location}</small></span></div>{item.year==="2018"&&<span className="institution-issuer">{baccalaureateIssuer}</span>}<h4>{item.title}</h4><p>{item.detail}</p></div></article>)}</div></Reveal>
     <Reveal delay={.1}><h3>{credentials.trainingTitle}</h3><div className="training-list">{credentials.courses.map(item=><div className="training-item" key={item.name}><div><strong>{item.name}</strong><span>{item.provider}</span><TechnologyMarks technologies={[item.provider]} limit={1} variant="inline"/></div><small>{item.kind}</small></div>)}</div><p className="education-footnote">{credentials.note}</p></Reveal></div>
    </div></section>
 
