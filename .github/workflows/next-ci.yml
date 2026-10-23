@@ -24,6 +24,9 @@ jobs:
           test -f out/cv/Taha_Zitane_CV_2026.pdf
           for prefix in "" "fr/" "ar/"; do
             test -f "out/${prefix}index.html"
+            for section in projects experience education expertise services contact; do
+              test -f "out/${prefix}${section}/index.html"
+            done
             for slug in enterprise-network-lab windows-server-ad remote-it-support hospital-network-support security-observability-labs firewall-ipsec-lab proxmox-virtualization-lab cisco-campus-network-lab; do
               test -f "out/${prefix}projects/${slug}/index.html"
             done

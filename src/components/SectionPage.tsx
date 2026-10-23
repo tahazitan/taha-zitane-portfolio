@@ -58,7 +58,7 @@ export default function SectionPage({locale,section}:{locale:Locale;section:Sect
  return <div className={`page-shell detail-site section-site section-site--${section} ${rtl?"rtl":""}`} dir={rtl?"rtl":"ltr"}>
   <Navigation locale={locale} section={section}/>
   <main>
-   <section className="detail-hero"><div className="container-xl detail-hero-inner">
+   <section className="detail-hero" id="top"><div className="container-xl detail-hero-inner">
     <div className="detail-headerline"><span>{t[0]}</span><span>TAHA ZITANE / {section.toUpperCase()}</span></div>
     <div className="detail-hero-body"><div><h1>{t[1]}</h1><p>{t[2]}</p><Link className="detail-back" href={homePath(locale)}><ArrowLeft size={17}/>{locale==="fr"?"Accueil":rtl?"الرئيسية":"Home"}</Link></div>
     <div className="detail-brand-panel" aria-label={t[3]}><div className="detail-brand-symbol"><BrandMark size={68}/></div><span>{t[3]}</span><TechnologyMarks technologies={toolsets[section]} limit={7} variant="inline"/></div></div>
