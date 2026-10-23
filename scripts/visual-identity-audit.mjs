@@ -13,9 +13,9 @@ const layout=read("src/app/layout.tsx");
 const logos=[...marks.matchAll(/\{key:"([^"]+)",name:[^\n]+logo:true\}/g)].map(m=>m[1]);
 if(logos.length<12)throw new Error("Incomplete authentic logo manifest");
 for(const logo of logos){
- const f="public/tech-logos/"+logo+".svg";
+ const f="public/tech-logos/"+logo+(logo==="zabbix"?".webp":".svg");
  if(!existsSync(resolve(root,f)))throw new Error("Missing branded logo asset: "+f);
- if(!read(f).includes("<svg"))throw new Error("Not an SVG: "+f);
+ if(logo!=="zabbix"&&!read(f).includes("<svg"))throw new Error("Not an SVG: "+f);
 }
 for(const term of ["FRRouting","Containerlab","GNS3","WireGuard","Cybrary","Enova Santé"])
  if(!marks.includes('name:"'+term+'"')||!marks.includes("logo:false"))throw new Error("Unbranded tool name not documented: "+term);

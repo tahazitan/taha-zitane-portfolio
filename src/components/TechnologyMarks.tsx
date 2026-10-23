@@ -22,7 +22,7 @@ const brands:Brand[] = [
  {key:"frr",name:"FRRouting",matcher:/\b(frrouting|frr)\b/i,logo:false},
  {key:"containerlab",name:"Containerlab",matcher:/\bcontainerlab\b/i,logo:false},
  {key:"gns3",name:"GNS3",matcher:/\bgns3\b/i,logo:false},
- {key:"zabbix",name:"Zabbix",matcher:/\bzabbix\b/i,logo:false},
+ {key:"zabbix",name:"Zabbix",matcher:/\bzabbix\b/i,logo:true},
  {key:"wireguard",name:"WireGuard",matcher:/\bwireguard\b/i,logo:false},
  {key:"cybrary",name:"Cybrary",matcher:/\bcybrary\b/i,logo:false},
  {key:"enova",name:"Enova Santé",matcher:/\benova\s+sant[ée]/i,logo:false}
@@ -33,7 +33,7 @@ export default function TechnologyMarks({technologies,limit=5,variant="inline"}:
  if(!matched.length)return null;
  return <div className={"tech-marks tech-marks--"+variant} aria-label="Tools and technologies">
    {matched.map(brand=><span className={"tech-mark "+(brand.logo?"tech-mark--logo":"tech-mark--wordmark")} key={brand.key} title={brand.name} aria-label={brand.name}>
-     {brand.logo&&<span className="tech-mark-image"><img src={"/tech-logos/"+brand.key+".svg"} width={25} height={25} alt="" loading={variant==="hero"?"eager":"lazy"} decoding="async" /></span>}
+     {brand.logo&&<span className="tech-mark-image"><img src={"/tech-logos/"+brand.key+(brand.key==="zabbix"?".webp":".svg")} width={25} height={25} alt="" loading={variant==="hero"?"eager":"lazy"} decoding="async" /></span>}
      <span className="tech-mark-label">{brand.name}</span>
    </span>)}
  </div>;
