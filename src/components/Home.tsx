@@ -1,39 +1,13 @@
-import Link from "next/link";
-import {ArrowUpRight,ArrowRight,Github,Linkedin,MoveDown,ArrowUp,Phone,ContactRound} from "lucide-react";
+import {ArrowUpRight,ArrowRight,MoveDown} from "lucide-react";
 import Navigation from "./Navigation";
-import LandingOverview from "./LandingOverview";
-import FooterBrand from "./FooterBrand";
 import Reveal from "./Reveal";
 import LocaleSetup from "./LocaleSetup";
-import ProjectExplorer from "./ProjectExplorer";
+import LandingOverview from "./LandingOverview";
+import FooterBrand from "./FooterBrand";
 import TechnologyMarks from "./TechnologyMarks";
-import ExperienceProof from "./ExperienceProof";
-import ExperienceVisual from "./ExperienceVisual";
-import EngineeringFocus from "./EngineeringFocus";
-import CapabilityVisual from "./CapabilityVisual";
-import ServiceVisual from "./ServiceVisual";
-import DiagnosticSection from "./DiagnosticSection";
-import {professional} from "@/data/professional";
-import {content,githubUrl,linkedInUrl,mailUrl,phoneNumber,prettyPhoneNumber,Locale} from "@/data/content";
-
+import {content,type Locale} from "@/data/content";
 export default function Home({locale}:{locale:Locale}){
- const c=content[locale];const rtl=locale==="ar";const credentials=professional[locale];
- // Stable IDs avoid assigning the wrong institution to a year when entries change.
- // Only attach a logoPath after an authentic institutional logo has been source-verified.
- const institutionMarks:Record<string,{name:string;location:string;full:string}>={
-  "2024 — 2025":{name:"EMSI",location:"TANGER",full:"EMSI Tanger"},
-  "2020 — 2022":{name:"OFPPT / ISMO",location:"TÉTOUAN",full:"Institut Spécialisé dans les Métiers de l’Offshoring · OFPPT Tétouan"},
-  "2019 — 2020":{name:"FACULTÉ DES SCIENCES",location:"ABDELMALEK ESSAÂDI",full:"Faculté des Sciences · Université Abdelmalek Essaâdi"},
-  "2018":{name:"AL-KHAWARIZMI",location:"CHEFCHAOUEN",full:"Lycée Al-Khawarizmi · Chefchaouen"}
- };
- const institutionLogoByYear:Record<string,"emsi"|"ofppt"|"university"|"ministry">={
-  "2024 — 2025":"emsi","2020 — 2022":"ofppt","2019 — 2020":"university","2018":"ministry"
- };
- const baccalaureateIssuer={en:"Moroccan Ministry of National Education",fr:"Ministère de l’Éducation nationale",ar:"وزارة التربية الوطنية"}[locale];
-
- const serviceTools=[["AnyDesk","Windows"],["Cisco","Windows Server","Linux","Ubuntu"],["Wireshark","Linux","Wazuh"],["GNS3","FRRouting","GitHub"]];
- const contactSteps=locale==="fr"?["ÉCOUTER","DIAGNOSTIQUER","DOCUMENTER"]:locale==="ar"?["فهم الحاجة","التشخيص","التوثيق"]:["UNDERSTAND","DIAGNOSE","DOCUMENT"];
- const serviceCta=locale==="fr"?"Discuter du besoin":locale==="ar"?"ناقش احتياجك":"Discuss a project";
+ const c=content[locale],rtl=locale==="ar";
  return <div className={`page-shell ${rtl?"rtl":""}`} dir={rtl?"rtl":"ltr"}>
   <LocaleSetup locale={locale}/>
   <Navigation locale={locale}/>
