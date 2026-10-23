@@ -8,6 +8,7 @@ import TechnologyMarks from "./TechnologyMarks";
 import ExperienceProof from "./ExperienceProof";
 import ExperienceVisual from "./ExperienceVisual";
 import EngineeringFocus from "./EngineeringFocus";
+import CapabilityVisual from "./CapabilityVisual";
 import DiagnosticSection from "./DiagnosticSection";
 import {professional} from "@/data/professional";
 import {content,githubUrl,linkedInUrl,mailUrl,phoneNumber,prettyPhoneNumber,Locale} from "@/data/content";
@@ -64,7 +65,7 @@ export default function Home({locale}:{locale:Locale}){
 
    <DiagnosticSection locale={locale}/>
 
-   <section className="expertise-section" id="expertise" aria-labelledby="expertise-title"><div className="container-xl"><Reveal className="section-heading"><span className="section-number light-number">{c.capabilitiesKicker}</span><div className="heading-row"><h2 id="expertise-title">{c.capabilitiesTitle}</h2><p>{c.capabilitiesSub}</p></div></Reveal><div className="capability-grid">{c.capabilities.map(cap=><Reveal key={cap.n}><article className="capability-card"><span className="cap-no">{cap.n}</span><h3>{cap.title}</h3><p>{cap.description}</p><TechnologyMarks technologies={[cap.tech]} limit={4} variant="inline"/><div className="capability-keywords">{cap.tech.split("  /  ").map(x=><span key={x}>{x}</span>)}</div></article></Reveal>)}</div></div></section>
+   <section className="expertise-section" id="expertise" aria-labelledby="expertise-title"><div className="container-xl"><Reveal className="section-heading"><span className="section-number light-number">{c.capabilitiesKicker}</span><div className="heading-row"><h2 id="expertise-title">{c.capabilitiesTitle}</h2><p>{c.capabilitiesSub}</p></div></Reveal><div className="capability-grid">{c.capabilities.map((cap,i)=><Reveal key={cap.n}><article className="capability-card"><span className="cap-no">{cap.n}</span><CapabilityVisual index={i} locale={locale} label={cap.title}/><h3>{cap.title}</h3><p>{cap.description}</p><TechnologyMarks technologies={[cap.tech]} limit={4} variant="inline"/></article></Reveal>)}</div></div></section>
 
    <section className="section education-section" id="education"><div className="container-xl">
     <Reveal className="section-heading"><span className="section-number">{credentials.kicker}</span><div className="heading-row"><h2>{credentials.title}</h2><p>{credentials.intro}</p></div></Reveal>
