@@ -15,3 +15,5 @@ The education timeline uses the four institution logo images supplied by the por
 A single compressed WebP image `public/images/education-institutions.webp` preserves their original visible branding, arranged as a 2×2 image sheet. `src/app/services-identity.css` displays individual quadrants with responsive cropping, and `src/components/Home.tsx` maps year to institution. Attribution: supplied by the owner; independent source URL and trademark provenance were not checked here. The ministry image accompanies the baccalaureate, not the lycée's own logo.
 
 Institution marks must not be generated, recolored, or substituted. For later changes, use the institution's own original supplied image and keep the four year/brand mappings accurate.
+
+- Zabbix: original owner-supplied ECG brand graphic from 2026-10-23, preserved and minimally resized/cropped for compact technology chips. Stored as `public/tech-logos/zabbix.webp`. Do not confuse with security-service certification or vendor endorsement.

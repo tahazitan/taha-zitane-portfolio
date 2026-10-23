@@ -9,8 +9,10 @@ function walk(dir){for(const item of readdirSync(dir)){const file=path.join(dir,
 walk(out);
 const allSlugs=['enterprise-network-lab','windows-server-ad','remote-it-support','hospital-network-support','security-observability-labs','firewall-ipsec-lab','proxmox-virtualization-lab','cisco-campus-network-lab'];
 const expected=[];
+const sections=['projects','experience','education','expertise','services','contact'];
 for(const locale of ['','fr/','ar/']){
  expected.push(`${locale}index.html`);
+ for(const section of sections)expected.push(`${locale}${section}/index.html`);
  for(const slug of allSlugs)expected.push(`${locale}projects/${slug}/index.html`);
 }
 for(const relative of expected)if(!existsSync(path.join(out,relative)))throw Error(`Missing localized page ${relative}`);

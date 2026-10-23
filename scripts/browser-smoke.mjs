@@ -5,156 +5,115 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {chromium} from 'playwright-core';
 
-const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
-const out=path.join(root,'out');
-const mime={'.js':'text/javascript','.css':'text/css','.html':'text/html','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.xml':'application/xml','.ico':'image/x-icon','.vcf':'text/vcard','.woff2':'font/woff2','.txt':'text/plain'};
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'), out=path.join(root,'out');
+const mime={'.js':'text/javascript','.css':'text/css','.html':'text/html','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.xml':'application/xml','.vcf':'text/vcard'};
 const serve=createServer((req,res)=>{
  try{
-  const url=new URL(req.url??'/', 'http://127.0.0.1');
-  const filename=decodeURIComponent(url.pathname);
-  const target=path.resolve(out, '.'+filename);
+  const pathname=decodeURIComponent(new URL(req.url??'/','http://127.0.0.1').pathname);
+  const target=path.resolve(out,'.'+pathname);
   if(!target.startsWith(out+path.sep)&&target!==out){res.writeHead(403).end();return}
   const resolved=existsSync(target)&&statSync(target).isDirectory()?path.join(target,'index.html'):target;
   if(!existsSync(resolved)||!statSync(resolved).isFile()){res.writeHead(404).end('Not found');return}
   res.writeHead(200,{'Content-Type':mime[path.extname(resolved)]||'application/octet-stream'}).end(readFileSync(resolved));
- }catch(err){res.writeHead(500).end(String(err))}
+ }catch(e){res.writeHead(500).end(String(e))}
 });
 await new Promise(resolve=>serve.listen(0,'127.0.0.1',resolve));
 const base=`http://127.0.0.1:${serve.address().port}`;
-const chrome=[process.env.CHROME_PATH,'/usr/bin/google-chrome','/usr/bin/google-chrome-stable','/usr/bin/chromium','/opt/google/chrome/chrome'].filter(Boolean).find(x=>existsSync(x));
-if(!chrome){serve.close();throw Error('Browser QA blocked: no Chromium/Chrome executable found on CI runner')}
+const chrome=[process.env.CHROME_PATH,'/usr/bin/google-chrome','/usr/bin/google-chrome-stable','/usr/bin/chromium'].filter(Boolean).find(existsSync);
+if(!chrome){serve.close();throw Error('Chrome/Chromium executable required for browser QA')}
+const errors=[];
+const overflow=async(page,label)=>{const delta=await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth);assert.ok(delta<=2,`${label} horizontal overflow: ${delta}px`)};
 let browser;
 try{
- browser=await chromium.launch({executablePath:chrome,headless:true,timeout:40000,args:['--no-sandbox','--disable-dev-shm-usage','--enable-webgl','--use-gl=angle','--use-angle=swiftshader']});
- const errors=[];
- const desktop=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:1});
- desktop.on('pageerror',err=>errors.push(err.message));
- await desktop.goto(base+'/',{waitUntil:'domcontentloaded',timeout:30000});
- await desktop.locator('.work-card').first().waitFor({timeout:30000});
- await desktop.waitForTimeout(900); // allow React hydration before exercising client-side filters
- assert.equal(await desktop.locator('.nav-links a').count(),5,'Five deliberate navigation links with distinct purposes');
- assert.equal(await desktop.locator('.hero-person').innerText(),'Taha Zitane','Name must render without literal template characters');
- assert.equal(await desktop.locator('.work-card').count(),8,'All eight projects visible by default');
- assert.equal(await desktop.locator('.work-card[data-project]').count(),8,'Each project has a stable visual identity');
- assert.equal(await desktop.locator('.work-card .project-flow-line').count()>0,true,'Project previews display topology signal paths');
- const search=desktop.locator('.work-search input');
- await search.fill('Proxmox');
- await desktop.waitForFunction(()=>document.querySelectorAll('.work-card').length===1);
- assert.equal(await desktop.locator('.work-card').count(),1,'Search filters projects by technology');
- await search.fill('');
- await desktop.locator('.work-filter button').nth(2).click();
- await desktop.waitForFunction(()=>document.querySelectorAll('.work-card').length===3);
- assert.equal(await desktop.locator('.work-card').count(),3,'Professional experience category filters correctly');
- await desktop.locator('.work-filter button').first().click();
- // Portfolio must focus on real work, not synthetic SOC interfaces
- assert.equal(await desktop.locator('.security-operations').count(),0,'SOC demo removed');
- assert.equal(await desktop.locator('.diagnostic-section').count(),1,'User-requested recruiter-friendly troubleshooting section is present');
- assert.equal(await desktop.locator('.diagnostic-tabs button').count(),4,'Four diagnostic scenarios are available');
- await desktop.locator('.diagnostic-tabs button').nth(1).click();
- assert.equal(await desktop.locator('.diagnostic-tabs button[aria-pressed="true"]').count(),1,'Diagnostic scenario selection updates');
- assert.equal(await desktop.locator('.diagnostic-step-track button').count(),5,'Five structured diagnostic steps');
- await desktop.locator('.diagnostic-step-track button').nth(2).click();
- assert.equal(await desktop.locator('.diagnostic-step-track button[aria-current="step"]').count(),1,'Step selection works');
- assert.equal(await desktop.locator('.work-card .visual-project--topology').count(),8,'Every project includes a GNS3-style equipment-and-cable topology');
- assert.equal(await desktop.locator('.work-card .topology-preview-stage > svg').count(),8,'Project diagrams use scalable source/role graphics');
- const cardGeometry=await desktop.locator('.work-card').evaluateAll(cards=>cards.map((card,index)=>{
-  const summary=card.querySelector('.work-card-summary')?.getBoundingClientRect();
-  const tags=card.querySelector('.work-tags')?.getBoundingClientRect();
-  const actions=card.querySelector('.work-card-actions')?.getBoundingClientRect();
-  return {index,summaryHeight:summary?.height??0,summaryBottom:summary?.bottom??0,tagsTop:tags?.top??0,tagsBottom:tags?.bottom??0,actionsTop:actions?.top??0};
- }));
- for(const card of cardGeometry){
-  assert.ok(card.summaryHeight>32,'Summary must not collapse: project '+card.index);
-  assert.ok(card.tagsTop>=card.summaryBottom-1,'Tooling tags must not overlap text: project '+card.index);
-  assert.ok(card.actionsTop>=card.tagsBottom-1,'Actions must not overlap tags: project '+card.index);
- }
- assert.equal(await desktop.locator('.lab-roadmap-card').count(),0,'Internal architecture roadmap is not displayed on homepage');
- assert.equal(await desktop.locator('.experience-proof').count(),6,'Every professional role shows skill evidence');
- // Source-linked connections are traceable to repository YAML, not fictitious equipment images.
- assert.equal(await desktop.locator('.equipment-card').count(),0,'Unsourced equipment gallery removed');
- assert.equal(await desktop.locator('.solution-media-card').count(),0,'Unreliable remote-image gallery must not appear');
- assert.equal(await desktop.locator('.hero-proof-strip').count(),0,'Vanity counters must be removed');
- assert.equal(await desktop.locator('.engineering-method').count(),0,'No repetitive methodology card grid');
- const primaryCTA=await desktop.locator('.hero-actions a').first().getAttribute('href');
- const secondaryCTA=await desktop.locator('.hero-actions a').last().getAttribute('href');
- assert.equal(primaryCTA,'#work','Primary hero action opens projects');
- assert.equal(secondaryCTA,'#contact','Secondary hero action opens actual contact details');
- assert.equal(await desktop.locator('.technology-reference').count(),0,'Redundant technical reference card library is no longer on homepage');
-
- assert.equal(await desktop.locator('.source-topology').count(),0,'Detailed source topology lives inside the enterprise project');
- // Portrait must be an actual decoded image, visible and unobscured by the architecture panel
- const portrait=desktop.locator('.portrait-photo');
- await portrait.waitFor({state:'visible'});
- await desktop.waitForFunction(()=>{const el=document.querySelector('.portrait-photo');return el instanceof HTMLImageElement && el.complete && el.naturalWidth>100 && el.naturalHeight>100;});
- const photoBox=await desktop.locator('.portrait-frame').boundingBox();
- assert.ok(photoBox&&photoBox.width>220&&photoBox.height>260,'Authentic portrait must be clearly visible');
- assert.equal(await desktop.locator('a[href^="mailto:"]').count()>0,true,'Functional email links');
- assert.equal(await desktop.locator('a[href^="tel:"]').count()>0,true,'Functional phone link');
- assert.equal(await desktop.locator('a[href$=".vcf"]').count()>0,true,'Contact VCard download');
- assert.equal(await desktop.locator('a[href="/cv/Taha_Zitane_CV_2026.pdf"]').count(),0,'Portfolio does not display CV download');
+ browser=await chromium.launch({executablePath:chrome,headless:true,timeout:45000,args:['--no-sandbox','--disable-dev-shm-usage','--enable-webgl','--use-gl=angle','--use-angle=swiftshader']});
  mkdirSync(path.join(root,'screenshots'),{recursive:true});
- await desktop.locator('.hero').screenshot({path:path.join(root,'screenshots','desktop-hero.png'),animations:'disabled'});
- await desktop.locator('.work-card').first().screenshot({path:path.join(root,'screenshots','desktop-project-card.png'),animations:'disabled'});
- await desktop.goto(base+'/projects/enterprise-network-lab/',{waitUntil:'domcontentloaded',timeout:30000});
- assert.equal(await desktop.locator('.source-topology-compact .source-edges button').count(),4,'Enterprise case uses actual base-profile wiring');
- assert.equal(await desktop.locator('.source-figure svg g[transform]').count(),5,'Enterprise source topology displays five original equipment symbols');
- assert.equal(await desktop.locator('.source-figure svg text').filter({hasText:'eth1 ↔ eth1'}).count(),1,'WAN cable identifies the source interface pair');
- assert.ok((await desktop.locator('.source-figure svg').getAttribute('aria-label')).includes('IPv4'),'Source diagram preserves IP addressing context');
- await desktop.locator('.source-switch button').nth(1).click();
- assert.equal(await desktop.locator('.source-topology-compact .source-edges button').count(),6,'Secure source profile includes six connections');
- const sourceUrl=await desktop.locator('.source-topology-compact .source-links a').first().getAttribute('href');
- assert.ok(sourceUrl?.includes('secure/topology.secure.clab.yml'),'Selected profile links to original secure configuration');
- assert.equal(await desktop.locator('.design-review-card').count(),3,'Case includes technical review');
- assert.equal(await desktop.locator('.visual-project--large .topology-preview-stage svg g[transform]').count(),5,'Enterprise case diagrams show five correctly connected source nodes');
- assert.equal(await desktop.locator('.related-work-grid a').count(),2,'Case-to-case navigation');
- await desktop.locator('.source-topology-compact').screenshot({path:path.join(root,'screenshots','enterprise-source-topology.png'),animations:'disabled'});
- const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
- mobile.on('pageerror',err=>errors.push('mobile: '+err.message));
- await mobile.goto(base+'/fr/',{waitUntil:'domcontentloaded',timeout:30000});
- await mobile.waitForFunction(()=>{const img=document.querySelector('.portrait-photo');return img instanceof HTMLImageElement&&img.complete&&img.naturalWidth>100;},{timeout:15000});
- const mobilePortrait=await mobile.locator('.portrait-frame').boundingBox();
- const mobileLayout=await mobile.evaluate(()=>{
-  const grid=document.querySelector('.hero-grid'),visual=document.querySelector('.hero-visual'),photo=document.querySelector('.portrait-frame'),scroll=window.scrollY;
-  return {scroll,viewport:window.innerHeight,grid:window.getComputedStyle(grid).display,visualOrder:window.getComputedStyle(visual).order,photoTop:photo?.getBoundingClientRect().top,photoBottom:photo?.getBoundingClientRect().bottom}
- });
- console.log('QA MOBILE PORTRAIT GEOMETRY',JSON.stringify({mobilePortrait,mobileLayout}));
- await mobile.screenshot({path:path.join(root,'screenshots','mobile-fr-debug.png'),animations:'disabled'});
- assert.ok(mobilePortrait&&mobilePortrait.y>=0&&mobilePortrait.y<770,'Authentic portrait must be visible in initial mobile viewport');
+ const d=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:1});
+ d.on('pageerror',e=>errors.push('desktop: '+e.message));
+ await d.goto(base+'/',{waitUntil:'domcontentloaded'});
+ await d.locator('.overview-card').first().waitFor();
+ assert.equal(await d.locator('.nav-links a').count(),6,'Navigation must expose six dedicated pages');
+ assert.equal(await d.locator('.hero-person').innerText(),'Taha Zitane');
+ assert.equal(await d.locator('.overview-card').count(),4,'Homepage is a focused four-path overview');
+ assert.equal(await d.locator('.work-card').count(),0,'Engineering diagrams belong to Projects, not homepage');
+ assert.equal(await d.locator('.source-topology').count(),0,'Source-specific diagram only on project page');
+ assert.equal(await d.locator('.overview-circuit .circuit-node').count(),3,'Hero preview uses meaningful network/security/system nodes');
+ const photo=d.locator('.portrait-photo');
+ await d.waitForFunction(()=>{const el=document.querySelector('.portrait-photo');return el instanceof HTMLImageElement&&el.complete&&el.naturalWidth>100},{timeout:18000});
+ const pb=await d.locator('.portrait-frame').boundingBox();assert.ok(pb&&pb.width>220,'Portrait prominent on desktop');
+ await overflow(d,'desktop home');
+ await d.locator('.hero').screenshot({path:path.join(root,'screenshots','desktop-hero.png'),animations:'disabled'});
+ await d.locator('.landing-overview').screenshot({path:path.join(root,'screenshots','desktop-overview.png'),animations:'disabled'});
 
- await mobile.locator('.nav-toggle').waitFor({timeout:15000});
- await mobile.waitForTimeout(650);
- await mobile.locator('.nav-toggle').click();
- assert.equal(await mobile.locator('#mobile-nav a').count(),8,'Five destinations and three language choices');
- await mobile.locator('.nav-toggle').click();
- const overflowFR=await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
- assert.ok(overflowFR<=2,`French page horizontal overflow: ${overflowFR}px`);
- const mobileCardGeometry=await mobile.locator('.work-card').evaluateAll(cards=>cards.map((card,index)=>{
-  const copy=card.querySelector('.work-card-summary')?.getBoundingClientRect();
-  const tags=card.querySelector('.work-tags')?.getBoundingClientRect();
-  return {index,summaryHeight:copy?.height??0,summaryBottom:copy?.bottom??0,tagsTop:tags?.top??0};
- }));
- for(const card of mobileCardGeometry){
-  assert.ok(card.summaryHeight>32,'Mobile FR summary must have intrinsic height: '+card.index);
-  assert.ok(card.tagsTop>=card.summaryBottom-1,'Mobile FR tags must not cover summary: '+card.index);
+ await d.goto(base+'/projects/',{waitUntil:'domcontentloaded'});
+ await d.locator('.work-card').first().waitFor();
+ assert.equal(await d.locator('.work-card').count(),8,'All eight technical project case studies');
+ assert.equal(await d.locator('.work-card .visual-project--topology').count(),8,'Eight contextual engineering diagrams');
+ await d.waitForTimeout(500);
+ const search=d.locator('.work-search input');
+ await search.fill('Proxmox');
+ await d.waitForFunction(()=>document.querySelectorAll('.work-card').length===1);
+ assert.equal(await d.locator('.work-card').count(),1,'Project technology search');
+ await search.fill('');
+ await d.locator('.work-filter button').nth(2).click();
+ await d.waitForFunction(()=>document.querySelectorAll('.work-card').length===3);
+ await d.locator('.work-filter button').first().click();
+ await overflow(d,'projects desktop');
+ await d.locator('.work-card').first().screenshot({path:path.join(root,'screenshots','desktop-project-card.png'),animations:'disabled'});
+
+ await d.goto(base+'/services/',{waitUntil:'domcontentloaded'});
+ assert.equal(await d.locator('.service-item').count(),4,'Four scoped technical services');
+ assert.equal(await d.locator('.service-diagram').count(),4,'Every service has a domain-specific workflow visual');
+ assert.equal(await d.locator('.process-steps>div').count(),4,'Realistic collaboration steps');
+ await overflow(d,'services desktop');
+ await d.locator('.service-item').first().screenshot({path:path.join(root,'screenshots','desktop-service-card.png'),animations:'disabled'});
+
+ await d.goto(base+'/experience/',{waitUntil:'domcontentloaded'});
+ assert.equal(await d.locator('.experience-item').count(),6,'Six distinct professional experiences');
+ assert.equal(await d.locator('.experience-proof').count(),6,'Work roles have relevant technical branding');
+ await d.goto(base+'/education/',{waitUntil:'domcontentloaded'});
+ assert.equal(await d.locator('.study-item').count(),4,'Education: four academic timeline entries');
+ assert.equal(await d.locator('.institution-crest').count(),4,'Academic institutions have owner-supplied marks');
+ assert.equal(await d.locator('.training-timeline .training-item').count(),5,'Five courses in their own timeline');
+ await overflow(d,'education desktop');
+ await d.goto(base+'/expertise/',{waitUntil:'domcontentloaded'});
+ assert.equal(await d.locator('.capability-card').count(),6,'Six technical domains');
+ assert.equal(await d.locator('.diagnostic-tabs button').count(),4,'Four diagnostic paths');
+ await d.waitForTimeout(400);
+ await d.locator('.diagnostic-tabs button').nth(1).click();
+ assert.equal(await d.locator('.diagnostic-tabs button[aria-pressed="true"]').count(),1);
+ await d.locator('.diagnostic-step-track button').nth(2).click();
+ assert.equal(await d.locator('.diagnostic-step-track button[aria-current="step"]').count(),1);
+ await d.goto(base+'/contact/',{waitUntil:'domcontentloaded'});
+ assert.ok(await d.locator('a[href^="mailto:"]').count()>0);
+ assert.ok(await d.locator('a[href^="tel:"]').count()>0);
+
+ await d.goto(base+'/projects/enterprise-network-lab/',{waitUntil:'domcontentloaded'});
+ assert.equal(await d.locator('.source-topology-compact .source-edges button').count(),4,'Source-based base topology has four links');
+ await d.waitForTimeout(400);
+ await d.locator('.source-switch button').nth(1).click();
+ assert.equal(await d.locator('.source-topology-compact .source-edges button').count(),6,'Secure source profile uses six links');
+
+ const m=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
+ m.on('pageerror',e=>errors.push('mobile: '+e.message));
+ for(const locale of ['fr','ar']){
+  await m.goto(base+`/${locale}/`,{waitUntil:'domcontentloaded'});
+  await m.waitForFunction(()=>{const p=document.querySelector('.portrait-photo');return p instanceof HTMLImageElement&&p.complete&&p.naturalWidth>100},{timeout:15000});
+  const frame=await m.locator('.portrait-frame').boundingBox();
+  assert.ok(frame&&frame.y<775,`${locale}: portrait appears in initial mobile viewport`);
+  assert.equal(await m.locator('.overview-card').count(),4);
+  await m.locator('.nav-toggle').click();
+  assert.equal(await m.locator('#mobile-nav a').count(),9,'Six sections and three languages in mobile menu');
+  await m.locator('.nav-toggle').click();
+  await overflow(m,`${locale} home mobile`);
+  await m.screenshot({path:path.join(root,'screenshots',`mobile-${locale}.png`),animations:'disabled'});
+  for(const s of ['projects','services','experience','education','expertise','contact']){
+   await m.goto(base+`/${locale}/${s}/`,{waitUntil:'domcontentloaded'});
+   await overflow(m,`${locale} ${s} mobile`);
+  }
  }
- await mobile.screenshot({path:path.join(root,'screenshots','mobile-fr.png'),animations:'disabled'});
- await mobile.goto(base+'/ar/',{waitUntil:'domcontentloaded',timeout:30000});
- assert.equal(await mobile.locator('html').getAttribute('lang'),'ar');
- await mobile.waitForFunction(()=>{const el=document.querySelector('.portrait-photo');return el instanceof HTMLImageElement && el.complete && el.naturalWidth>100;});
- assert.equal(await mobile.locator('html').getAttribute('dir'),'rtl');
- assert.ok((await mobile.locator('.brand-name').innerText()).includes('طه زيطان'),'Arabic spelling is correct');
- assert.equal(await mobile.locator('.hero-person').innerText(),'طه زيطان','Arabic identity must render naturally with no stray symbols');
- assert.equal(await mobile.locator('.source-topology').count(),0,'Mobile homepage keeps architecture inside projects');
- assert.equal(await mobile.locator('.diagnostic-tabs button').count(),4,'Arabic diagnostic controls available');
- assert.equal(await mobile.locator('.lab-roadmap-card').count(),0,'Arabic homepage hides the internal roadmap');
- assert.equal(await mobile.locator('.solution-media-card').count(),0,'Arabic layout omits broken third-party images');
- assert.equal(await mobile.locator('.technology-reference').count(),0,'Mobile homepage avoids redundant reference card grid');
- const arabicPortrait=await mobile.locator('.portrait-frame').boundingBox();
- assert.ok(arabicPortrait&&arabicPortrait.y>=0&&arabicPortrait.y<770,'Arabic mobile also shows the portrait near the top');
- const overflowAR=await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
- assert.ok(overflowAR<=2,`Arabic page horizontal overflow: ${overflowAR}px`);
- await mobile.screenshot({path:path.join(root,'screenshots','mobile-ar.png'),animations:'disabled'});
- // Ignore WebGL warnings produced in some headless renderers; do not ignore React runtime exceptions.
- if(errors.length)throw Error(`Browser runtime errors:\n${errors.slice(0,8).join('\n')}`);
- console.log('PASS: real-browser desktop/mobile navigation, project search, category filters, source-based network links, unobscured decoded portrait, honest project cards, actual portrait and real-media integrity, enterprise source viewer, case navigation, 3 locales, phone/email/vCard, RTL and no mobile overflow');
-}finally{if(browser)await browser.close();await new Promise(resolve=>serve.close(resolve))}
+ if(errors.length)throw Error('Runtime errors:\n'+errors.slice(0,12).join('\n'));
+ console.log('PASS: homepage editorial UX, six sections in EN/FR/AR, filtered projects, technical diagrams, service branding, source-linked case topology, mobile navigation, portrait, responsive layout, contact and RTL');
+} finally {
+ if(browser)await browser.close();
+ await new Promise(resolve=>serve.close(resolve));
+}

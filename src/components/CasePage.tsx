@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {ArrowLeft,ArrowUpRight, Github, Mail, Route, Scale, ListChecks} from "lucide-react";
 import Navigation from "./Navigation";
+import FooterBrand from "./FooterBrand";
 import LocaleSetup from "./LocaleSetup";
 import DesignReview from "./DesignReview";
 import SourceTopology from "./SourceTopology";
@@ -20,8 +21,8 @@ export default function CasePage({locale,slug}:{locale:Locale;slug:string}){
   fr:{scopeValue:'Siège + agence A + agence B + utilisateurs distants',choicesValue:'Segmentation, périmètre, contrôle d’accès, supervision et reprise',criteriaValue:'Sécurité, coût et exploitation guident les choix ci-dessous.',walkthroughTitle:'Parcours de trafic',walkthroughBody:'Topologie interactive et scénarios décrivant le trajet attendu de certains flux dans l’architecture.',acceptanceBody:'Objectifs de validation proposés pour la phase d’implémentation pratique. Elles orientent les prochaines vérifications du laboratoire.',tradeoffBody:'Principales décisions de conception et compromis étudiés du point de vue sécurité, coût et exploitation.',altLabel:'Alternative / compromis'},
   ar:{scopeValue:'المقر الرئيسي + الفرع A + الفرع B + مستخدمون عن بُعد',choicesValue:'التقسيم، الأمن الطرفي، التحكم في الوصول، المراقبة والاستعادة',criteriaValue:'الأمن والكلفة وسهولة التشغيل هي التي توجه القرارات التالية.',walkthroughTitle:'مسارات حركة المرور',walkthroughBody:'مخطط تفاعلي وسيناريوهات تشرح كيف يُفترض أن تمر بعض التدفقات داخل البنية.',acceptanceBody:'أهداف تحقق مقترحة لمرحلة التنفيذ العملي، لتوجيه مراحل التحقق القادمة.',tradeoffBody:'أهم قرارات التصميم والمفاضلات المرتبطة بالأمن والكلفة والتشغيل.',altLabel:'بديل / مفاضلة'}
  }[locale];
- return <div className={`page-shell ${rtl?'rtl':''}`} dir={rtl?'rtl':'ltr'}><LocaleSetup locale={locale}/><Navigation locale={locale} slug={slug}/><main className="case-main"><div className="container-xl">
-  <div className="case-breadcrumb"><Link href={`${homePath(locale)}#work`}><ArrowLeft size={16}/>{c.backToWork}</Link><span>{project.number} / {String(c.projects.length).padStart(2,"0")}</span></div>
+ return <div className={`page-shell ${rtl?'rtl':''}`} dir={rtl?'rtl':'ltr'}><LocaleSetup locale={locale}/><Navigation locale={locale} slug={slug}/><main id="top" className="case-main"><div className="container-xl">
+  <div className="case-breadcrumb"><Link href={`${locale==="en"?"":`/${locale}`}/projects/`}><ArrowLeft size={16}/>{c.backToWork}</Link><span>{project.number} / {String(c.projects.length).padStart(2,"0")}</span></div>
   <div className="case-heading"><span className="section-number">{project.type}</span><h1>{project.title}<span>.</span></h1><p>{project.summary}</p><span className={`status-pill status-${project.statusKind}`}>{project.status}</span></div>
   <div className="case-overview-strip"><strong>{project.type}</strong><span>{project.tech.slice(0,5).join(" · ")}</span></div>
   <TechnologyMarks technologies={project.tech} limit={8} variant="case"/>
@@ -66,6 +67,6 @@ export default function CasePage({locale,slug}:{locale:Locale;slug:string}){
   </>}
 
   <aside className="related-work" aria-label={locale==='ar'?'مشاريع أخرى':locale==='fr'?'Autres projets':'Explore more work'}><div className="related-work-top"><span className="section-number">{locale==='ar'?'مشاريع أخرى':locale==='fr'?'DÉCOUVRIR PLUS':'OTHER PROJECTS'}</span><h2>{locale==='ar'?'واصل الاستكشاف.':locale==='fr'?'Poursuivre la découverte.':'Continue exploring.'}</h2></div><div className="related-work-grid">{related.map(next=><Link href={projectPath(locale,next.slug)} key={next.slug}><small>{next.type}</small><strong>{next.title}</strong><span><ArrowUpRight size={22}/></span></Link>)}</div></aside>
-  <div className="case-bottom-links">{project.link&&<a className="btn btn-primary" href={project.link} target="_blank" rel="noopener noreferrer"><Github size={19}/>{c.viewRepo}<ArrowUpRight size={17}/></a>}<Link href={`${homePath(locale)}#work`} className="btn btn-outline">{c.backToWork}<ArrowUpRight size={17}/></Link><a className="btn btn-outline" href={mailUrl}><Mail size={18}/>{c.contact}</a></div>
-  </div></main><footer className="case-footer"><div className="container-xl"><span>© 2026 TAHA ZITANE</span><span>{c.footerNote}</span></div></footer></div>;
+  <div className="case-bottom-links">{project.link&&<a className="btn btn-primary" href={project.link} target="_blank" rel="noopener noreferrer"><Github size={19}/>{c.viewRepo}<ArrowUpRight size={17}/></a>}<Link href={`${locale==="en"?"":`/${locale}`}/projects/`} className="btn btn-outline">{c.backToWork}<ArrowUpRight size={17}/></Link><a className="btn btn-outline" href={mailUrl}><Mail size={18}/>{c.contact}</a></div>
+  </div></main><FooterBrand locale={locale}/></div>;
 }
