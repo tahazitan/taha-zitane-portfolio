@@ -82,8 +82,6 @@ try{
  assert.equal(await desktop.locator('.technology-reference').count(),0,'Redundant technical reference card library is no longer on homepage');
 
  assert.equal(await desktop.locator('.source-topology').count(),0,'Detailed source topology lives inside the enterprise project');
- const sourceUrl=await desktop.locator('.source-links a').first().getAttribute('href');
- assert.ok(sourceUrl.includes('secure/topology.secure.clab.yml'),'Selected secure profile links to original YAML');
  // Portrait must be an actual decoded image, visible and unobscured by the architecture panel
  const portrait=desktop.locator('.portrait-photo');
  await portrait.waitFor({state:'visible'});
@@ -99,6 +97,13 @@ try{
  await desktop.locator('.work-card').first().screenshot({path:path.join(root,'screenshots','desktop-project-card.png'),animations:'disabled'});
  await desktop.goto(base+'/projects/enterprise-network-lab/',{waitUntil:'domcontentloaded',timeout:30000});
  assert.equal(await desktop.locator('.source-topology-compact .source-edges button').count(),4,'Enterprise case uses actual base-profile wiring');
+ assert.equal(await desktop.locator('.source-figure svg g[transform]').count(),5,'Enterprise source topology displays five original equipment symbols');
+ assert.equal(await desktop.locator('.source-figure svg text').filter({hasText:'eth1 ↔ eth1'}).count(),1,'WAN cable identifies the source interface pair');
+ assert.ok((await desktop.locator('.source-figure svg').getAttribute('aria-label')).includes('IPv4'),'Source diagram preserves IP addressing context');
+ await desktop.locator('.source-switch button').nth(1).click();
+ assert.equal(await desktop.locator('.source-topology-compact .source-edges button').count(),6,'Secure source profile includes six connections');
+ const sourceUrl=await desktop.locator('.source-topology-compact .source-links a').first().getAttribute('href');
+ assert.ok(sourceUrl?.includes('secure/topology.secure.clab.yml'),'Selected profile links to original secure configuration');
  assert.equal(await desktop.locator('.design-review-card').count(),3,'Case includes technical review');
  assert.equal(await desktop.locator('.visual-project--large .topology-preview-stage svg g[transform]').count(),5,'Enterprise case diagrams show five correctly connected source nodes');
  assert.equal(await desktop.locator('.related-work-grid a').count(),2,'Case-to-case navigation');
