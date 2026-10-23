@@ -1,13 +1,14 @@
-import {ArrowUpRight,ArrowRight,MoveDown} from "lucide-react";
+import {ArrowUpRight,ArrowRight,MoveDown,Phone,ContactRound,Github,Linkedin} from "lucide-react";
 import Navigation from "./Navigation";
 import Reveal from "./Reveal";
 import LocaleSetup from "./LocaleSetup";
 import LandingOverview from "./LandingOverview";
 import FooterBrand from "./FooterBrand";
 import TechnologyMarks from "./TechnologyMarks";
-import {content,type Locale} from "@/data/content";
+import {content,mailUrl,phoneNumber,prettyPhoneNumber,githubUrl,linkedInUrl,type Locale} from "@/data/content";
 export default function Home({locale}:{locale:Locale}){
  const c=content[locale],rtl=locale==="ar";
+ const contactSteps=locale==="fr"?["ÉCOUTER","DIAGNOSTIQUER","DOCUMENTER"]:locale==="ar"?["فهم الحاجة","التشخيص","التوثيق"]:["UNDERSTAND","DIAGNOSE","DOCUMENT"];
  return <div className={`page-shell ${rtl?"rtl":""}`} dir={rtl?"rtl":"ltr"}>
   <LocaleSetup locale={locale}/>
   <Navigation locale={locale}/>
