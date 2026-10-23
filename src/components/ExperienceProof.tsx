@@ -1,30 +1,29 @@
 import type {Locale} from "@/data/content";
 import TechnologyMarks from "./TechnologyMarks";
-import {ClipboardCheck,Shield,Router,Headphones,TicketCheck,GraduationCap} from "lucide-react";
 type RecordProof={scope:string;keywords:string[];technologies:string[];kind:string};
 const en:RecordProof[]=[
- {scope:"REMOTE SUPPORT / FREELANCE",kind:"USER OPERATIONS",keywords:["Windows support","LAN / Wi-Fi","Remote diagnosis","Peripherals"],technologies:["Windows","AnyDesk"],},
+ {scope:"SYSTEMS & NETWORKS / FREELANCE",kind:"VPS & CONFIGURATION",keywords:["VPS administration","Configuration review","Systems & networks","Remote support"],technologies:["Windows","Linux","AnyDesk"],},
  {scope:"HOSPITAL / INTERNSHIP",kind:"APPLICATION & LAN",keywords:["Enova Santé","User guidance","Connectivity","Escalation"],technologies:["Enova Santé"]},
- {scope:"TRAINING / PRACTICAL LABS",kind:"KNOWLEDGE TRANSFER",keywords:["Networking labs","Systems basics","Hands-on exercises","Troubleshooting"],technologies:[]},
- {scope:"IT SUPPORT / ITSM",kind:"INCIDENT WORKFLOW",keywords:["Ticket triage","Emailing platforms","Incident follow-up","User support"],technologies:[]},
+ {scope:"TRAINING / PRACTICAL LABS",kind:"PACKET TRACER / TEACHING",keywords:["Cisco Packet Tracer","Routing & switching","Practical labs","Troubleshooting"],technologies:["Cisco Packet Tracer"]},
+ {scope:"IT SUPPORT / ITSM",kind:"TICKETING WORKFLOW",keywords:["Ticket triage","Emailing platforms","Incident tracking","User support"],technologies:[]},
  {scope:"PHYSICAL SERVERS / INTERNSHIP",kind:"SYSTEMS & NETWORKS",keywords:["Windows Server","AD DS","DNS","File shares","LAN support"],technologies:["Windows Server","Cisco"]},
- {scope:"PUBLIC SECTOR / INTERNSHIP",kind:"ENDPOINT SUPPORT",keywords:["Workstations","Printer diagnosis","Software setup"],technologies:[]}
+ {scope:"PUBLIC SECTOR / INTERNSHIP",kind:"ENDPOINT SUPPORT",keywords:["Workstations","Printer diagnosis","Software setup"],technologies:["Windows"]}
 ];
 const fr:RecordProof[]=[
- {scope:"SUPPORT À DISTANCE / FREELANCE",kind:"SUPPORT UTILISATEUR",keywords:["Support Windows","LAN / Wi-Fi","Diagnostic distant","Périphériques"],technologies:["Windows","AnyDesk"]},
+ {scope:"ADMINISTRATION / FREELANCE",kind:"VPS & CONFIGURATION",keywords:["Administration VPS","Revue de configurations","Systèmes & réseaux","Support distant"],technologies:["Windows","Linux","AnyDesk"]},
  {scope:"HÔPITAL / STAGE",kind:"APPLICATION & LAN",keywords:["Enova Santé","Aide utilisateurs","Connectivité","Escalade"],technologies:["Enova Santé"]},
- {scope:"FORMATION / TP",kind:"TRANSMISSION",keywords:["TP réseaux","Bases systèmes","Exercices pratiques","Diagnostic"],technologies:[]},
- {scope:"SUPPORT IT / ITSM",kind:"TRAITEMENT D'INCIDENTS",keywords:["Qualification tickets","Emailing","Suivi d’incident","Support"],technologies:[]},
+ {scope:"FORMATION / TP",kind:"PACKET TRACER / TP",keywords:["Cisco Packet Tracer","Routage & commutation","Exercices pratiques","Diagnostic"],technologies:["Cisco Packet Tracer"]},
+ {scope:"SUPPORT IT / ITSM",kind:"GESTION DE TICKETS",keywords:["Ticketing ITSM","Plateformes e-mail","Qualification","Suivi d’incident"],technologies:[]},
  {scope:"SERVEURS PHYSIQUES / STAGE",kind:"SYSTÈMES & RÉSEAUX",keywords:["Windows Server","AD DS","DNS","Partages","Support LAN"],technologies:["Windows Server","Cisco"]},
- {scope:"COLLECTIVITÉ / STAGE",kind:"SUPPORT POSTES",keywords:["Postes clients","Imprimantes","Installation logiciels"],technologies:[]}
+ {scope:"COLLECTIVITÉ / STAGE",kind:"SUPPORT POSTES",keywords:["Postes clients","Diagnostic imprimantes","Installation logiciels"],technologies:["Windows"]}
 ];
 const ar:RecordProof[]=[
- {scope:"دعم عن بُعد / مستقل",kind:"دعم المستخدمين",keywords:["Windows","شبكات LAN / Wi-Fi","تشخيص عن بُعد","ملحقات الحاسوب"],technologies:["Windows","AnyDesk"]},
+ {scope:"إدارة الأنظمة / عمل حر",kind:"خوادم وإعدادات",keywords:["إدارة VPS","مراجعة الإعدادات","الأنظمة والشبكات","الدعم عن بُعد"],technologies:["Windows","Linux","AnyDesk"]},
  {scope:"مستشفى / تدريب",kind:"دعم التطبيقات والشبكة",keywords:["Enova Santé","مساعدة المستخدمين","الاتصال","التصعيد"],technologies:["Enova Santé"]},
- {scope:"تكوين وتطبيقات",kind:"تأطير تقني",keywords:["تمارين الشبكات","أساسيات الأنظمة","تطبيق عملي","تشخيص"],technologies:[]},
- {scope:"الدعم / ITSM",kind:"تدبير الحوادث",keywords:["تذاكر الدعم","منصات البريد","متابعة الحوادث","المستخدمون"],technologies:[]},
+ {scope:"التكوين والتطبيقات",kind:"PACKET TRACER",keywords:["Cisco Packet Tracer","تمارين التوجيه والتبديل","تطبيق عملي","تشخيص الشبكات"],technologies:["Cisco Packet Tracer"]},
+ {scope:"الدعم / ITSM",kind:"إدارة التذاكر",keywords:["نظام Ticketing","منصات البريد","تصنيف الحوادث","متابعة الحلول"],technologies:[]},
  {scope:"خوادم فعلية / تدريب",kind:"أنظمة وشبكات",keywords:["Windows Server","AD DS","DNS","مشاركة الملفات","LAN"],technologies:["Windows Server","Cisco"]},
- {scope:"مرفق عمومي / تدريب",kind:"صيانة الحواسيب",keywords:["الحواسيب","الطابعات","البرامج"],technologies:[]}
+ {scope:"مرفق عمومي / تدريب",kind:"صيانة الحواسيب",keywords:["الحواسيب","تشخيص الطابعات","تثبيت البرامج"],technologies:["Windows"]}
 ];
 export default function ExperienceProof({index,locale}:{index:number;locale:Locale}){
  const e=({en,fr,ar} as const)[locale][index];if(!e)return null;
