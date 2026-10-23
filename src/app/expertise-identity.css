@@ -1,0 +1,107 @@
+/* Expertise — six technical disciplines, one restrained design language. */
+.expertise-section{
+ background:radial-gradient(ellipse at 0% 0%,rgba(50,101,127,.21),transparent 42%),linear-gradient(160deg,#0b2031,#112e41 60%,#0b2334);
+ color:#ecf7f8;padding:clamp(78px,8vw,115px) 0;
+}
+.expertise-section .section-number{color:#8dc3cf}
+.expertise-section .section-heading h2{color:#f0f8fa}
+.expertise-section .section-heading p{color:#b4ccd5}
+.expertise-section .capability-grid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:14px;margin-top:30px;border:0;background:none;
+}
+.expertise-section .capability-grid>div{min-width:0}
+.expertise-section .capability-card{
+ --cap-accent:#7acbcf;
+ --cap-haze:rgba(111,190,198,.14);
+ display:flex;flex-direction:column;gap:10px;height:100%;min-height:405px;
+ border:1px solid rgba(151,196,211,.24);border-radius:var(--design-radius,12px);
+ background:linear-gradient(155deg,rgba(40,74,94,.62),rgba(12,36,52,.95));
+ padding:clamp(16px,1.7vw,24px);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+ transition:transform .35s var(--design-ease),border-color .35s var(--design-ease);
+ overflow:hidden;
+}
+.expertise-section .capability-grid>div:nth-child(2) .capability-card{--cap-accent:#94b8ef;--cap-haze:rgba(114,155,220,.18)}
+.expertise-section .capability-grid>div:nth-child(3) .capability-card{--cap-accent:#e6b38d;--cap-haze:rgba(206,151,109,.14)}
+.expertise-section .capability-grid>div:nth-child(4) .capability-card{--cap-accent:#bba4e4;--cap-haze:rgba(171,139,214,.16)}
+.expertise-section .capability-grid>div:nth-child(5) .capability-card{--cap-accent:#8ad4b9;--cap-haze:rgba(120,203,176,.15)}
+.expertise-section .capability-grid>div:nth-child(6) .capability-card{--cap-accent:#86c0ed;--cap-haze:rgba(119,170,219,.15)}
+@media(hover:hover) and (pointer:fine){
+ .expertise-section .capability-card:hover{transform:translateY(-4px);border-color:var(--cap-accent)}
+}
+.expertise-section .cap-no{
+ display:inline-flex;align-items:center;justify-content:center;
+ border:1px solid rgba(191,225,229,.23);border-radius:4px;
+ width:38px;height:27px;line-height:1;
+ color:var(--cap-accent);font:750 11px ui-monospace,monospace;
+}
+.expertise-section .capability-card h3{
+ margin:5px 0 0;min-height:48px;
+ font-size:clamp(18px,1.45vw,22px);letter-spacing:-.025em;
+ color:#f4f9fa;line-height:1.27;
+}
+.expertise-section .capability-card p{
+ color:#b8ced8;font-size:13px;line-height:1.67;margin:0;
+}
+.expertise-section .capability-card>.tech-marks{
+ margin-top:auto;padding-top:16px;
+ border-top:1px solid rgba(181,219,226,.15);
+ gap:7px;max-width:100%;
+}
+.expertise-section .capability-card .tech-mark{
+ color:#e3f0f2;background:rgba(245,253,253,.06);
+ border:1px solid rgba(160,204,215,.29);
+ padding:6px 8px;border-radius:5px;font-size:10px;
+}
+.expertise-section .capability-card .tech-mark--wordmark{color:#e3f0f2!important;border-color:rgba(160,204,215,.29)!important;background:rgba(245,253,253,.06)!important}
+.expertise-section .capability-card .tech-mark-image{width:21px;height:21px;background:white;border-radius:4px;padding:2px}
+.expertise-section .capability-card .tech-mark-image img{width:17px;height:17px;object-fit:contain}
+.expertise-section .capability-card .tech-mark-label{font-size:10px}
+.capability-visual{
+ flex:0 0 auto;min-width:0;height:auto;
+ aspect-ratio:480/190;margin:1px 0 6px;overflow:hidden;
+ border:1px solid rgba(162,208,220,.18);
+ border-radius:7px;
+ background:radial-gradient(ellipse at 72% 8%,var(--cap-haze),transparent 73%),#0b2335;
+}
+.capability-visual svg{width:100%;height:100%;display:block}
+.capability-visual .capvis-line{fill:none;stroke:#537e91;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
+.capability-visual .capvis-flow{
+ fill:none;stroke:var(--cap-accent);stroke-width:2.7;stroke-dasharray:6 12;
+ stroke-linecap:round;stroke-linejoin:round;
+ animation:capabilityPackets 11s linear infinite;
+}
+.capability-visual .capvis-node{fill:#173b50;stroke:#547f94;stroke-width:1.6}
+.capability-visual .capvis-node--accent{fill:#245268;stroke:var(--cap-accent);stroke-width:2}
+.capability-visual .capvis-name{fill:#ecf9fa;font:750 12px ui-monospace,monospace}
+.capability-visual .capvis-detail,.capability-visual .capvis-minitext{fill:#a9c7d5;font:650 10px ui-monospace,monospace}
+.capability-visual .capvis-leds circle,.capability-visual .capvis-led{fill:var(--cap-accent);animation:capabilityGlow 4s ease-in-out infinite}
+.capability-visual .capvis-leds circle:nth-child(2){animation-delay:.65s}
+.capability-visual .capvis-leds circle:nth-child(3){animation-delay:1.3s}
+.capability-visual .capvis-rack,.capability-visual .capvis-console{fill:#112c40;stroke:#5c8495;stroke-width:1.5}
+.capability-visual .capvis-device{fill:#1a4054;stroke:#56798d;stroke-width:1}
+.capability-visual .capvis-device-detail,.capability-visual .capvis-gridline{stroke:#628aa0;stroke-width:2;fill:none}
+.capability-visual .capvis-blocked{stroke:#dc9d89;stroke-width:2.2;fill:none;stroke-linecap:round}
+.capability-visual .capvis-wave{stroke:var(--cap-accent);stroke-width:2.6;fill:none;stroke-linejoin:round;stroke-dasharray:12 7;animation:capabilityPackets 16s linear infinite}
+.capability-visual .capvis-packet{fill:#1c435b;stroke:#567d93;stroke-width:1}
+.capability-visual .capvis-packet--highlight{fill:#254d69;stroke:var(--cap-accent);stroke-width:1.8}
+.rtl .expertise-section .capability-card h3{letter-spacing:normal}
+@keyframes capabilityPackets{to{stroke-dashoffset:-100}}
+@keyframes capabilityGlow{0%,100%{opacity:.35}55%{opacity:1}}
+@media(max-width:1080px){
+ .expertise-section .capability-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .expertise-section .capability-card{min-height:380px}
+}
+@media(max-width:700px){
+ .expertise-section{padding:72px 0}
+ .expertise-section .capability-grid{grid-template-columns:minmax(0,1fr);gap:14px}
+ .expertise-section .capability-card{min-height:0;padding:19px;gap:13px}
+ .expertise-section .capability-card h3{min-height:0}
+ .capability-visual .capvis-flow,.capability-visual .capvis-wave,.capability-visual .capvis-led,.capability-visual .capvis-leds circle{animation:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .expertise-section .capability-card{transition:none}
+ .expertise-section .capability-card:hover{transform:none}
+ .capability-visual *{animation:none!important}
+}
