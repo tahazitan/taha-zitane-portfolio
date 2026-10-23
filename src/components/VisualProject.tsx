@@ -56,10 +56,20 @@ const previews:Record<string,Preview>={
   nodes:[node("core","CISCO CORE","switch",480,112,"L3 / routing","cisco"),node("a","ACCESS SW 1","switch",260,264,"VLAN access","cisco"),node("b","ACCESS SW 2","switch",706,264,"VLAN access","cisco"),node("pc1","DEPT A","pc",105,394,"Endpoint"),node("pc2","DEPT B","pc",847,394,"Endpoint")],
   cables:[wire("core","a","802.1Q trunk",293,150),wire("core","b","802.1Q trunk",690,150),wire("a","pc1","Access port",99,303),wire("b","pc2","Access port",853,304)]}
 };
+const projectPalette:Record<string,{edge:string;vpn:string;node:string;server:string;client:string;firewall:string;frame:string}>={
+ "enterprise-network-lab":{edge:"#79cfd2",vpn:"#e4b184",node:"#83d4d0",server:"#92cdd5",client:"#9bc9ee",firewall:"#dfa17f",frame:"#12384c"},
+ "windows-server-ad":{edge:"#7bafe7",vpn:"#ddae81",node:"#7eaee0",server:"#a3c8f5",client:"#8edbd1",firewall:"#dfa17f",frame:"#152f4f"},
+ "remote-it-support":{edge:"#7ad0c0",vpn:"#ddb280",node:"#8dcfc3",server:"#8fbcbf",client:"#8cdbd0",firewall:"#dfa17f",frame:"#123b43"},
+ "hospital-network-support":{edge:"#81bdd8",vpn:"#e3a88c",node:"#8cc2d8",server:"#9cc9da",client:"#97d9ca",firewall:"#dda591",frame:"#14394a"},
+ "security-observability-labs":{edge:"#a8a1e4",vpn:"#e1a08d",node:"#a69cda",server:"#b6a8e9",client:"#90cadf",firewall:"#e1a08d",frame:"#292d4c"},
+ "firewall-ipsec-lab":{edge:"#99c4ca",vpn:"#eab17c",node:"#8cbdc6",server:"#b8c6db",client:"#a3d6d3",firewall:"#e4a477",frame:"#322d3e"},
+ "proxmox-virtualization-lab":{edge:"#92b1e6",vpn:"#e2b081",node:"#a1b2e6",server:"#adbef6",client:"#89d1d0",firewall:"#e2a785",frame:"#172f4b"},
+ "cisco-campus-network-lab":{edge:"#7cb6db",vpn:"#e1b284",node:"#89b8df",server:"#a6bddd",client:"#8ed3cc",firewall:"#e2a785",frame:"#13344b"}
+};
 const pictograms={pc:Monitor,router:Router,switch:Network,firewall:ShieldCheck,server:Server,sensor:Activity,cloud:Cloud,support:Wrench};
 const translations={
- en:{source:"SOURCE-DEFINED CABLING",concept:"TOPOLOGY / PROJECT VIEW",intro:"Network layout",detail:"View the case study for architecture details",caption:"Equipment · Links · Roles"},
- fr:{source:"LIAISONS DU FICHIER SOURCE",concept:"TOPOLOGIE / PROJET",intro:"Schéma réseau",detail:"Consultez le projet pour les détails",caption:"Équipements · Liens · Rôles"},
+ en:{source:"SOURCE-DEFINED CABLING",concept:"TOPOLOGY / PROJECT VIEW",intro:"Network layout",detail:"Open project architecture and configuration details",caption:"Equipment · Links · Roles"},
+ fr:{source:"LIAISONS DU FICHIER SOURCE",concept:"TOPOLOGIE / PROJET",intro:"Schéma réseau",detail:"Découvrir les détails techniques du projet",caption:"Équipements · Liens · Rôles"},
  ar:{source:"وصلات من ملفات الإعداد",concept:"طوبولوجيا / مشروع",intro:"مخطط الشبكة",detail:"افتح المشروع للتفاصيل",caption:"الأجهزة · الروابط · الأدوار"}
 } as const;
 export function projectVisualData(slug:string){return previews[slug]}
@@ -68,30 +78,32 @@ export default function VisualProject({slug,locale,large=false}:{slug:string;loc
  const diagram=previews[slug];
  if(!diagram)return null;
  const language=translations[locale];
+ const palette=projectPalette[slug];
  const byId=new Map(diagram.nodes.map(n=>[n.id,n]));
- return <div className={"visual-project visual-project--topology"+(large?" visual-project--large":"")} dir="ltr" role="group" aria-label={language.intro+": "+diagram.title}>
+ return <div className={"visual-project visual-project--topology visual-project--"+slug+(large?" visual-project--large":"")} dir="ltr" role="group" aria-label={language.intro+": "+diagram.title}>
    <div className="visual-project-top"><span><Network size={14}/>{diagram.title}</span><span>{diagram.source?language.source:language.concept}</span></div>
    <div className="topology-preview-stage">
     <svg viewBox="0 0 960 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={diagram.title+": "+diagram.nodes.map(n=>n.name).join(", ")}>
      <defs>
       <pattern id={"preview-grid-"+slug} width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="#568b9c" opacity=".34"/></pattern>
      </defs>
-     <rect x="0" y="0" width="960" height="460" rx="12" fill="#102c3c"/>
+     <rect x="0" y="0" width="960" height="460" rx="12" fill={palette?.frame??"#102c3c"}/>
      <rect x="0" y="0" width="960" height="460" rx="12" fill={"url(#preview-grid-"+slug+")"}/>
      {diagram.cables.map((edge,i)=>{
       const a=byId.get(edge.a)!,b=byId.get(edge.b)!;
       return <g key={edge.a+"-"+edge.b}>
-       <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={edge.vpn?"#ffc58c":"#86bed0"} strokeWidth={edge.vpn?4:3.5} strokeDasharray={edge.vpn?"13 9":undefined} strokeLinecap="round"/>
-       <rect x={edge.x-Math.max(65,edge.label.length*6.7)} y={edge.y-21} width={Math.max(130,edge.label.length*13.4)} height="28" rx="6" fill="#19394b" stroke={edge.vpn?"#dda56c":"#658fa1"} strokeWidth="1.5"/>
+       <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={edge.vpn?palette.vpn:palette.edge} strokeWidth={edge.vpn?4:3.5} strokeDasharray={edge.vpn?"13 9":undefined} strokeLinecap="round"/>
+       <line className="project-flow-line" x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={edge.vpn?palette.vpn:palette.edge} strokeWidth={edge.vpn?3.2:2.4} strokeDasharray={edge.vpn?"10 35":"5 27"} opacity=".75" strokeLinecap="round"/>
+       <rect x={edge.x-Math.max(65,edge.label.length*6.7)} y={edge.y-21} width={Math.max(130,edge.label.length*13.4)} height="28" rx="6" fill="#19394b" stroke={edge.vpn?palette.vpn:palette.edge} strokeWidth="1.5"/>
        <text x={edge.x} y={edge.y-2} textAnchor="middle" fill="#e7f5f8" fontSize="17" fontFamily="ui-monospace,monospace">{edge.label}</text>
        <title>{a.name+" — "+edge.label+" — "+b.name}</title>
       </g>;
      })}
      {diagram.nodes.map(n=>{
       const Icon=pictograms[n.role];
-      const accent=n.role==="firewall"?"#ffbd82":n.role==="server"?"#b9baf9":n.role==="pc"?"#8ee3c0":"#84baff";
+      const accent=n.role==="firewall"?palette.firewall:n.role==="server"?palette.server:n.role==="pc"?palette.client:palette.node;
       return <g key={n.id} transform={"translate("+n.x+","+n.y+")"}>
-       <rect x="-103" y="-62" width="206" height="124" rx="12" fill="#193e52" stroke={accent} strokeWidth="2"/>
+       <rect x="-103" y="-62" width="206" height="124" rx="12" fill={palette?.frame??"#193e52"} stroke={accent} strokeWidth="2"/>
        <rect x="-103" y="-62" width="206" height="9" rx="4" fill={accent}/>
        <rect x="-85" y="-43" width="49" height="43" rx="8" fill="#eef7fa"/>
        <Icon x={-78} y={-37} width={34} height={31} color="#234b64" strokeWidth={1.7}/>
