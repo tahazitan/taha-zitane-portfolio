@@ -5,13 +5,13 @@
 .nav-links{gap:clamp(8px,1.25vw,21px)}
 .nav-links a{font-size:clamp(10px,.8vw,12px);letter-spacing:.012em}
 .nav-links a[aria-current="page"]{color:#a4e3df;border-bottom:1px solid #80ccc7}
-@media(max-width:1200px){.nav-links{display:none}.nav-toggle{display:grid}}
+@media(max-width:1200px){.nav-links{display:none}.nav-toggle{display:grid}.mobile-menu{display:block}}
 /* Homepage: genuine portrait, light motion, restrained brand accents. */
 .hero{background:radial-gradient(ellipse at 65% 40%,rgba(27,80,108,.32),transparent 58%),#091d2d}
 .hero .hero-visual{perspective:1000px}
-.hero .hero-schematic{transform:rotateY(-8deg) rotateX(3deg);animation:subtle-diagram-float 12s ease-in-out infinite}
+.hero .hero-schematic{transform:translateX(-50%) rotateY(-8deg) rotateX(3deg);animation:subtle-diagram-float 12s ease-in-out infinite}
 .hero .portrait-frame{box-shadow:0 25px 60px rgba(2,15,25,.3)}
-@keyframes subtle-diagram-float{0%,100%{transform:rotateY(-8deg) translateY(0)}50%{transform:rotateY(-5deg) translateY(-9px)}}
+@keyframes subtle-diagram-float{0%,100%{transform:translateX(-50%) rotateY(-8deg) rotateX(3deg) translateY(0)}50%{transform:translateX(-50%) rotateY(-5deg) rotateX(3deg) translateY(-9px)}}
 .landing-overview{background:linear-gradient(160deg,#eef5f5 0%,#fbfcfb 65%,#f0f5f3 100%);padding:clamp(82px,9vw,140px) 0}
 .landing-overview-heading{display:flex;justify-content:space-between;align-items:end;gap:35px;margin-bottom:clamp(32px,5vw,68px)}
 .landing-overview-heading h2{font-size:clamp(34px,4.2vw,66px);letter-spacing:-.055em;line-height:1.09;max-width:700px;margin:17px 0 0;color:#0e3140}
@@ -117,3 +117,24 @@
 .footer-copyright a{color:#d2e6e9}
 @media(max-width:900px){.footer-brand-main{grid-template-columns:1fr 1fr}.footer-signature{grid-column:1/-1}}
 @media(max-width:590px){.footer-brand-main{grid-template-columns:1fr;padding:50px 0 35px}.footer-signature{grid-column:auto}.footer-copyright{flex-wrap:wrap;font-size:9px}}
+
+/* The homepage shows a documented technical topology, not a decorative node chain. */
+.overview-project-preview{width:100%;min-width:0;margin:clamp(25px,3.8vw,54px) 0;direction:ltr}
+.overview-project-preview .visual-project--topology{border-color:#5b8b9b;background:#0a2434;box-shadow:0 18px 35px rgba(4,19,29,.18)}
+.overview-project-preview .visual-project-top{color:#d7f0f2}
+.overview-project-preview .visual-project-caption{color:#b3d6dc}
+.overview-project-preview .topology-preview-stage{background:#0e293b}
+.overview-card:focus-visible{outline:3px solid #e5ab7d;outline-offset:4px}
+.overview-card:focus-visible .overview-card-top svg{transform:translate(3px,-3px)}
+@media(max-width:760px){
+ /* Show role and name before the portrait on compact screens. */
+ .hero-grid .hero-copy{order:0}
+ .hero-grid .hero-visual{order:1;padding-top:4px;padding-bottom:33px}
+ .overview-project-preview{margin:22px 0}
+}
+@media(max-width:550px){
+ .overview-project-preview .visual-project--topology{padding:8px}
+ .overview-project-preview .visual-project-top{gap:4px}
+ .overview-project-preview .visual-project-top>span{font-size:9px}
+ .overview-project-preview .visual-project-caption{font-size:9px}
+}
