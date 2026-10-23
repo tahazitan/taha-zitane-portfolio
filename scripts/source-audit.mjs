@@ -15,7 +15,7 @@ const required=[
  'src/components/ProjectExplorer.tsx','src/components/CasePage.tsx',
  'src/components/SourceTopology.tsx','src/components/DesignReview.tsx',
  'src/data/projectReviews.ts','src/data/professional.ts',
- 'public/cv/Taha_Zitane_CV_2026.pdf','public/contact/taha-zitane.vcf',
+ 'public/contact/taha-zitane.vcf',
  'public/images/taha-portrait.webp','public/meta/mark.svg',
  'public/meta/portfolio-social.png','src/app/sitemap.ts',
  'scripts/site-smoke.mjs','scripts/browser-smoke.mjs'
@@ -33,9 +33,10 @@ if(!nav.includes('c.nav[5]'))throw new Error('Contact label not preserved');
 
 const sections=['className="hero"','className="about-section"','className="section experience-section"','className="section work-section"'];
 for(let i=1;i<sections.length;i++)if(home.indexOf(sections[i])<=home.indexOf(sections[i-1]))throw new Error('Incorrect portfolio story order');
-for(const necessary of ['ProjectExplorer','SourceTopology','portrait-photo','/images/taha-portrait.webp','/cv/Taha_Zitane_CV_2026.pdf']){
+for(const necessary of ['ProjectExplorer','SourceTopology','portrait-photo','/images/taha-portrait.webp']){
  if(!home.includes(necessary))throw new Error('Missing real portfolio element: '+necessary);
 }
+if(home.includes('hero-resume-link')||home.includes('<LabRoadmap')||home.includes('cv/Taha_Zitane_CV_2026.pdf'))throw new Error('CV download and lab roadmap must stay off the homepage');
 for(const unused of ['SolutionMedia','SkillEvidence','TechnologyReferences','engineeringMethod','hero-proof-strip','NetworkBackdrop','TopologyStudio','DiagnosticExplorer','SecurityOperationsDesk']){
  if(home.includes(unused))throw new Error('Unwanted widget still on homepage: '+unused);
 }
