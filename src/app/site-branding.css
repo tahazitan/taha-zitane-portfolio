@@ -127,9 +127,6 @@
 .overview-card:focus-visible{outline:3px solid #e5ab7d;outline-offset:4px}
 .overview-card:focus-visible .overview-card-top svg{transform:translate(3px,-3px)}
 @media(max-width:760px){
- /* Show role and name before the portrait on compact screens. */
- .hero-grid .hero-copy{order:0}
- .hero-grid .hero-visual{order:1;padding-top:4px;padding-bottom:33px}
  .overview-project-preview{margin:22px 0}
 }
 @media(max-width:550px){
