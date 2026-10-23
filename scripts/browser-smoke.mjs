@@ -66,7 +66,7 @@ try{
   assert.ok(card.tagsTop>=card.summaryBottom-1,'Tooling tags must not overlap text: project '+card.index);
   assert.ok(card.actionsTop>=card.tagsBottom-1,'Actions must not overlap tags: project '+card.index);
  }
- assert.equal(await desktop.locator('.lab-roadmap-card').count(),4,'Architecture roadmap distinguishes planned labs');
+ assert.equal(await desktop.locator('.lab-roadmap-card').count(),0,'Internal architecture roadmap is not displayed on homepage');
  assert.equal(await desktop.locator('.experience-proof').count(),6,'Every professional role shows skill evidence');
  // Source-linked connections are traceable to repository YAML, not fictitious equipment images.
  assert.equal(await desktop.locator('.equipment-card').count(),0,'Unsourced equipment gallery removed');
@@ -98,7 +98,7 @@ try{
  assert.equal(await desktop.locator('a[href^="mailto:"]').count()>0,true,'Functional email links');
  assert.equal(await desktop.locator('a[href^="tel:"]').count()>0,true,'Functional phone link');
  assert.equal(await desktop.locator('a[href$=".vcf"]').count()>0,true,'Contact VCard download');
- assert.equal(await desktop.locator('a[href="/cv/Taha_Zitane_CV_2026.pdf"]').count(),1,'Genuine PDF CV download link');
+ assert.equal(await desktop.locator('a[href="/cv/Taha_Zitane_CV_2026.pdf"]').count(),0,'Portfolio does not display CV download');
  mkdirSync(path.join(root,'screenshots'),{recursive:true});
  await desktop.locator('.hero').screenshot({path:path.join(root,'screenshots','desktop-hero.png'),animations:'disabled'});
  await desktop.locator('.work-card').first().screenshot({path:path.join(root,'screenshots','desktop-project-card.png'),animations:'disabled'});
@@ -146,7 +146,7 @@ try{
  assert.equal(await mobile.locator('.hero-person').innerText(),'طه زيطان','Arabic identity must render naturally with no stray symbols');
  assert.equal(await mobile.locator('.source-topology').count(),1,'Source topology available in Arabic RTL');
  assert.equal(await mobile.locator('.diagnostic-tabs button').count(),4,'Arabic diagnostic controls available');
- assert.equal(await mobile.locator('.lab-roadmap-card').count(),4,'Arabic lab roadmap available');
+ assert.equal(await mobile.locator('.lab-roadmap-card').count(),0,'Arabic homepage hides the internal roadmap');
  assert.equal(await mobile.locator('.solution-media-card').count(),0,'Arabic layout omits broken third-party images');
  assert.equal(await mobile.locator('.technology-reference').count(),0,'Mobile homepage avoids redundant reference card grid');
  const arabicPortrait=await mobile.locator('.portrait-frame').boundingBox();
