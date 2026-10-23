@@ -42,7 +42,7 @@ for(let i=1;i<sections.length;i++)if(home.indexOf(sections[i])<=home.indexOf(sec
 for(const necessary of ['LandingOverview','portrait-photo','/images/taha-portrait.webp']){
  if(!home.includes(necessary))throw new Error('Missing real portfolio element: '+necessary);
 }
-if(!section.includes('ProjectExplorer locale={locale} projects={c.projects}')||!overview.includes('overview-circuit'))throw new Error('Projects must have their own engineering space and focused homepage preview');
+if(!section.includes('ProjectExplorer locale={locale} projects={c.projects}')||!overview.includes('<VisualProject slug="enterprise-network-lab" locale={locale}/>'))throw new Error('Projects need a dedicated page and the homepage needs its source-defined topology');
 if(home.includes('<SourceTopology')||home.includes('hero-resume-link')||home.includes('<LabRoadmap')||home.includes('cv/Taha_Zitane_CV_2026.pdf'))throw new Error('CV download and lab roadmap must stay off the homepage');
 for(const unused of ['SolutionMedia','SkillEvidence','TechnologyReferences','engineeringMethod','hero-proof-strip','NetworkBackdrop','TopologyStudio','DiagnosticExplorer','SecurityOperationsDesk']){
  if(home.includes(unused))throw new Error('Unwanted widget still on homepage: '+unused);
