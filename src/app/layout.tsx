@@ -38,7 +38,7 @@ export const metadata:Metadata={
  icons:{icon:"/meta/mark.svg"},
  openGraph:{
   title:"Taha Zitane — Systems, Networks & Cybersecurity",
-  description:"Professional portfolio with systems administration, network security, cybersecurity labs and evidence-led architecture case studies.",
+  description:"Professional portfolio with systems administration, network security, cybersecurity labs and linked technical projects and network architectures.",
   type:"website",
   url:siteUrl,
   siteName:"Taha Zitane Portfolio",
@@ -47,7 +47,7 @@ export const metadata:Metadata={
  twitter:{
   card:"summary_large_image",
   title:"Taha Zitane — Systems, Networks & Cybersecurity",
-  description:"Professional portfolio: systems, networks, IT support, firewall/VPN labs and cybersecurity engineering case studies.",
+  description:"Professional portfolio: systems, networks, IT support, firewall/VPN labs and cybersecurity and infrastructure projects.",
   images:[{url:"/meta/portfolio-social.png",width:1200,height:630,alt:"Taha Zitane — Systems, Networks & Cybersecurity"}]
  },
  robots:{index:true,follow:true},
