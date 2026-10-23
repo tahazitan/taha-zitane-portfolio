@@ -15,6 +15,8 @@ import {content,githubUrl,linkedInUrl,mailUrl,phoneNumber,prettyPhoneNumber,Loca
 
 export default function Home({locale}:{locale:Locale}){
  const c=content[locale];const rtl=locale==="ar";const credentials=professional[locale];
+ const institutionMarks=[{"name":"EMSI","location":"TANGER","full":"EMSI Tanger"},{"name":"OFPPT / ISMO","location":"TÉTOUAN","full":"Institut Spécialisé dans les Métiers de l’Offshoring · OFPPT Tétouan"},{"name":"FACULTÉ DES SCIENCES","location":"ABDELMALEK ESSAÂDI","full":"Faculté des Sciences · Université Abdelmalek Essaâdi"},{"name":"AL-KHAWARIZMI","location":"CHEFCHAOUEN","full":"Lycée Al-Khawarizmi · Chefchaouen"}];
+
  const serviceTools=[["AnyDesk","Windows"],["Cisco","Windows Server","Linux"],["Wireshark","Linux"],["GNS3","FRRouting","GitHub"]];
  return <div className={`page-shell ${rtl?"rtl":""}`} dir={rtl?"rtl":"ltr"}>
   <LocaleSetup locale={locale}/>
@@ -69,7 +71,7 @@ export default function Home({locale}:{locale:Locale}){
 
    <section className="section education-section" id="education"><div className="container-xl">
     <Reveal className="section-heading"><span className="section-number">{credentials.kicker}</span><div className="heading-row"><h2>{credentials.title}</h2><p>{credentials.intro}</p></div></Reveal>
-    <div className="education-grid"><Reveal><h3>{credentials.studyTitle}</h3><div className="study-list">{credentials.studies.map((item,i)=><article key={item.year} className="study-item"><small>{item.year}</small><div className="study-body"><span className="institution-name" aria-label={i===0?"EMSI Tanger":i===1?"ISMO Tétouan / OFPPT":"Lycée Al-Khawarizmi"}>{i===0?"EMSI":i===1?"OFPPT / ISMO":"AL-KHAWARIZMI"}<small>{i===0?"TANGER":i===1?"TÉTOUAN":"CHEFCHAOUEN"}</small></span><h4>{item.title}</h4><p>{item.detail}</p></div></article>)}</div></Reveal>
+    <div className="education-grid"><Reveal><h3>{credentials.studyTitle}</h3><div className="study-list">{credentials.studies.map((item,i)=><article key={item.year} className="study-item"><small>{item.year}</small><div className="study-body"><span className="institution-name" aria-label={institutionMarks[i].full}>{institutionMarks[i].name}<small>{institutionMarks[i].location}</small></span><h4>{item.title}</h4><p>{item.detail}</p></div></article>)}</div></Reveal>
     <Reveal delay={.1}><h3>{credentials.trainingTitle}</h3><div className="training-list">{credentials.courses.map(item=><div className="training-item" key={item.name}><div><strong>{item.name}</strong><span>{item.provider}</span><TechnologyMarks technologies={[item.provider]} limit={1} variant="inline"/></div><small>{item.kind}</small></div>)}</div><p className="education-footnote">{credentials.note}</p></Reveal></div>
    </div></section>
 
