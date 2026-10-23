@@ -7,6 +7,7 @@ import ProjectExplorer from "./ProjectExplorer";
 import SourceTopology from "./SourceTopology";
 import TechnologyMarks from "./TechnologyMarks";
 import ExperienceProof from "./ExperienceProof";
+import ExperienceVisual from "./ExperienceVisual";
 import EngineeringFocus from "./EngineeringFocus";
 import DiagnosticSection from "./DiagnosticSection";
 import {professional} from "@/data/professional";
@@ -54,7 +55,7 @@ export default function Home({locale}:{locale:Locale}){
 
    <section className="section experience-section" id="experience" aria-labelledby="experience-title"><div className="container-xl">
      <Reveal className="section-heading"><span className="section-number">{c.experienceKicker}</span><div className="heading-row"><h2 id="experience-title">{c.experienceTitle}</h2><p>{c.experienceSub}</p></div></Reveal>
-     <div className="experience-list">{c.experience.map((exp,i)=><Reveal key={i}><div className="experience-item"><div className="experience-period">{exp.period}</div><div className="experience-detail"><h3>{exp.position}</h3><p>{exp.organisation}</p><ExperienceProof index={i} locale={locale}/></div><p className="experience-desc">{exp.details}</p><span className="experience-arrow">↗</span></div></Reveal>)}</div>
+     <div className="experience-list">{c.experience.map((exp,i)=><Reveal key={i}><article className="experience-item experience-item--visual"><span className="experience-period">{exp.period}</span><div className="experience-detail"><h3>{exp.position}</h3><p>{exp.organisation}</p><ExperienceProof index={i} locale={locale}/></div><div className="experience-media"><ExperienceVisual index={i} locale={locale}/></div><p className="experience-desc">{exp.details}</p></article></Reveal>)}</div>
    </div></section>
 
    <section className="section work-section" id="work" aria-labelledby="work-title"><div className="container-xl">
