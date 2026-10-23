@@ -34,7 +34,9 @@ try{
  await desktop.waitForTimeout(900); // allow React hydration before exercising client-side filters
  assert.equal(await desktop.locator('.nav-links a').count(),5,'Five deliberate navigation links with distinct purposes');
  assert.equal(await desktop.locator('.hero-person').innerText(),'Taha Zitane','Name must render without literal template characters');
- assert.equal(await desktop.locator('.work-card').count(),8,'All eight case studies visible by default');
+ assert.equal(await desktop.locator('.work-card').count(),8,'All eight projects visible by default');
+ assert.equal(await desktop.locator('.work-card[data-project]').count(),8,'Each project has a stable visual identity');
+ assert.equal(await desktop.locator('.work-card .project-flow-line').count()>0,true,'Project previews display topology signal paths');
  const search=desktop.locator('.work-search input');
  await search.fill('Proxmox');
  await desktop.waitForFunction(()=>document.querySelectorAll('.work-card').length===1);
@@ -79,14 +81,7 @@ try{
  assert.equal(secondaryCTA,'#contact','Secondary hero action opens actual contact details');
  assert.equal(await desktop.locator('.technology-reference').count(),0,'Redundant technical reference card library is no longer on homepage');
 
- assert.equal(await desktop.locator('.source-topology').count(),1,'Actual source topology section exists');
- assert.equal(await desktop.locator('.source-figure svg g[transform]').count(),5,'Base profile displays five distinct router/client equipment symbols');
- assert.equal(await desktop.locator('.source-technology img[src="/tech-logos/linux.svg"]').count(),1,'Authentic Linux logo appears in technology identification, not as a router brand');
- assert.equal(await desktop.locator('.source-figure svg text').filter({hasText:'eth1 ↔ eth1'}).count(),1,'WAN link shows the YAML interface pair');
- assert.ok((await desktop.locator('.source-figure svg').getAttribute('aria-label')).includes('IPv4'),'Topology communicates source IP context');
- assert.equal(await desktop.locator('.source-edges button').count(),4,'Base YAML profile has four wired links');
- await desktop.locator('.source-switch button').nth(1).click();
- assert.equal(await desktop.locator('.source-edges button').count(),6,'Secure YAML profile has six wired links');
+ assert.equal(await desktop.locator('.source-topology').count(),0,'Detailed source topology lives inside the enterprise project');
  const sourceUrl=await desktop.locator('.source-links a').first().getAttribute('href');
  assert.ok(sourceUrl.includes('secure/topology.secure.clab.yml'),'Selected secure profile links to original YAML');
  // Portrait must be an actual decoded image, visible and unobscured by the architecture panel
@@ -144,7 +139,7 @@ try{
  assert.equal(await mobile.locator('html').getAttribute('dir'),'rtl');
  assert.ok((await mobile.locator('.brand-name').innerText()).includes('طه زيطان'),'Arabic spelling is correct');
  assert.equal(await mobile.locator('.hero-person').innerText(),'طه زيطان','Arabic identity must render naturally with no stray symbols');
- assert.equal(await mobile.locator('.source-topology').count(),1,'Source topology available in Arabic RTL');
+ assert.equal(await mobile.locator('.source-topology').count(),0,'Mobile homepage keeps architecture inside projects');
  assert.equal(await mobile.locator('.diagnostic-tabs button').count(),4,'Arabic diagnostic controls available');
  assert.equal(await mobile.locator('.lab-roadmap-card').count(),0,'Arabic homepage hides the internal roadmap');
  assert.equal(await mobile.locator('.solution-media-card').count(),0,'Arabic layout omits broken third-party images');
