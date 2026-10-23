@@ -1,5 +1,6 @@
 import Link from "next/link";
-import {ArrowUpRight,Network,ShieldCheck,Server,GraduationCap,BriefcaseBusiness} from "lucide-react";
+import {ArrowUpRight,Network,ShieldCheck,GraduationCap,BriefcaseBusiness} from "lucide-react";
+import VisualProject from "./VisualProject";
 import TechnologyMarks from "./TechnologyMarks";
 import {content,type Locale} from "@/data/content";
 const path=(locale:Locale,p:string)=>`${locale==="en"?"":"/"+locale}/${p}/`;
@@ -21,7 +22,7 @@ export default function LandingOverview({locale}:{locale:Locale}){
   <div className="overview-grid">{cards.map((card,i)=>{const Icon=card.icon;return <Link href={path(locale,card.id)} className={`overview-card ${card.className}`} key={card.id}>
    <div className="overview-card-top"><span>0{i+1} / {t.route}</span><ArrowUpRight size={23}/></div>
    <div className="overview-content"><div className="overview-icon"><Icon size={22}/></div><h3>{card.title}</h3><p>{card.description}</p></div>
-   {i===0&&<div className="overview-circuit" aria-hidden="true"><div className="circuit-node circuit-node--one"><Network size={18}/><span>LAN / VLAN</span></div><span className="circuit-join"/><div className="circuit-node circuit-node--two"><ShieldCheck size={18}/><span>VPN / FIREWALL</span></div><span className="circuit-join"/><div className="circuit-node circuit-node--three"><Server size={18}/><span>AD / LINUX</span></div></div>}
+   {i===0&&<div className="overview-project-preview"><VisualProject slug="enterprise-network-lab" locale={locale}/></div>}
    <div className="overview-card-bottom"><TechnologyMarks technologies={card.tools} limit={5} variant="inline"/><span className="overview-cta">{t.cta}<ArrowUpRight size={15}/></span></div>
   </Link>})}</div>
  </div></section>;
