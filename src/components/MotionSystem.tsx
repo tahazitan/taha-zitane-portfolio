@@ -1,6 +1,7 @@
 "use client";
 import {useEffect} from "react";
 import {usePathname} from "next/navigation";
+import {ArrowUp} from "lucide-react";
 /** Lightweight, route-aware progressive enhancement; never hides real content. */
 export default function MotionSystem(){
  const pathname=usePathname();
@@ -57,5 +58,9 @@ export default function MotionSystem(){
   document.addEventListener("pointermove",glow,{passive:true});
   return()=>{window.removeEventListener("scroll",update);window.removeEventListener("resize",update);document.removeEventListener("pointermove",glow);mutation?.disconnect();observer?.disconnect();if(frame)window.cancelAnimationFrame(frame);};
  },[pathname]);
- return <div id="site-scroll-progress" className="site-scroll-progress" aria-hidden="true"/>;
+ const label=pathname.startsWith("/ar/")||pathname==="/ar"?"العودة إلى أعلى الصفحة":pathname.startsWith("/fr/")||pathname==="/fr"?"Retour en haut":"Back to top";
+ return <><div id="site-scroll-progress" className="site-scroll-progress" aria-hidden="true"/>
+  <button type="button" className="site-return-top" aria-label={label} title={label}
+   onClick={()=>window.scrollTo({top:0,behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}>
+   <ArrowUp size={21} aria-hidden="true"/></button></>;
 }
