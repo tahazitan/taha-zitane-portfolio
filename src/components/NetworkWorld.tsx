@@ -1,6 +1,7 @@
 "use client";
-import {Canvas, useFrame} from "@react-three/fiber";
-import {useMemo, useRef} from "react";
+import {Canvas,useFrame,useThree} from "@react-three/fiber";
+import {useEffect,useMemo,useRef} from "react";
+import {useReducedMotion} from "framer-motion";
 import * as THREE from "three";
 export type Focus = "network" | "systems" | "security" | "monitoring";
 const palette={network:"#65e0db",systems:"#91baff",security:"#ffb38b",monitoring:"#c2a7ff"} as const;
@@ -37,14 +38,27 @@ function RemoteNode({pos,kind,selected}:{pos:[number,number,number];kind:Focus;s
    {selected&&<mesh rotation={[Math.PI/2,0,0]} position={[0,-.45,0]}><torusGeometry args={[.55,.012,5,44]}/><meshBasicMaterial color={palette[kind]} transparent opacity={.7}/></mesh>}
  </group>;
 }
-function Rack({active}:{active:Focus}){
+function CameraFit(){
+ const {camera,size,invalidate}=useThree();
+ useEffect(()=>{
+  if(!(camera instanceof THREE.PerspectiveCamera))return;
+  const aspect=size.width/Math.max(1,size.height);
+  camera.position.set(0,1.15,aspect<.86?12.4:aspect<1.25?11.3:9.6);
+  camera.fov=aspect<.86?44:42;
+  camera.updateProjectionMatrix();
+  invalidate();
+ },[camera,size.width,size.height,invalidate]);
+ return null;
+}
+function Rack({active,orbit}:{active:Focus;orbit:{current:number}}){
+ const reduced=useReducedMotion();
  const root=useRef<THREE.Group>(null);
  useFrame(({pointer,clock},delta)=>{
    if(!root.current)return;
    const smoothing=Math.min(1,delta*2.5);
-   root.current.rotation.y+=(pointer.x*.21 + Math.sin(clock.elapsedTime*.16)*.06-root.current.rotation.y)*smoothing;
-   root.current.rotation.x+=(-pointer.y*.07-root.current.rotation.x)*smoothing;
-   root.current.position.y=Math.sin(clock.elapsedTime*.48)*.035;
+   root.current.rotation.y+=((reduced?0:pointer.x*.21)+orbit.current+(reduced?0:Math.sin(clock.elapsedTime*.16)*.06)-root.current.rotation.y)*smoothing;
+   root.current.rotation.x+=((reduced?0:-pointer.y*.07)-root.current.rotation.x)*smoothing;
+   root.current.position.y=reduced?0:Math.sin(clock.elapsedTime*.48)*.035;
  });
  return <group ref={root} rotation={[0,-.14,0]}>
    <mesh receiveShadow position={[0,-2.05,0]}><cylinderGeometry args={[2.1,2.35,.1,44]}/><meshStandardMaterial color="#102a3b" metalness={.65} roughness={.46}/></mesh>
@@ -74,10 +88,11 @@ function Particles(){
  },[]);
  return <points><bufferGeometry><bufferAttribute attach="attributes-position" args={[buffer,3]}/></bufferGeometry><pointsMaterial color="#82c8d5" size={.023} transparent opacity={.55} sizeAttenuation/></points>;
 }
-export default function NetworkWorld({active}:{active:Focus}){
- return <Canvas dpr={[1,1.5]} camera={{position:[0,1.15,9.6],fov:42,near:.1,far:70}} gl={{alpha:true,antialias:true,powerPreference:"low-power"}} fallback={<div className="stage-no-webgl" aria-hidden="true"/>} aria-label="Interactive 3D network infrastructure visualization">
+export default function NetworkWorld({active,orbit}:{active:Focus;orbit:{current:number}}){
+ return <Canvas dpr={[1,2]} camera={{position:[0,1.15,9.6],fov:42,near:.1,far:70}} gl={{alpha:true,antialias:true,powerPreference:"high-performance"}} fallback={<div className="stage-no-webgl" aria-hidden="true"/>} aria-label="Interactive 3D network infrastructure visualization">
+   <CameraFit/>
    <ambientLight intensity={1.4}/><directionalLight position={[4,6,7]} intensity={2.6} color="#d5f6ff"/><pointLight position={[-5,1,1]} color="#51d5d4" intensity={21} distance={14}/><pointLight position={[4,-2,2]} color="#ffb17f" intensity={10} distance={12}/>
    <fog attach="fog" args={["#0b2030",13,27]}/>
-   <Particles/><Rack active={active}/>
+   <Particles/><Rack active={active} orbit={orbit}/>
  </Canvas>;
 }

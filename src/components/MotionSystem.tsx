@@ -1,13 +1,16 @@
 "use client";
-import {useEffect} from "react";
+import {useEffect,useState} from "react";
 import {usePathname} from "next/navigation";
+import {ArrowUp} from "lucide-react";
 /** Lightweight, route-aware progressive enhancement; never hides real content. */
 export default function MotionSystem(){
  const pathname=usePathname();
+ const [showTop,setShowTop]=useState(false);
  useEffect(()=>{
   const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const progress=document.getElementById("site-scroll-progress");
   let frame=0;
+  let lastScrollY=window.scrollY;
   const update=()=>{
    if(frame)return;
    frame=window.requestAnimationFrame(()=>{
@@ -15,6 +18,11 @@ export default function MotionSystem(){
     const max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
     progress?.style.setProperty("--site-progress",String(Math.min(1,Math.max(0,window.scrollY/max))));
     document.documentElement.dataset.scrolled=window.scrollY>44?"true":"false";
+    const y=window.scrollY;
+    if(Math.abs(y-lastScrollY)>2){
+     setShowTop(y>850&&y<lastScrollY-2);
+     lastScrollY=y;
+    }
    });
   };
   // Progressive section reveals across home, all six directories and all case-study routes.
@@ -57,5 +65,9 @@ export default function MotionSystem(){
   document.addEventListener("pointermove",glow,{passive:true});
   return()=>{window.removeEventListener("scroll",update);window.removeEventListener("resize",update);document.removeEventListener("pointermove",glow);mutation?.disconnect();observer?.disconnect();if(frame)window.cancelAnimationFrame(frame);};
  },[pathname]);
- return <div id="site-scroll-progress" className="site-scroll-progress" aria-hidden="true"/>;
+ const label=pathname.startsWith("/ar/")||pathname==="/ar"?"العودة إلى أعلى الصفحة":pathname.startsWith("/fr/")||pathname==="/fr"?"Retour en haut":"Back to top";
+ return <><div id="site-scroll-progress" className="site-scroll-progress" aria-hidden="true"/>
+  <button type="button" className="site-return-top" aria-label={label} title={label} aria-hidden={!showTop} tabIndex={showTop?0:-1} data-visible={showTop}
+   onClick={()=>window.scrollTo({top:0,behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}>
+   <ArrowUp size={21} aria-hidden="true"/></button></>;
 }
