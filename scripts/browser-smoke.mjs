@@ -35,6 +35,11 @@ try{
  assert.equal(await d.locator('.hero-person').innerText(),'Taha Zitane');
  assert.equal(await d.locator('.overview-card').count(),4,'Homepage is a focused four-path overview');
  assert.equal(await d.locator('.immersive-section .layer-button').count(),4,'Interactive 3D infrastructure has four functional layers');
+ assert.equal(await d.locator('.immersive-orbit-controls button').count(),3,'The 3D visualization offers keyboard-accessible camera controls');
+ await d.locator('.immersive-orbit-controls button').nth(2).click();
+ assert.equal(await d.locator('.immersive-visual').getAttribute('data-orbit-angle'),'0.25','Desktop camera rotates on request');
+ await d.locator('.immersive-orbit-controls button').nth(1).click();
+ assert.equal(await d.locator('.immersive-visual').getAttribute('data-orbit-angle'),'0.00','Camera reset restores orientation');
  assert.equal(await d.locator('.immersive-section .layer-button[aria-pressed="true"]').count(),1,'One infrastructure focus selected');
  await d.locator('.immersive-section .layer-button').nth(1).click();
  assert.ok(await d.locator('.immersive-section .layer-button').nth(1).getAttribute('aria-pressed')==='true','Selecting security updates visualization focus');
@@ -131,21 +136,59 @@ try{
   assert.ok(frame&&frame.y<775,`${locale}: portrait appears in initial mobile viewport`);
   assert.equal(await m.locator('.overview-card').count(),4);
   assert.ok(await m.locator('.immersive-section').count()===1,'locale: 3D infrastructure section exists on mobile');
-  assert.ok(await m.locator('.stage-blueprint').count()===1,'locale: lightweight fallback instead of WebGL on narrow screens');
+  // Phone must get the real 3D canvas whenever this browser actually supports WebGL.
+  await m.locator('.immersive-visual').scrollIntoViewIfNeeded();
+  const mobileWebGL=await m.evaluate(()=>{
+   try{const el=document.createElement('canvas');return Boolean(el.getContext('webgl2')||el.getContext('webgl'));}catch{return false}
+  });
+  if(mobileWebGL){
+   await m.locator('.immersive-visual canvas').first().waitFor({state:'visible',timeout:20000});
+   assert.equal(await m.locator('.stage-blueprint').count(),0,`${locale}: 3D must not be downgraded on phones with WebGL`);
+  } else {
+   assert.equal(await m.locator('.stage-blueprint').count(),1,`${locale}: only browsers without real WebGL use the fallback`);
+  }
+  const angle0=await m.locator('.immersive-visual').getAttribute('data-orbit-angle');
+  await m.locator('.immersive-orbit-controls button').nth(2).click();
+  assert.notEqual(await m.locator('.immersive-visual').getAttribute('data-orbit-angle'),angle0,`${locale}: rotation controls operate on mobile`);
+  await m.locator('.immersive-orbit-controls button').nth(1).click();
+  assert.equal(await m.locator('.immersive-visual').getAttribute('data-orbit-angle'),'0.00',`${locale}: reset works on mobile`);
   assert.equal(await m.locator('.layer-button').count(),4,'Localized focus controls work in mobile layout');
 
   await m.locator('.nav-toggle').click();
   assert.equal(await m.locator('#mobile-nav a').count(),9,'Six sections and three languages in mobile menu');
+  assert.equal(await m.evaluate(()=>document.activeElement?.tagName),'A','Keyboard focus moves into open mobile navigation');
+  await m.keyboard.press('Escape');
+  assert.equal(await m.locator('#mobile-nav').count(),0,'Escape closes the mobile navigation');
+  await m.locator('.nav-toggle').click();
   await m.locator('.nav-toggle').click();
   await overflow(m,`${locale} home mobile`);
   await m.screenshot({path:path.join(root,'screenshots',`mobile-${locale}.png`),animations:'disabled'});
   for(const s of ['projects','services','experience','education','expertise','contact']){
    await m.goto(base+`/${locale}/${s}/`,{waitUntil:'domcontentloaded'});
    assert.ok(await m.locator('.domain-visual').isVisible(),`${locale} ${s}: own visual story remains visible on mobile`);
+   assert.ok(await m.locator('.mobile-menu').count()===0,`${locale} ${s}: mobile menu stays closed until requested`);
    assert.equal(await m.locator('.domain-node').count(),3,`${locale} ${s}: technical nodes remain interactive`);
    await overflow(m,`${locale} ${s} mobile`);
   }
  }
+ // Cross-device audit: smallest phones, larger phones and landscape must preserve all content.
+ for(const width of [320,360,430,768]){
+  const phone=await browser.newPage({viewport:{width,height:width===768?1024:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
+  await phone.goto(base+'/',{waitUntil:'domcontentloaded'});
+  assert.equal(await phone.locator('.immersive-orbit-controls button').count(),3,`${width}px: full 3D control surface on every device width`);
+  assert.equal(await phone.locator('.overview-card').count(),4,`${width}px: homepage content parity`);
+  await overflow(phone,`${width}px homepage`);
+  await phone.goto(base+'/projects/',{waitUntil:'domcontentloaded'});
+  await overflow(phone,`${width}px projects`);
+  await phone.goto(base+'/projects/enterprise-network-lab/',{waitUntil:'domcontentloaded'});
+  await overflow(phone,`${width}px engineering case`);
+  await phone.close();
+ }
+ const landscape=await browser.newPage({viewport:{width:844,height:390},deviceScaleFactor:1,isMobile:true,hasTouch:true});
+ await landscape.goto(base+'/',{waitUntil:'domcontentloaded'});
+ assert.equal(await landscape.locator('.immersive-orbit-controls button').count(),3,'Phone landscape has full 3D controls');
+ await overflow(landscape,'mobile landscape');
+ await landscape.close();
  if(errors.length)throw Error('Runtime errors:\n'+errors.slice(0,12).join('\n'));
  console.log('PASS: homepage editorial UX, six sections in EN/FR/AR, filtered projects, technical diagrams, service branding, source-linked case topology, mobile navigation, portrait, responsive layout, contact and RTL');
 } finally {
