@@ -3,6 +3,7 @@ import Navigation from "./Navigation";
 import Reveal from "./Reveal";
 import LocaleSetup from "./LocaleSetup";
 import LandingOverview from "./LandingOverview";
+import InfrastructureStage from "./InfrastructureStage";
 import FooterBrand from "./FooterBrand";
 import TechnologyMarks from "./TechnologyMarks";
 import {content,mailUrl,phoneNumber,prettyPhoneNumber,githubUrl,linkedInUrl,type Locale} from "@/data/content";
@@ -37,6 +38,8 @@ export default function Home({locale}:{locale:Locale}){
     </div></div>
     <div className="hero-foot"><span><MoveDown size={14}/>{c.scroll}</span><div className="hero-foot-rule"/><span>{locale==='ar'?'البنية التحتية · التشغيل والدعم':locale==='fr'?'Infrastructure · Exploitation & support':'Infrastructure · Operations & support'}</span></div>
    </div></section>
+
+   <InfrastructureStage locale={locale}/>
 
    <section className="about-section" id="about" aria-labelledby="about-title"><div className="container-xl">
      <div className="about-grid">

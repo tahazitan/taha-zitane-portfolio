@@ -1,7 +1,8 @@
 import Link from "next/link";
 import {ArrowUpRight, ArrowLeft, Mail, Phone, Github, Linkedin, ShieldCheck, Layers3} from "lucide-react";
 import Navigation from "./Navigation";
-import BrandMark from "./BrandMark";
+import SectionHeroVisual from "./SectionHeroVisual";
+import LocaleSetup from "./LocaleSetup";
 import FooterBrand from "./FooterBrand";
 import Reveal from "./Reveal";
 import ProjectExplorer from "./ProjectExplorer";
@@ -41,14 +42,6 @@ const details={
   contact:["التواصل / التعاون","لنتحدث عن احتياجك.","أخبرني بطبيعة بيئتك التقنية والمشكلة والنتيجة المطلوبة. نحدد نطاق المهمة والصلاحيات والتوثيق قبل البدء.","مشاريع عن بُعد وتعاون مهني."]
  }
 } as const;
-const toolsets={
- projects:["Cisco","Windows Server","Proxmox","FortiGate","Palo Alto","Wazuh","Wireshark"],
- experience:["Windows Server","Cisco","Linux","AnyDesk"],
- education:["Cisco","Linux","Windows"],
- expertise:["Cisco","Windows Server","Linux","FortiGate","Palo Alto","Wazuh"],
- services:["Windows Server","Linux","Cisco","FortiGate","Wireshark"],
- contact:[] as string[]
-};
 const serviceTools=[["AnyDesk","Windows"],["Windows Server","Linux","Proxmox","Ubuntu"],["Wireshark","Wazuh","FortiGate","Palo Alto"],["Cisco","GNS3","Windows Server","Linux"]];
 const marks={"2024 — 2025":{logo:"emsi",name:"EMSI",city:"TANGER"},"2020 — 2022":{logo:"ofppt",name:"OFPPT / ISMO",city:"TÉTOUAN"},"2019 — 2020":{logo:"university",name:"UNIVERSITÉ ABDELMALEK ESSAÂDI",city:"FACULTÉ DES SCIENCES"},"2018":{logo:"ministry",name:"LYCÉE AL-KHAWARIZMI",city:"CHEFCHAOUEN"}} as const;
 const route=(locale:Locale,section:SectionKey)=>`${locale==="en"?"":"/"+locale}/${section}/`;
@@ -56,12 +49,13 @@ export default function SectionPage({locale,section}:{locale:Locale;section:Sect
  const c=content[locale],p=professional[locale],t=details[locale][section],rtl=locale==="ar";
  const companyLine=locale==="fr"?"ENTREPRISES · INDÉPENDANTS · MISSIONS À DISTANCE":locale==="ar"?"الشركات · العملاء · المهام عن بُعد":"BUSINESSES · CLIENTS · REMOTE MISSIONS";
  return <div className={`page-shell detail-site section-site section-site--${section} ${rtl?"rtl":""}`} dir={rtl?"rtl":"ltr"}>
+  <LocaleSetup locale={locale}/>
   <Navigation locale={locale} section={section}/>
   <main>
    <section className="detail-hero" id="top"><div className="container-xl detail-hero-inner">
     <div className="detail-headerline"><span>{t[0]}</span><span>TAHA ZITANE / {section.toUpperCase()}</span></div>
     <div className="detail-hero-body"><div><h1>{t[1]}</h1><p>{t[2]}</p><Link className="detail-back" href={homePath(locale)}><ArrowLeft size={17}/>{locale==="fr"?"Accueil":rtl?"الرئيسية":"Home"}</Link></div>
-    <div className="detail-brand-panel" aria-label={t[3]}><div className="detail-brand-symbol"><BrandMark size={68}/></div><span>{t[3]}</span><TechnologyMarks technologies={toolsets[section]} limit={7} variant="inline"/></div></div>
+    <SectionHeroVisual section={section} locale={locale}/></div>
    </div></section>
    {section==="projects"&&<section id="work" className="section work-section"><div className="container-xl">
     <div className="detail-section-caption"><span>01 / ENGINEERING PORTFOLIO</span><span>08 / CASE STUDIES</span></div>
