@@ -1,0 +1,189 @@
+/* Professional infrastructure studio: one restrained visual language, with
+   authored topologies and interface metadata, not generated screenshot art. */
+:root{
+  --studio-ink:#0a1b2b;
+  --studio-panel:#102e40;
+  --studio-edge:#476c7c;
+  --studio-accent:#8cddd8;
+  --studio-secondary:#9abfff;
+  --studio-warm:#e7b48c;
+  --studio-type:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
+  --studio-motion:cubic-bezier(.2,.7,.2,1);
+}
+.source-shell{
+  position:relative;
+  isolation:isolate;
+  border:1px solid #5a7e91;
+  border-radius:16px;
+  overflow:hidden;
+  background:radial-gradient(ellipse at 4% 0%,rgba(61,135,155,.12),transparent 47%),#0a2131;
+  box-shadow:0 27px 60px rgba(9,28,40,.22),0 0 0 1px rgba(223,244,245,.05) inset;
+}
+.source-shell::before{
+  content:"";
+  pointer-events:none;
+  position:absolute;
+  inset:0 0 auto;
+  height:3px;
+  background:linear-gradient(90deg,#8fdbd5 0%,#8ab2ee 54%,#e9ad80 100%);
+  z-index:3;
+}
+.source-bar{background:rgba(12,35,50,.96);padding:17px clamp(16px,2.8vw,29px);border-bottom:1px solid #395b6d}
+.source-bar>div:first-child{color:#e3f4f4;letter-spacing:.095em}
+.source-bar button{border-radius:7px;transition:background .2s,border-color .2s,color .2s}
+.source-bar button:focus-visible,.source-edges button:focus-visible,.source-inspector button:focus-visible,.source-links a:focus-visible,.source-inspector-config:focus-visible{
+  outline:2px solid #ffe0a4;outline-offset:3px;
+}
+.source-workspace-meta{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px 24px;flex-wrap:wrap;padding:12px clamp(16px,2.8vw,29px);
+  background:#133447;border-bottom:1px solid rgba(131,178,193,.23);
+  font:700 10px/1.6 var(--studio-type);letter-spacing:.07em;color:#b8d5df;
+}
+.source-workspace-meta>div{display:flex;align-items:center;gap:11px;color:#e2f4f4}
+.source-workspace-meta>span{font-weight:500;color:#b8cedb}
+.source-workspace-beacon,.source-inspector-led{
+  flex:none;display:inline-block;width:8px;height:8px;
+  border-radius:2px;background:#9ce0d5;box-shadow:0 0 0 4px rgba(156,224,213,.095);
+}
+.source-columns{grid-template-columns:minmax(0,1.75fr) minmax(280px,.81fr)}
+.source-figure{padding:clamp(16px,2.5vw,29px);background:#0b2333}
+.source-caption{color:#b3d1da;gap:12px;letter-spacing:.035em}
+.source-caption>span:first-child{color:#e3f0f4}
+.source-figure svg{
+  width:100%;min-width:640px;max-width:none;
+  border:1px solid #466f82;border-radius:9px;
+  background:#0b2230;box-shadow:0 12px 30px rgba(0,9,20,.18);
+}
+.source-diagram-link{cursor:pointer}
+.source-diagram-node{cursor:pointer}
+.source-diagram-link path:not(.source-diagram-hit){transition:stroke .2s,stroke-width .2s}
+.source-diagram-link:hover path:not(.source-diagram-hit),
+.source-diagram-link:focus-visible path:not(.source-diagram-hit){stroke:#fff0bf}
+.source-diagram-node>rect:first-child{transition:stroke .2s,filter .2s}
+.source-diagram-node:hover>rect:first-child,.source-diagram-node:focus-visible>rect:first-child{
+  stroke:#fff0bf;filter:drop-shadow(0 0 7px rgba(255,218,154,.36))
+}
+.source-diagram-link:focus-visible,.source-diagram-node:focus-visible{outline:none}
+.source-diagram-link:focus-visible .source-diagram-hit{stroke:rgba(255,240,191,.12)}
+.source-figure>p{font-size:12px;line-height:1.7;color:#c5dfe6}
+.source-aside{
+  display:flex;flex-direction:column;gap:15px;
+  padding:clamp(16px,2.3vw,25px);
+  background:linear-gradient(180deg,#143549,#0b2537);
+}
+.source-aside>h3{margin:9px 0 0;font-size:11px;color:#bbd7df}
+.source-inspector{
+  min-width:0;background:#0b2535;
+  border:1px solid #4c7181;border-radius:10px;
+  padding:clamp(16px,2vw,21px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
+}
+.source-inspector-kicker{
+  display:flex;align-items:center;gap:10px;
+  font:700 10px/1.4 var(--studio-type);
+  letter-spacing:.09em;color:#a7c9d5
+}
+.source-inspector-led{background:#efc094;box-shadow:0 0 0 4px rgba(239,192,148,.08)}
+.source-inspector h3{margin:14px 0;color:#fff9ed;font:700 clamp(15px,1.6vw,19px)/1.45 var(--studio-type);overflow-wrap:anywhere}
+.source-inspector dl{margin:0;display:grid;gap:10px}
+.source-inspector dl>div{border-top:1px solid #36586a;padding-top:10px;display:grid;gap:4px}
+.source-inspector dt{font-size:11px;font-weight:600;color:#9bbbc9}
+.source-inspector dd{margin:0;font:600 11px/1.7 var(--studio-type);overflow-wrap:anywhere;color:#e2eff2}
+.source-inspector-config,.source-inspector-reset{
+  display:flex;align-items:center;gap:7px;
+  width:100%;margin-top:16px;padding:10px 12px;
+  border:1px solid #668c93;border-radius:6px;
+  background:#194656;color:#d9f5ed;
+  text-decoration:none;font:700 11px/1.5 var(--studio-type);
+  cursor:pointer;text-align:start;
+}
+.source-inspector-config:hover,.source-inspector-reset:hover{background:#245c6a;color:#fff}
+.source-inspector-config svg:last-child{margin-inline-start:auto}
+.source-inspector-reset{background:transparent}
+.source-edges{gap:7px;max-height:none}
+.source-edges button{
+  border-radius:7px;background:#15384a;border:1px solid #4d7181;
+  padding:13px;transition:border-color .2s,background .2s,transform .2s var(--studio-motion);
+}
+.source-edges button:hover{border-color:#92bccc;background:#204658;transform:translateX(2px)}
+.source-edges button[aria-pressed="true"]{background:#2a4b5a;border-color:#f4be99;box-shadow:inset 3px 0 0 #efb685}
+.source-edges button strong,.source-edges button small{overflow-wrap:anywhere}
+.source-edges button strong{font-size:11px;color:#eaf7f8}
+.source-edges button small{font-size:10px;line-height:1.55;color:#b6d0da}
+.source-links{margin-top:auto;gap:13px}
+.source-links a{line-height:1.5}
+.source-technology{margin-bottom:14px}
+.source-topology .topology-legend{color:#c4dfe4}
+/* Consistent interaction language across all portfolio pages */
+.overview-card,.work-card,.service-item,.capability-card{
+  transition:transform .4s var(--studio-motion),box-shadow .4s var(--studio-motion),border-color .4s var(--studio-motion);
+}
+.overview-card:hover,.work-card:hover,.service-item:hover,.capability-card:hover{
+  box-shadow:0 24px 49px rgba(12,35,48,.15);
+}
+.overview-card:focus-visible,.work-card:focus-visible,a.btn:focus-visible,.contact-circle:focus-visible,.service-action:focus-visible{
+  outline:3px solid #dfac83;outline-offset:4px;
+}
+.source-topology-compact .source-shell{margin-top:4px}
+@media(max-width:900px){
+  .source-columns{grid-template-columns:1fr}
+  .source-figure{border-inline-end:0;border-bottom:1px solid #436478}
+  .source-aside{gap:16px}
+  .source-edges{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:580px){
+  .source-shell{border-radius:10px}
+  .source-bar{padding:16px 13px}
+  .source-workspace-meta{padding:12px 13px;align-items:start}
+  .source-figure{padding:12px}
+  .source-figure svg{width:640px}
+  .source-edges{grid-template-columns:1fr}
+  .source-aside{padding:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  .source-edges button,.source-diagram-node>rect:first-child,.source-diagram-link path:not(.source-diagram-hit),
+  .overview-card,.work-card,.service-item,.capability-card{transition:none!important;animation:none!important}
+  .source-edges button:hover{transform:none}
+}
+
+/* One reusable inspection pattern for all eight project case studies. */
+.visual-project--large .topology-preview-stage{border:1px solid #4d7486;box-shadow:0 18px 42px rgba(6,27,45,.13)}
+.visual-project-interactive{cursor:pointer;outline:none}
+.visual-project-interactive[role="button"]>rect:first-child{transition:stroke .2s,filter .2s}
+.visual-project-interactive[role="button"]:hover>rect:first-child,
+.visual-project-interactive[role="button"]:focus-visible>rect:first-child,
+.visual-project-interactive[role="button"].is-active>rect:first-child{
+  stroke:#ffe0a4;stroke-width:4px;filter:drop-shadow(0 0 6px rgba(255,221,166,.3));
+}
+.visual-project-interactive[role="button"]:hover>line:nth-child(2),
+.visual-project-interactive[role="button"]:focus-visible>line:nth-child(2),
+.visual-project-interactive[role="button"].is-active>line:nth-child(2){
+  stroke:#ffe0a4;stroke-width:6px;
+}
+.visual-project-inspector{
+  display:flex;align-items:center;justify-content:space-between;gap:13px;
+  padding:18px clamp(15px,3vw,28px);margin-top:12px;
+  border:1px solid #557587;border-radius:9px;
+  background:linear-gradient(120deg,#122f42,#16384a);
+  color:#f2f9fa;
+}
+.visual-project-inspector-copy{display:grid;gap:6px;min-width:0}
+.visual-project-inspector-copy small{
+  color:#a9d0d9;font:700 10px/1.4 var(--studio-type);letter-spacing:.065em;
+}
+.visual-project-inspector-copy strong{
+  color:#f6fafa;font-size:clamp(13px,1.7vw,17px);font-weight:650;overflow-wrap:anywhere;
+}
+.visual-project-inspector-copy span{color:#bdd8de;font:600 12px/1.5 var(--studio-type)}
+.visual-project-inspector-count{
+  flex:none;border:1px solid #678c97;border-radius:5px;padding:9px;
+  font:700 10px/1.5 var(--studio-type);color:#c7e3e6;
+}
+@media(max-width:580px){
+ .visual-project-inspector{align-items:stretch;flex-direction:column}
+ .visual-project-inspector-count{align-self:flex-start}
+}
+@media(prefers-reduced-motion:reduce){
+ .visual-project-interactive[role="button"]>rect:first-child{transition:none!important}
+}

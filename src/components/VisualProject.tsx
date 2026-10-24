@@ -1,3 +1,5 @@
+"use client";
+import {useState} from "react";
 import type {Locale} from "@/data/content";
 import {Activity,Cloud,HardDrive,Monitor,Network,Router,Server,ShieldCheck,Wrench} from "lucide-react";
 
@@ -68,22 +70,28 @@ const projectPalette:Record<string,{edge:string;vpn:string;node:string;server:st
 };
 const pictograms={pc:Monitor,router:Router,switch:Network,firewall:ShieldCheck,server:Server,sensor:Activity,cloud:Cloud,support:Wrench};
 const translations={
- en:{source:"SOURCE-DEFINED CABLING",concept:"TOPOLOGY / PROJECT VIEW",intro:"Network layout",detail:"Open project architecture and configuration details",caption:"Equipment · Links · Roles"},
- fr:{source:"LIAISONS DU FICHIER SOURCE",concept:"TOPOLOGIE / PROJET",intro:"Schéma réseau",detail:"Découvrir les détails techniques du projet",caption:"Équipements · Liens · Rôles"},
- ar:{source:"وصلات من ملفات الإعداد",concept:"طوبولوجيا / مشروع",intro:"مخطط الشبكة",detail:"افتح المشروع للتفاصيل",caption:"الأجهزة · الروابط · الأدوار"}
+ en:{source:"SOURCE-DEFINED CABLING",concept:"TOPOLOGY / PROJECT VIEW",intro:"Network layout",detail:"Open project architecture and configuration details",caption:"Equipment · Links · Roles",inspect:"ENGINEERING INSPECTOR",hint:"Select a device or connection in the diagram",equipment:"EQUIPMENT",connection:"CONNECTION"},
+ fr:{source:"LIAISONS DU FICHIER SOURCE",concept:"TOPOLOGIE / PROJET",intro:"Schéma réseau",detail:"Découvrir les détails techniques du projet",caption:"Équipements · Liens · Rôles",inspect:"INSPECTEUR D’ARCHITECTURE",hint:"Sélectionnez un équipement ou une connexion",equipment:"ÉQUIPEMENT",connection:"LIAISON"},
+ ar:{source:"وصلات من ملفات الإعداد",concept:"طوبولوجيا / مشروع",intro:"مخطط الشبكة",detail:"افتح المشروع للتفاصيل",caption:"الأجهزة · الروابط · الأدوار",inspect:"مستعرض البنية التقنية",hint:"اختر جهازاً أو وصلة لمشاهدة تفاصيلها",equipment:"الجهاز",connection:"الاتصال"}
 } as const;
 export function projectVisualData(slug:string){return previews[slug]}
 
 export default function VisualProject({slug,locale,large=false}:{slug:string;locale:Locale;large?:boolean}){
+ const [inspection,setInspection]=useState<{kind:"node"|"link";id:string}|null>(null);
  const diagram=previews[slug];
  if(!diagram)return null;
  const language=translations[locale];
  const palette=projectPalette[slug];
  const byId=new Map(diagram.nodes.map(n=>[n.id,n]));
+ const inspectedNode=inspection?.kind==="node"?byId.get(inspection.id):null;
+ const inspectedCable=inspection?.kind==="link"?diagram.cables.find(c=>c.a+"-"+c.b===inspection.id):null;
+ const selectionLabel=inspectedNode?inspectedNode.name:inspectedCable?byId.get(inspectedCable.a)?.name+" ↔ "+byId.get(inspectedCable.b)?.name:null;
+ const selectionDescription=inspectedNode?inspectedNode.detail:inspectedCable?inspectedCable.label:null;
+ const onSelect=(kind:"node"|"link",id:string)=>setInspection(current=>current?.kind===kind&&current.id===id?null:{kind,id});
  return <div className={"visual-project visual-project--topology visual-project--"+slug+(large?" visual-project--large":"")} dir="ltr" role="group" aria-label={language.intro+": "+diagram.title}>
    <div className="visual-project-top"><span><Network size={14}/>{diagram.title}</span><span>{diagram.source?language.source:language.concept}</span></div>
    <div className="topology-preview-stage">
-    <svg viewBox="0 0 960 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={diagram.title+": "+diagram.nodes.map(n=>n.name).join(", ")}>
+    <svg viewBox="0 0 960 460" xmlns="http://www.w3.org/2000/svg" role={large?"group":"img"} aria-label={diagram.title+": "+diagram.nodes.map(n=>n.name).join(", ")}>
      <defs>
       <pattern id={"preview-grid-"+slug} width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="#568b9c" opacity=".34"/></pattern>
      </defs>
@@ -91,7 +99,8 @@ export default function VisualProject({slug,locale,large=false}:{slug:string;loc
      <rect x="0" y="0" width="960" height="460" rx="12" fill={"url(#preview-grid-"+slug+")"}/>
      {diagram.cables.map((edge,i)=>{
       const a=byId.get(edge.a)!,b=byId.get(edge.b)!;
-      return <g key={edge.a+"-"+edge.b}>
+      return <g key={edge.a+"-"+edge.b} className={"visual-project-interactive"+(inspection?.kind==="link"&&inspection.id===edge.a+"-"+edge.b?" is-active":"")} role={large?"button":undefined} tabIndex={large?0:undefined} aria-label={large?a.name+" ↔ "+b.name+" · "+edge.label:undefined} onClick={large?()=>onSelect("link",edge.a+"-"+edge.b):undefined} onKeyDown={large?event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();onSelect("link",edge.a+"-"+edge.b)}}:undefined}>
+       {large&&<line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="transparent" strokeWidth="28" />}
        <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={edge.vpn?palette.vpn:palette.edge} strokeWidth={edge.vpn?4:3.5} strokeDasharray={edge.vpn?"13 9":undefined} strokeLinecap="round"/>
        <line className="project-flow-line" x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={edge.vpn?palette.vpn:palette.edge} strokeWidth={edge.vpn?3.2:2.4} strokeDasharray={edge.vpn?"10 35":"5 27"} opacity=".75" strokeLinecap="round"/>
        <rect x={edge.x-Math.max(65,edge.label.length*6.7)} y={edge.y-21} width={Math.max(130,edge.label.length*13.4)} height="28" rx="6" fill="#19394b" stroke={edge.vpn?palette.vpn:palette.edge} strokeWidth="1.5"/>
@@ -102,7 +111,7 @@ export default function VisualProject({slug,locale,large=false}:{slug:string;loc
      {diagram.nodes.map(n=>{
       const Icon=pictograms[n.role];
       const accent=n.role==="firewall"?palette.firewall:n.role==="server"?palette.server:n.role==="pc"?palette.client:palette.node;
-      return <g key={n.id} transform={"translate("+n.x+","+n.y+")"}>
+      return <g key={n.id} transform={"translate("+n.x+","+n.y+")"} className={"visual-project-interactive"+(inspection?.kind==="node"&&inspection.id===n.id?" is-active":"")} role={large?"button":undefined} tabIndex={large?0:undefined} aria-label={large?n.name+" · "+n.detail:undefined} onClick={large?()=>onSelect("node",n.id):undefined} onKeyDown={large?event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();onSelect("node",n.id)}}:undefined}>
        <rect x="-103" y="-62" width="206" height="124" rx="12" fill={palette?.frame??"#193e52"} stroke={accent} strokeWidth="2"/>
        <rect x="-103" y="-62" width="206" height="9" rx="4" fill={accent}/>
        <rect x="-85" y="-43" width="49" height="43" rx="8" fill="#eef7fa"/>
@@ -115,6 +124,9 @@ export default function VisualProject({slug,locale,large=false}:{slug:string;loc
      })}
     </svg>
    </div>
-   {large?<div className="visual-project-bottom"><span>{language.detail}</span><span>{language.caption}</span></div>:<span className="visual-project-caption">{language.caption}</span>}
+   {large?<><div className="visual-project-inspector" aria-live="polite" dir={locale==="ar"?"rtl":"ltr"}>
+      <div className="visual-project-inspector-copy"><small>{language.inspect} · {inspection?(inspectedNode?language.equipment:language.connection):"00"}</small><strong>{selectionLabel??language.hint}</strong><span dir="auto">{selectionDescription??language.caption}</span></div>
+      <span className="visual-project-inspector-count" aria-label={language.caption}>{diagram.nodes.length} DEV / {diagram.cables.length} LINKS</span>
+    </div><div className="visual-project-bottom"><span>{diagram.source?language.source:language.concept}</span><span>{language.caption}</span></div></>:<span className="visual-project-caption">{language.caption}</span>}
  </div>;
 }

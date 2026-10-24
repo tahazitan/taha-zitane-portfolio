@@ -1,5 +1,5 @@
 "use client";
-import {useState} from "react";
+import {useId,useState} from "react";
 import {ExternalLink,GitBranch,FileCode2} from "lucide-react";
 import TechnologyMarks from "./TechnologyMarks";
 import type {Locale} from "@/data/content";
@@ -46,6 +46,9 @@ const copy={
 export default function SourceTopology({locale,compact=false}:{locale:Locale;compact?:boolean}){
  const [mode,setMode]=useState<"base"|"secure">("base");
  const [active,setActive]=useState(0);
+ const [selectedNode,setSelectedNode]=useState<string|null>(null);
+ const rawId=useId();
+ const gridId="source-grid-"+rawId.replace(/:/g,"");
  const p=mode==="base"?base:secure,t=copy[locale];
  const nodes=new Map(p.nodes.map(n=>[n.id,n]));
  const address:Record<string,{role:string;addr:string;zone:string}>={
@@ -58,28 +61,39 @@ export default function SourceTopology({locale,compact=false}:{locale:Locale;com
   "branch-user":{role:mode==="secure"?"BRANCH / VLAN 30":"BRANCH",addr:"10.20.30.10/24",zone:"users"}
  };
  const wan=mode==="base"?"OSPF · 10.255.0.0/30":"OSPF · 172.16.255.0/30";
+ const ui={
+  en:{workspace:"ENGINEERING WORKSPACE",documentation:"CONFIGURATION-DEFINED / NOT LIVE TELEMETRY",selectDevice:"Click any device or link to inspect the architecture",device:"SELECTED EQUIPMENT",link:"SELECTED CONNECTION",ports:"Interfaces",address:"Address / segment",role:"Role",configuration:"Read source configuration",clear:"Show selected connection",source:"SOURCE OF TRUTH"},
+  fr:{workspace:"ATELIER D'INGÉNIERIE",documentation:"DÉFINI PAR LES CONFIGURATIONS / PAS DE TÉLÉMÉTRIE",selectDevice:"Sélectionnez un équipement ou une liaison pour inspecter l'architecture",device:"ÉQUIPEMENT SÉLECTIONNÉ",link:"LIAISON SÉLECTIONNÉE",ports:"Interfaces",address:"Adresse / segment",role:"Rôle",configuration:"Lire la configuration source",clear:"Afficher la liaison",source:"FICHIERS SOURCES"},
+  ar:{workspace:"مساحة العمل الهندسي",documentation:"مخطط من ملفات الإعداد، وليس مراقبة حية",selectDevice:"اختر جهازاً أو اتصالاً لاستعراض تفاصيل التصميم",device:"الجهاز المحدد",link:"الاتصال المحدد",ports:"الواجهات",address:"العنوان أو الشبكة",role:"الدور",configuration:"عرض ملف إعداد الجهاز",clear:"عرض الاتصال",source:"الملفات الأصلية"}
+ }[locale];
+ const selectedEdge=p.edges[active];
+ const device=selectedNode?address[selectedNode]:null;
+ const configPath=selectedNode==="hq-rtr"?(mode==="secure"?"secure/configs/hq/frr.conf":"configs/hq-rtr/frr.conf"):selectedNode==="branch-rtr"?(mode==="secure"?"secure/configs/branch/frr.conf":"configs/branch-rtr/frr.conf"):null;
+ const chooseEdge=(index:number)=>{setActive(index);setSelectedNode(null)};
+ const chooseNode=(id:string)=>setSelectedNode(previous=>previous===id?null:id);
 
  return <section className={"source-topology"+(compact?" source-topology-compact":"")} id={compact?undefined:"topology"} aria-labelledby={compact?undefined:"source-title"}>
   <div className="container-xl">
    {!compact&&<div className="source-heading"><span className="section-number">{t.kicker}</span><h2 id="source-title">{t.title}</h2><p>{t.intro}</p></div>}
    <div className="source-shell">
     <div className="source-bar"><div><GitBranch size={18}/><strong>CONTAINERLAB / YAML</strong></div><div className="source-switch" role="group" aria-label={t.kicker}>
-     <button type="button" aria-pressed={mode==="base"} onClick={()=>{setMode("base");setActive(0)}}>{t.a}</button>
-     <button type="button" aria-pressed={mode==="secure"} onClick={()=>{setMode("secure");setActive(0)}}>{t.b}</button>
+     <button type="button" aria-pressed={mode==="base"} onClick={()=>{setMode("base");setActive(0);setSelectedNode(null)}}>{t.a}</button>
+     <button type="button" aria-pressed={mode==="secure"} onClick={()=>{setMode("secure");setActive(0);setSelectedNode(null)}}>{t.b}</button>
     </div></div>
+    <div className="source-workspace-meta"><div><span className="source-workspace-beacon" aria-hidden="true"/><strong>{ui.workspace}</strong></div><span>{ui.documentation}</span></div>
     <div className="source-columns">
      <div className="source-figure">
       <div className="source-caption"><span>{p.file}</span><span>{p.nodes.length} {t.nodes} / {p.edges.length} {t.links}</span></div>
       <div className="source-technology"><TechnologyMarks technologies={mode==="secure"?["Containerlab","FRRouting","Linux","WireGuard"]:["Containerlab","FRRouting","Linux"]} limit={4} variant="inline"/></div>
-      <svg viewBox="0 0 900 375" role="img" aria-label={p.file+" · IPv4 / "+t.config}>
+      <svg viewBox="0 0 900 375" role="group" aria-label={p.file+" · IPv4 / "+t.config}>
        <desc>{t.intro} {t.config}</desc>
-       <defs><pattern id="yaml-grid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" fill="none" stroke="#285062" strokeWidth=".65"/></pattern></defs>
-       <rect width="900" height="375" fill="#0b2230"/><rect width="900" height="375" fill="url(#yaml-grid)"/>
+       <defs><pattern id={gridId} width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" fill="none" stroke="#285062" strokeWidth=".65"/></pattern></defs>
+       <rect width="900" height="375" fill="#0b2230"/><rect width="900" height="375" fill={"url(#"+gridId+")"}/>
        <rect x="344" y="5" width="213" height="25" rx="3" fill="#173b4e" stroke="#537d87"/>
        <text x="450" y="22" textAnchor="middle" fill="#c1e2e2" fontSize="11" fontFamily="monospace">{wan}</text>
-       {p.edges.map((e,i)=>{const a=nodes.get(e.a)!,b=nodes.get(e.b)!;const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;return <g key={e.a+"-"+e.b}><path d={"M"+a.x+","+a.y+"L"+b.x+","+b.y} fill="none" stroke={active===i?"#ffbc86":"#6da7b5"} strokeWidth={active===i?4.6:2.6} strokeLinecap="round"/><circle cx={mx} cy={my} r={active===i?5:3} fill={active===i?"#ffbc86":"#8cd2c5"}/><rect x={mx-38} y={my-25} width="76" height="17" rx="3" fill="#102e3d" stroke={active===i?"#ffbc86":"#507e8c"} strokeWidth=".65"/><text x={mx} y={my-13} textAnchor="middle" fill="#ecf8f5" fontSize="10" fontFamily="monospace">{e.ports.split(" · ")[0]}</text><title>{e.a+" ↔ "+e.b+" · "+e.ports}</title></g>})}
-       {p.nodes.map(n=>{const m=address[n.id];const kind=n.id.endsWith("rtr")?"router":n.id.endsWith("switch")?"switch":"client";return <g key={n.id} transform={"translate("+n.x+","+n.y+")"}>
-         <rect x="-83" y="-34" width="166" height="71" rx="8" fill={m.zone==="network"?"#254d67":"#1c514f"} stroke={m.zone==="network"?"#9bbef7":"#7be2c6"} strokeWidth="1.7"/>
+       {p.edges.map((e,i)=>{const a=nodes.get(e.a)!,b=nodes.get(e.b)!;const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;return <g key={e.a+"-"+e.b} className={"source-diagram-link"+(active===i&&!selectedNode?" is-inspected":"")} role="button" tabIndex={0} aria-label={e.a+" ↔ "+e.b+" · "+e.ports} aria-pressed={active===i&&!selectedNode} onClick={()=>chooseEdge(i)} onKeyDown={event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();chooseEdge(i)}}}><path d={"M"+a.x+","+a.y+"L"+b.x+","+b.y} fill="none" stroke="transparent" strokeWidth="24" strokeLinecap="round" className="source-diagram-hit"/><path d={"M"+a.x+","+a.y+"L"+b.x+","+b.y} fill="none" stroke={(active===i&&!selectedNode)||(selectedNode&&(e.a===selectedNode||e.b===selectedNode))?"#ffbc86":"#6da7b5"} strokeWidth={(active===i&&!selectedNode)||(selectedNode&&(e.a===selectedNode||e.b===selectedNode))?4.6:2.6} strokeLinecap="round"/><circle cx={mx} cy={my} r={active===i?5:3} fill={active===i?"#ffbc86":"#8cd2c5"}/><rect x={mx-38} y={my-25} width="76" height="17" rx="3" fill="#102e3d" stroke={active===i?"#ffbc86":"#507e8c"} strokeWidth=".65"/><text x={mx} y={my-13} textAnchor="middle" fill="#ecf8f5" fontSize="10" fontFamily="monospace">{e.ports.split(" · ")[0]}</text><title>{e.a+" ↔ "+e.b+" · "+e.ports}</title></g>})}
+       {p.nodes.map(n=>{const m=address[n.id];const kind=n.id.endsWith("rtr")?"router":n.id.endsWith("switch")?"switch":"client";return <g key={n.id} transform={"translate("+n.x+","+n.y+")"} className={"source-diagram-node"+(selectedNode===n.id?" is-inspected":"")} role="button" tabIndex={0} aria-label={n.label+" · "+m.addr} aria-pressed={selectedNode===n.id} onClick={()=>chooseNode(n.id)} onKeyDown={event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();chooseNode(n.id)}}}>
+         <rect x="-83" y="-34" width="166" height="71" rx="8" fill={m.zone==="network"?"#254d67":"#1c514f"} stroke={selectedNode===n.id?"#ffbc86":m.zone==="network"?"#9bbef7":"#7be2c6"} strokeWidth={selectedNode===n.id?3:1.7}/>
          <rect x="-83" y="-34" width="166" height="8" rx="4" fill={m.zone==="network"?"#5488d2":"#4dc4a1"}/>
          <rect x="-73" y="-18" width="26" height="26" rx="4" fill="#eff7f8"/>
          {kind==="router"?<g fill="none" stroke="#214b64" strokeWidth="1.7" strokeLinecap="round"><rect x="-69" y="-11" width="18" height="11" rx="2"/><path d="M-66 -6h12m-9 -3l-3 3 3 3m6 -6l3 3-3 3"/></g>:kind==="switch"?<g fill="#214b64"><rect x="-69" y="-12" width="18" height="13" rx="2"/><rect x="-66" y="-9" width="4" height="4" rx=".5" fill="#eaf4f4"/><rect x="-60" y="-9" width="4" height="4" rx=".5" fill="#eaf4f4"/><rect x="-54" y="-9" width="2" height="4" rx=".5" fill="#eaf4f4"/></g>:<g fill="none" stroke="#214b64" strokeWidth="1.7"><rect x="-69" y="-13" width="18" height="13" rx="1.5"/><path d="M-66 3h12m-6 -3v3"/></g>}
@@ -95,10 +109,21 @@ export default function SourceTopology({locale,compact=false}:{locale:Locale;com
        <span><i className="topology-key-user"/>{locale==="fr"?"Postes et VLAN":locale==="ar"?"أجهزة المستخدمين":"Endpoints / subnets"}</span>
        <span><i className="topology-key-link"/>{locale==="fr"?"Liaison sélectionnée":locale==="ar"?"الرابط المحدد":"Selected link"}</span>
       </div>
-      <p>{t.note} · {t.config}</p>
+      <p>{ui.selectDevice} · {t.config}</p>
      </div>
-     <aside className="source-aside"><h3>{t.inventory}</h3>
-      <div className="source-edges">{p.edges.map((e,i)=><button key={e.a+e.b} type="button" aria-pressed={active===i} onClick={()=>setActive(i)}><strong dir="ltr">{e.a} ↔ {e.b}</strong><small dir="ltr">{e.ports}</small></button>)}</div>
+     <aside className="source-aside">
+      <div className="source-inspector" aria-live="polite">
+       <div className="source-inspector-kicker"><span className="source-inspector-led" aria-hidden="true"/>{device?ui.device:ui.link}</div>
+       <h3 dir="ltr">{selectedNode??selectedEdge.a+" ↔ "+selectedEdge.b}</h3>
+       <dl>
+        <div><dt>{device?ui.role:ui.ports}</dt><dd dir="ltr">{device?device.role:selectedEdge.ports}</dd></div>
+        <div><dt>{device?ui.address:ui.source}</dt><dd dir="ltr">{device?device.addr:p.file}</dd></div>
+       </dl>
+       {configPath?<a className="source-inspector-config" href={repo+"/blob/main/"+configPath} target="_blank" rel="noopener noreferrer"><FileCode2 size={15}/>{ui.configuration}<ExternalLink size={13}/></a>:null}
+       {selectedNode?<button type="button" className="source-inspector-reset" onClick={()=>setSelectedNode(null)}>{ui.clear}</button>:null}
+      </div>
+      <h3>{t.inventory}</h3>
+      <div className="source-edges">{p.edges.map((e,i)=><button key={e.a+e.b} type="button" aria-pressed={active===i&&!selectedNode} onClick={()=>chooseEdge(i)}><strong dir="ltr">{e.a} ↔ {e.b}</strong><small dir="ltr">{e.ports}</small></button>)}</div>
       <div className="source-links"><a href={p.url} target="_blank" rel="noopener noreferrer"><FileCode2 size={17}/>{t.read}<ExternalLink size={15}/></a><a href={repo} target="_blank" rel="noopener noreferrer">{t.project}<ExternalLink size={15}/></a></div>
      </aside>
     </div>
