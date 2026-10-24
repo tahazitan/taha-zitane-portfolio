@@ -91,7 +91,7 @@ export default function VisualProject({slug,locale,large=false}:{slug:string;loc
  return <div className={"visual-project visual-project--topology visual-project--"+slug+(large?" visual-project--large":"")} dir="ltr" role="group" aria-label={language.intro+": "+diagram.title}>
    <div className="visual-project-top"><span><Network size={14}/>{diagram.title}</span><span>{diagram.source?language.source:language.concept}</span></div>
    <div className="topology-preview-stage">
-    <svg viewBox="0 0 960 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={diagram.title+": "+diagram.nodes.map(n=>n.name).join(", ")}>
+    <svg viewBox="0 0 960 460" xmlns="http://www.w3.org/2000/svg" role={large?"group":"img"} aria-label={diagram.title+": "+diagram.nodes.map(n=>n.name).join(", ")}>
      <defs>
       <pattern id={"preview-grid-"+slug} width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="#568b9c" opacity=".34"/></pattern>
      </defs>
