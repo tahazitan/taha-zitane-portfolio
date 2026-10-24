@@ -29,6 +29,7 @@ if(!layout.includes('immersive-experience.css')||!layout.includes('<MotionSystem
 if(!layout.includes('sitewide-motion.css')||!motionSystem.includes('IntersectionObserver')||!siteMotionCSS.includes('.domain-visual'))throw Error('Sitewide motion and branding missing');
 if(!motionSystem.includes('site-return-top')||!nav.includes('aria-expanded={open}')||!nav.includes('onEscape'))throw Error('Whole-site mobile navigation and scroll controls missing');
 if(!section.includes('<SectionHeroVisual section={section} locale={locale}/>'))throw Error('Interactive technical story missing from six section pages');
+if(!sectionStory.includes('n.mark?<TechnologyMarks')||!mobilePremiumCSS.includes('.domain-node-plate .tech-mark'))throw Error('Section diagrams must include authentic contextual brand marks');
 for(const name of ['projects','experience','education','expertise','services','contact'])if(!sectionStory.includes(name+':{kicker:'))throw Error('Missing localized section identity: '+name);
 if(!casePage.includes('case-site--${slug}'))throw Error('Case-specific visual identity missing');
 for(const role of ['network','systems','security','monitoring'])if(!network3d.includes('kind="'+role+'"'))throw Error('Missing engineered 3D role: '+role);
