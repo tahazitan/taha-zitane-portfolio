@@ -12,6 +12,8 @@ import "./expertise-identity.css";
 import "./services-identity.css";
 import "./education-training.css";
 import "./site-branding.css";
+import "./immersive-experience.css";
+import MotionSystem from "@/components/MotionSystem";
 
 const siteUrl = "https://taha-zitane-engineering.zitanet44.workers.dev";
 
@@ -73,5 +75,5 @@ const personSchema={
 };
 
 export default function RootLayout({children}:{children:ReactNode}){
-  return <html lang="en"><body>{children}<script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(personSchema)}} /></body></html>
+  return <html lang="en"><body><MotionSystem/>{children}<script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(personSchema)}} /></body></html>
 }
