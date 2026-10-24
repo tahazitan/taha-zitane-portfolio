@@ -13,6 +13,7 @@ import "./services-identity.css";
 import "./education-training.css";
 import "./site-branding.css";
 import "./immersive-experience.css";
+import "./sitewide-motion.css";
 import MotionSystem from "@/components/MotionSystem";
 
 const siteUrl = "https://taha-zitane-engineering.zitanet44.workers.dev";
