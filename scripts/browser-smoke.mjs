@@ -34,6 +34,11 @@ try{
  assert.equal(await d.locator('.nav-links a').count(),6,'Navigation must expose six dedicated pages');
  assert.equal(await d.locator('.hero-person').innerText(),'Taha Zitane');
  assert.equal(await d.locator('.overview-card').count(),4,'Homepage is a focused four-path overview');
+ assert.equal(await d.locator('.immersive-section .layer-button').count(),4,'Interactive 3D infrastructure has four functional layers');
+ assert.equal(await d.locator('.immersive-section .layer-button[aria-pressed="true"]').count(),1,'One infrastructure focus selected');
+ await d.locator('.immersive-section .layer-button').nth(1).click();
+ assert.ok(await d.locator('.immersive-section .layer-button').nth(1).getAttribute('aria-pressed')==='true','Selecting security updates visualization focus');
+ assert.ok((await d.locator('.layer-information').innerText()).includes('Security policies'),'Context changes with 3D layer selection');
  assert.equal(await d.locator('.work-card').count(),0,'Engineering diagrams belong to Projects, not homepage');
  assert.equal(await d.locator('.source-topology').count(),0,'Source-specific diagram only on project page');
  assert.equal(await d.locator('.overview-project-preview .visual-project--topology').count(),1,'Homepage previews the documented enterprise topology');
@@ -99,6 +104,7 @@ try{
  assert.ok(await tablet.locator('.nav-toggle').isVisible(),'Tablet hamburger must be visible');
  await tablet.locator('.nav-toggle').click();
  assert.ok(await tablet.locator('#mobile-nav').isVisible(),'Tablet menu must expand visibly at 1024px');
+ assert.equal(await tablet.locator('.immersive-section').count(),1,'Tablet includes the infrastructure showcase');
  assert.equal(await tablet.locator('#mobile-nav a').count(),9,'Tablet menu has six sections and three languages');
  await overflow(tablet,'tablet home');
  await tablet.close();
@@ -111,6 +117,10 @@ try{
   const frame=await m.locator('.portrait-frame').boundingBox();
   assert.ok(frame&&frame.y<775,`${locale}: portrait appears in initial mobile viewport`);
   assert.equal(await m.locator('.overview-card').count(),4);
+  assert.ok(await m.locator('.immersive-section').count()===1,'locale: 3D infrastructure section exists on mobile');
+  assert.ok(await m.locator('.stage-blueprint').count()===1,'locale: lightweight fallback instead of WebGL on narrow screens');
+  assert.equal(await m.locator('.layer-button').count(),4,'Localized focus controls work in mobile layout');
+
   await m.locator('.nav-toggle').click();
   assert.equal(await m.locator('#mobile-nav a').count(),9,'Six sections and three languages in mobile menu');
   await m.locator('.nav-toggle').click();
