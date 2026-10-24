@@ -201,3 +201,70 @@
 .immersive-visual canvas:active{cursor:grabbing}
 @media(max-width:700px){.immersive-stage-actions>span{display:none}.immersive-play-toggle{padding:9px 11px}.immersive-play-toggle span{display:none}.immersive-stage-top{inset-inline:15px;top:15px}}
 @media(prefers-reduced-motion:reduce){.immersive-play-toggle{transition:none}.immersive-play-toggle:hover{transform:none}}
+
+/* Mobile-first entrance to the real interactive R3F scene below the editorial hero.
+   Preview is source-defined Containerlab; no simulated live network measurements. */
+.mobile-lab-entry{display:none}
+@media(max-width:700px){
+ .mobile-lab-entry{
+  display:block;position:relative;isolation:isolate;width:100%;margin:22px 0 0;
+  border:1px solid #386779;border-radius:18px;overflow:hidden;text-decoration:none;
+  background:linear-gradient(142deg,#081a29 0%,#102d43 53%,#071d2d 100%);
+  box-shadow:0 20px 40px rgba(12,31,43,.2),inset 0 1px rgba(188,226,237,.15);
+  color:#edf9fc;
+ }
+ .mobile-lab-entry::before{
+  content:"";position:absolute;inset:-100px -80px auto auto;width:270px;height:270px;
+  border-radius:50%;background:radial-gradient(circle,rgba(55,141,159,.27),transparent 69%);
+  pointer-events:none;
+ }
+ .mobile-lab-entry:focus-visible{outline:3px solid #d2ac80;outline-offset:4px}
+ .mobile-lab-entry-head{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px 0}
+ .mobile-lab-entry-copy{display:grid;gap:4px;min-width:0}
+ .mobile-lab-entry-kicker{display:inline-flex;align-items:center;gap:7px;font:750 10px/1.3 ui-monospace,monospace;color:#9bdfe1;letter-spacing:.08em}
+ .mobile-lab-entry-copy>strong{font-size:clamp(17px,5.15vw,23px);line-height:1.25;letter-spacing:-.035em;color:#f4fbfd}
+ .mobile-lab-entry-expand{width:36px;height:36px;display:grid;place-items:center;flex:none;border:1px solid #5b95a1;border-radius:10px;color:#c2f6ed;background:rgba(34,93,110,.36)}
+ .mobile-lab-viewport{position:relative;height:176px;perspective:600px;overflow:hidden}
+ .mobile-lab-stamp{position:absolute;z-index:3;right:16px;top:14px;display:flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid rgba(150,211,216,.3);border-radius:4px;background:#112f40;color:#a2dadd;font:700 9px ui-monospace,monospace;letter-spacing:.045em}
+ .mobile-lab-topology{
+  display:block;position:absolute;inset:-23px -6px -12px;width:calc(100% + 12px);height:calc(100% + 35px);
+  overflow:visible;transform:rotateX(18deg) rotateZ(-5deg) scale(.94);
+  transform-origin:center 52%;filter:drop-shadow(0 12px 8px rgba(0,5,16,.3));
+  transition:transform .48s cubic-bezier(.18,.9,.27,1);
+ }
+ .mobile-lab-entry:active .mobile-lab-topology{transform:rotateX(12deg) rotateZ(-2deg) scale(.97)}
+ .mobile-lab-node-shadow{fill:rgba(2,15,27,.72)}
+ .mobile-lab-node-face{fill:#193e53;stroke:#6b9cac;stroke-width:1.3}
+ .mobile-lab-node--router .mobile-lab-node-face{fill:#1a4958;stroke:#8cd4cb}
+ .mobile-lab-node-side{fill:#112739}
+ .mobile-lab-node-name{font:800 9.6px ui-monospace,monospace;fill:#eafcff;letter-spacing:.01em}
+ .mobile-lab-node-ip{font:650 9px ui-monospace,monospace;fill:#b2cfdc}
+ .mobile-lab-protocol{font:800 9px ui-monospace,monospace;fill:#ead0a8;letter-spacing:.055em}
+ .mobile-lab-flow{animation:mobile-lab-packets 7s linear infinite}
+ @keyframes mobile-lab-packets{to{stroke-dashoffset:-156}}
+ .mobile-lab-entry-foot{position:relative;z-index:2;display:flex;justify-content:space-between;gap:6px;align-items:center;padding:7px 16px 13px;border-top:1px solid rgba(111,175,192,.2)}
+ .mobile-lab-entry-foot>span:first-child{max-width:40%;font:700 9px/1.5 ui-monospace,monospace;color:#9ab7c3}
+ .mobile-lab-entry-cta{display:flex;align-items:center;justify-content:flex-end;gap:4px;text-align:end;font:750 11px/1.35 ui-monospace,monospace;color:#b5f1e7}
+ .hero .hero-shell>.mobile-lab-entry{z-index:3}
+ .immersive-section{scroll-margin-top:65px}
+ .immersive-visual[data-render-mode="blueprint"] .stage-blueprint{perspective:1000px}
+ .immersive-visual[data-render-mode="blueprint"] .blueprint-rack{
+  transform:perspective(650px) rotateY(calc(-17deg + var(--mobile-orbit,0deg))) rotateX(9deg) scale(1.04);
+  box-shadow:30px 34px 58px rgba(0,0,0,.43),inset 2px 0 14px rgba(133,202,228,.23);
+  border-inline-start:12px ridge #5c8595;
+  border-inline-end:10px ridge #24485a;
+ }
+ .immersive-visual[data-render-mode="blueprint"] .blueprint-rack::after{box-shadow:15px 0 25px rgba(2,12,24,.4)}
+ .immersive-visual[data-render-mode="blueprint"] .blueprint-label{background:#123a4b;color:#d8f7f5;box-shadow:0 7px 25px rgba(0,8,20,.37)}
+}
+@media(max-width:370px){
+ .mobile-lab-entry-head{padding:13px 13px 0}
+ .mobile-lab-entry-copy>strong{font-size:16px}
+ .mobile-lab-viewport{height:156px}
+ .mobile-lab-entry-foot{padding-inline:12px}
+ .mobile-lab-entry-cta{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+ .mobile-lab-flow{animation:none!important}
+ .mobile-lab-topology{transition:none!important}
+}
