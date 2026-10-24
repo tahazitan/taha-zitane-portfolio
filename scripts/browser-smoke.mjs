@@ -52,6 +52,15 @@ try{
  await d.waitForFunction(()=>{const el=document.querySelector('.portrait-photo');return el instanceof HTMLImageElement&&el.complete&&el.naturalWidth>100},{timeout:18000});
  const pb=await d.locator('.portrait-frame').boundingBox();assert.ok(pb&&pb.width>220,'Portrait prominent on desktop');
  await overflow(d,'desktop home');
+ // Long portfolio pages reveal the return control on upward scroll without blocking content on downward scroll.
+ await d.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));
+ await d.waitForTimeout(120);
+ assert.equal(await d.locator('.site-return-top').getAttribute('data-visible'),'false','Back-to-top stays hidden while reading downward');
+ await d.evaluate(()=>window.scrollBy(0,-320));
+ await d.waitForFunction(()=>document.querySelector('.site-return-top')?.getAttribute('data-visible')==='true');
+ await d.locator('.site-return-top').click();
+ await d.waitForFunction(()=>window.scrollY<100);
+ assert.equal(await d.locator('.site-return-top').getAttribute('data-visible'),'false','Back-to-top disappears after returning to the start');
  await d.locator('.hero').screenshot({path:path.join(root,'screenshots','desktop-hero.png'),animations:'disabled'});
  await d.locator('.immersive-interface').screenshot({path:path.join(root,'screenshots','desktop-3d-infrastructure.png'),animations:'disabled'});
  await d.locator('.landing-overview').screenshot({path:path.join(root,'screenshots','desktop-overview.png'),animations:'disabled'});
