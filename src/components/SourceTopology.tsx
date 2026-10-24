@@ -85,7 +85,7 @@ export default function SourceTopology({locale,compact=false}:{locale:Locale;com
      <div className="source-figure">
       <div className="source-caption"><span>{p.file}</span><span>{p.nodes.length} {t.nodes} / {p.edges.length} {t.links}</span></div>
       <div className="source-technology"><TechnologyMarks technologies={mode==="secure"?["Containerlab","FRRouting","Linux","WireGuard"]:["Containerlab","FRRouting","Linux"]} limit={4} variant="inline"/></div>
-      <svg viewBox="0 0 900 375" role="img" aria-label={p.file+" · IPv4 / "+t.config}>
+      <svg viewBox="0 0 900 375" role="group" aria-label={p.file+" · IPv4 / "+t.config}>
        <desc>{t.intro} {t.config}</desc>
        <defs><pattern id={gridId} width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" fill="none" stroke="#285062" strokeWidth=".65"/></pattern></defs>
        <rect width="900" height="375" fill="#0b2230"/><rect width="900" height="375" fill={"url(#"+gridId+")"}/>
