@@ -1,5 +1,5 @@
 "use client";
-import {useEffect,useRef,useState} from "react";
+import {useEffect,useRef,useState,type CSSProperties} from "react";
 import dynamic from "next/dynamic";
 import {ArrowUpRight,Box,Orbit,Server,ShieldCheck,Activity,Network,MoveUpRight,RotateCcw,ChevronLeft,ChevronRight} from "lucide-react";
 import TechnologyMarks from "./TechnologyMarks";
@@ -55,7 +55,7 @@ export default function InfrastructureStage({locale}:{locale:Locale}){
     <p>{t.subtitle}</p>
    </div>
    <div className="immersive-interface">
-    <div className="immersive-visual" aria-label={t.fallback}
+    <div className="immersive-visual" aria-label={t.fallback} data-orbit-angle={orbitAngle.toFixed(2)}
      onTouchStart={event=>{if(event.touches.length===1)touchX.current=event.touches[0].clientX;}}
      onTouchMove={event=>{if(touchX.current===null||event.touches.length!==1)return;const x=event.touches[0].clientX;const delta=x-touchX.current;if(Math.abs(delta)>3){rotate(delta*.005);touchX.current=x;}}}
      onTouchEnd={()=>{touchX.current=null;}} onTouchCancel={()=>{touchX.current=null;}}>
@@ -64,7 +64,7 @@ export default function InfrastructureStage({locale}:{locale:Locale}){
       <div className="blueprint-glow"/>
       <span className="blueprint-label blueprint-label--n">LAN / VLAN</span>
       <span className="blueprint-label blueprint-label--s">FIREWALL / VPN</span>
-      <div className="blueprint-rack" style={{"--mobile-orbit":orbitAngle*18+"deg"} as React.CSSProperties}><div className="blueprint-rack-top"/>{categories.map((cat,i)=><div key={cat.id} className={"blueprint-unit "+(cat.id===active?"is-lit":"")}><span className="unit-slots">{Array.from({length:8},(_,k)=><i key={k}/>)}</span><span className="unit-led"/></div>)}</div>
+      <div className="blueprint-rack" style={{"--mobile-orbit":orbitAngle*18+"deg"} as CSSProperties}><div className="blueprint-rack-top"/>{categories.map((cat,i)=><div key={cat.id} className={"blueprint-unit "+(cat.id===active?"is-lit":"")}><span className="unit-slots">{Array.from({length:8},(_,k)=><i key={k}/>)}</span><span className="unit-led"/></div>)}</div>
       <span className="blueprint-label blueprint-label--c">AD / LINUX / VM</span>
       <span className="blueprint-label blueprint-label--o">LOG / SIEM</span>
       <div className="blueprint-trace blueprint-trace--a"/><div className="blueprint-trace blueprint-trace--b"/>
