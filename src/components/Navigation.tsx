@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import {useState} from "react";
+import {useEffect,useRef,useState} from "react";
 import {Menu,X,ArrowUpRight} from "lucide-react";
 import {content,homePath,languages,type Locale} from "@/data/content";
 import BrandMark from "./BrandMark";
@@ -9,13 +9,26 @@ type Page=typeof sections[number];
 const pagePath=(locale:Locale,page:Page)=>`${locale==="en"?"":"/"+locale}/${page}/`;
 export default function Navigation({locale,slug,section}:{locale:Locale;slug?:string;section?:string}){
  const c=content[locale], [open,setOpen]=useState(false);
+ const toggleRef=useRef<HTMLButtonElement>(null);
+ const menuRef=useRef<HTMLElement>(null);
+ const labels=locale==="ar"?{open:"فتح قائمة التنقل",close:"إغلاق قائمة التنقل",main:"التنقل الرئيسي",lang:"اللغات"}:locale==="fr"?{open:"Ouvrir la navigation",close:"Fermer la navigation",main:"Navigation principale",lang:"Langues"}:{open:"Open navigation",close:"Close navigation",main:"Main navigation",lang:"Languages"};
+ useEffect(()=>{
+  if(!open)return;
+  const first=menuRef.current?.querySelector<HTMLAnchorElement>("a");
+  first?.focus();
+  const onEscape=(e:KeyboardEvent)=>{if(e.key==="Escape"){setOpen(false);toggleRef.current?.focus();}};
+  const onOutside=(e:PointerEvent)=>{if(!(e.target instanceof Node))return;if(!menuRef.current?.contains(e.target)&&!toggleRef.current?.contains(e.target))setOpen(false);};
+  window.addEventListener("keydown",onEscape);
+  document.addEventListener("pointerdown",onOutside);
+  return()=>{window.removeEventListener("keydown",onEscape);document.removeEventListener("pointerdown",onOutside);};
+ },[open]);
  const otherHref=(lang:Locale)=>slug?`${lang==="en"?"":"/"+lang}/projects/${slug}/`:section&&sections.includes(section as Page)?pagePath(lang,section as Page):homePath(lang);
  return <header className="header-wrap"><div className="site-nav container-xl" dir={locale==="ar"?"rtl":"ltr"}>
  <Link className="brand" href={homePath(locale)} aria-label="Taha Zitane home"><BrandMark size={52} className="brand-mark"/><span className="brand-name">{locale==="ar"?"طه زيطان":"TAHA ZITANE"}<span>{locale==="ar"?" / الأنظمة والشبكات":" / SYSTEMS & NETWORKS"}</span></span></Link>
- <nav className="nav-links" aria-label="Primary navigation">{sections.map((s,i)=><Link key={s} href={pagePath(locale,s)} aria-current={section===s?"page":undefined}>{c.nav[i]}</Link>)}</nav>
- <div className="nav-right"><div className="language-switcher" aria-label="Site language">{languages.map(lang=><Link href={otherHref(lang)} key={lang} hrefLang={lang} aria-current={lang===locale?"page":undefined} className={lang===locale?"selected":""}>{lang.toUpperCase()}</Link>)}</div></div>
- <button className="nav-toggle" type="button" aria-expanded={open} aria-controls="mobile-nav" aria-label={open?"Close navigation":"Open navigation"} onClick={()=>setOpen(v=>!v)}>{open?<X size={24}/>:<Menu size={24}/>}</button>
+ <nav className="nav-links" aria-label={labels.main}>{sections.map((s,i)=><Link key={s} href={pagePath(locale,s)} aria-current={section===s?"page":undefined}>{c.nav[i]}</Link>)}</nav>
+ <div className="nav-right"><div className="language-switcher" aria-label={labels.lang}>{languages.map(lang=><Link href={otherHref(lang)} key={lang} hrefLang={lang} aria-current={lang===locale?"page":undefined} className={lang===locale?"selected":""}>{lang.toUpperCase()}</Link>)}</div></div>
+ <button ref={toggleRef} className="nav-toggle" type="button" aria-expanded={open} aria-controls="mobile-nav" aria-label={open?labels.close:labels.open} onClick={()=>setOpen(v=>!v)}>{open?<X size={24}/>:<Menu size={24}/>}</button>
  </div>
- {open&&<nav id="mobile-nav" className="mobile-menu" aria-label="Mobile navigation" dir={locale==="ar"?"rtl":"ltr"}>{sections.map((s,i)=><Link key={s} onClick={()=>setOpen(false)} href={pagePath(locale,s)}>{c.nav[i]}<ArrowUpRight size={15}/></Link>)}<div className="mobile-langs">{languages.map(lang=><Link key={lang} onClick={()=>setOpen(false)} href={otherHref(lang)} className={lang===locale?"selected":""}>{lang.toUpperCase()}</Link>)}</div></nav>}
+ {open&&<nav ref={menuRef} id="mobile-nav" className="mobile-menu" aria-label={labels.main} dir={locale==="ar"?"rtl":"ltr"}>{sections.map((s,i)=><Link key={s} onClick={()=>setOpen(false)} aria-current={section===s?"page":undefined} href={pagePath(locale,s)}><span className="mobile-link-index">{String(i+1).padStart(2,"0")}</span><span>{c.nav[i]}</span><ArrowUpRight size={17}/></Link>)}<div className="mobile-langs">{languages.map(lang=><Link key={lang} onClick={()=>setOpen(false)} href={otherHref(lang)} className={lang===locale?"selected":""}>{lang.toUpperCase()}</Link>)}</div></nav>}
  </header>;
 }
