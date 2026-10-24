@@ -129,3 +129,27 @@ html[data-scrolled="true"] .site-return-top{opacity:1;pointer-events:auto;transf
  .hero .hero-schematic{animation:none!important;will-change:auto}
  .site-return-top{transition:none!important}
 }
+/* Command-center navigation: full-size touch targets and predictable keyboard focus. */
+@media(max-width:1200px){
+ .nav-toggle{min-width:48px;min-height:48px;border-radius:11px;border:1px solid rgba(161,216,225,.31);background:rgba(126,190,205,.07);color:#e7f7f6;transition:background .2s,border-color .2s}
+ .nav-toggle:hover,.nav-toggle[aria-expanded="true"]{background:rgba(122,204,206,.18);border-color:#8fdbd9}
+ .nav-toggle:focus-visible{outline:3px solid #b4f0e6;outline-offset:3px}
+ .mobile-menu{border-top:1px solid rgba(115,204,204,.28);background:linear-gradient(155deg,rgba(9,31,45,.98),rgba(15,54,68,.98));backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 25px 65px rgba(0,12,22,.38);padding:14px clamp(18px,4vw,35px) 22px;max-height:calc(100dvh - 78px);overflow-y:auto}
+ .mobile-menu>a{min-height:53px;display:flex;align-items:center;gap:15px;padding:11px 9px;border-bottom:1px solid rgba(170,211,224,.17);font-size:15px;letter-spacing:.02em;color:#e9f7f8;transition:background .2s,color .2s}
+ .mobile-menu>a svg{margin-inline-start:auto;flex:0 0 auto;color:#8fd7d5}
+ .mobile-menu>a:hover,.mobile-menu>a:focus-visible,.mobile-menu>a[aria-current="page"]{background:rgba(132,202,210,.12);color:#d0fff5}
+ .mobile-link-index{font:750 10px ui-monospace,monospace;color:#8fc8d1;min-width:21px}
+ .mobile-menu>a:focus-visible,.mobile-langs a:focus-visible{outline:2px solid #b7e8e4;outline-offset:2px}
+ .mobile-langs{display:flex;gap:10px;padding:15px 4px 5px}
+ .mobile-langs a{min-width:53px;min-height:44px;display:grid;place-items:center;border-radius:8px}
+ .mobile-langs a.selected{border-color:#8de3d6;background:rgba(127,206,204,.17)}
+}
+@media(max-width:560px){
+ .site-nav .brand-mark{width:44px;height:44px}
+ .site-nav .brand-name{font-size:clamp(11px,3.3vw,14px)}
+ .site-nav .brand-name span{font-size:9px;letter-spacing:.035em}
+ .site-nav .nav-right{display:none}
+ .site-nav{gap:8px}
+ .nav-toggle{margin-inline-start:auto;flex:0 0 48px}
+ .mobile-menu>a{font-size:16px}
+}
