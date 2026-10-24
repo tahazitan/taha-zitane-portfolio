@@ -43,11 +43,18 @@ export default function InfrastructureStage({locale}:{locale:Locale}){
    // Mobile gets the exact same Three.js scene. WebGL capability—not screen width—decides the fallback.
    const supported=typeof window.WebGLRenderingContext!=="undefined";
    if(!supported){if(active)setEnhanced(false);return;}
-   try{const c=document.createElement("canvas");const gl=c.getContext("webgl2",{powerPreference:"low-power"})||c.getContext("webgl",{powerPreference:"low-power"});if(active)setEnhanced(Boolean(gl));}
+   try{
+    const c=document.createElement("canvas");
+    const gl=c.getContext("webgl2",{powerPreference:"low-power"})||c.getContext("webgl",{powerPreference:"low-power"});
+    const ready=Boolean(gl);
+    // Do not leak a second GPU context alongside the actual React Three Fiber scene.
+    gl?.getExtension("WEBGL_lose_context")?.loseContext();
+    if(active)setEnhanced(ready);
+   }
    catch{if(active)setEnhanced(false);}
   };
-  test();window.addEventListener("resize",test,{passive:true});
-  return()=>{active=false;window.removeEventListener("resize",test);};
+  test();
+  return()=>{active=false;};
  },[]);
  return <section ref={sectionRef} className="immersive-section" id="infrastructure" aria-labelledby="immersive-title" dir={locale==="ar"?"rtl":"ltr"}>
   <div className="container-xl">
@@ -56,7 +63,7 @@ export default function InfrastructureStage({locale}:{locale:Locale}){
     <p>{t.subtitle}</p>
    </div>
    <div className="immersive-interface">
-    <div className="immersive-visual" aria-label={t.fallback} data-orbit-angle={orbitAngle.toFixed(2)} data-motion-paused={motionPaused?"true":"false"}
+    <div className="immersive-visual" aria-label={t.fallback} data-render-mode={enhanced&&inViewport?"webgl":"blueprint"} data-orbit-angle={orbitAngle.toFixed(2)} data-motion-paused={motionPaused?"true":"false"}
      onTouchStart={event=>{if(event.touches.length===1)touchX.current=event.touches[0].clientX;}}
      onTouchMove={event=>{if(touchX.current===null||event.touches.length!==1)return;const x=event.touches[0].clientX;const delta=x-touchX.current;if(Math.abs(delta)>3){rotate(delta*.005);touchX.current=x;}}}
      onTouchEnd={()=>{touchX.current=null;}} onTouchCancel={()=>{touchX.current=null;}}>
