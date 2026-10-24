@@ -187,3 +187,17 @@
 @media(prefers-reduced-motion:reduce){
  .visual-project-interactive[role="button"]>rect:first-child{transition:none!important}
 }
+
+/* R3F + Drei engineering scene: real controls, readable focus, adaptive rendering. */
+.immersive-stage-actions{display:inline-flex;align-items:center;gap:16px;pointer-events:auto}
+.immersive-stage-actions>span{color:#75a9b7;white-space:nowrap}
+.immersive-play-toggle{border:1px solid rgba(143,207,213,.46);border-radius:999px;background:rgba(10,34,49,.88);color:#e6faff;display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 10px/1.25 ui-monospace,monospace;letter-spacing:.025em;padding:10px 12px;cursor:pointer;transition:background .2s,border-color .2s,transform .2s}
+.immersive-play-toggle:hover{background:#224b5c;border-color:#a7e9e2;transform:translateY(-1px)}
+.immersive-play-toggle:focus-visible{outline:3px solid #ace6e6;outline-offset:4px}
+.immersive-play-toggle svg{flex:none}
+.immersive-play-toggle span{color:inherit!important;white-space:nowrap}
+.immersive-visual[data-motion-paused="true"] .immersive-pulse{animation-play-state:paused}
+.immersive-visual canvas{cursor:grab}
+.immersive-visual canvas:active{cursor:grabbing}
+@media(max-width:700px){.immersive-stage-actions>span{display:none}.immersive-play-toggle{padding:9px 11px}.immersive-play-toggle span{display:none}.immersive-stage-top{inset-inline:15px;top:15px}}
+@media(prefers-reduced-motion:reduce){.immersive-play-toggle{transition:none}.immersive-play-toggle:hover{transform:none}}
