@@ -15,6 +15,7 @@ import "./site-branding.css";
 import "./immersive-experience.css";
 import "./sitewide-motion.css";
 import "./mobile-premium.css";
+import "./studio-design.css";
 import MotionSystem from "@/components/MotionSystem";
 
 const siteUrl = "https://taha-zitane-engineering.zitanet44.workers.dev";
