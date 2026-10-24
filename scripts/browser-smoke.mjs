@@ -50,6 +50,17 @@ try{
  await d.locator('.hero').screenshot({path:path.join(root,'screenshots','desktop-hero.png'),animations:'disabled'});
  await d.locator('.landing-overview').screenshot({path:path.join(root,'screenshots','desktop-overview.png'),animations:'disabled'});
 
+ for(const section of ['projects','experience','education','expertise','services','contact']){
+  await d.goto(base+'/'+section+'/',{waitUntil:'domcontentloaded'});
+  assert.equal(await d.locator('.domain-node').count(),3,section+': unique three-stage technical visual');
+  assert.equal(await d.locator('.domain-node[aria-pressed="true"]').count(),1,section+': exactly one active domain');
+  await d.locator('.domain-node').nth(1).click();
+  assert.equal(await d.locator('.domain-node').nth(1).getAttribute('aria-pressed'),'true',section+': active node selection responds to click');
+  assert.ok(await d.locator('.domain-selected').isVisible(),section+': contextual technical explanation visible');
+  await overflow(d,section+' desktop');
+  await d.locator('.detail-hero').screenshot({path:path.join(root,'screenshots','desktop-'+section+'-hero.png'),animations:'disabled'});
+ }
+
  await d.goto(base+'/projects/',{waitUntil:'domcontentloaded'});
  await d.locator('.work-card').first().waitFor();
  assert.equal(await d.locator('.work-card').count(),8,'All eight technical project case studies');
@@ -94,6 +105,8 @@ try{
  assert.ok(await d.locator('a[href^="tel:"]').count()>0);
 
  await d.goto(base+'/projects/enterprise-network-lab/',{waitUntil:'domcontentloaded'});
+ assert.equal(await d.locator('.case-site--enterprise-network-lab').count(),1,'Every engineering case uses its named design identity');
+ assert.ok(await d.locator('.case-main .visual-project--large').isVisible(),'Case hero technical visual present');
  assert.equal(await d.locator('.source-topology-compact .source-edges button').count(),4,'Source-based base topology has four links');
  await d.waitForTimeout(400);
  await d.locator('.source-switch button').nth(1).click();
@@ -128,6 +141,8 @@ try{
   await m.screenshot({path:path.join(root,'screenshots',`mobile-${locale}.png`),animations:'disabled'});
   for(const s of ['projects','services','experience','education','expertise','contact']){
    await m.goto(base+`/${locale}/${s}/`,{waitUntil:'domcontentloaded'});
+   assert.ok(await m.locator('.domain-visual').isVisible(),`${locale} ${s}: own visual story remains visible on mobile`);
+   assert.equal(await m.locator('.domain-node').count(),3,`${locale} ${s}: technical nodes remain interactive`);
    await overflow(m,`${locale} ${s} mobile`);
   }
  }
