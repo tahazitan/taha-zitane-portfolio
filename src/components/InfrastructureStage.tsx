@@ -1,5 +1,5 @@
 "use client";
-import {useEffect,useState} from "react";
+import {useEffect,useRef,useState} from "react";
 import dynamic from "next/dynamic";
 import {ArrowUpRight,Box,Orbit,Server,ShieldCheck,Activity,Network,MoveUpRight} from "lucide-react";
 import TechnologyMarks from "./TechnologyMarks";
@@ -20,6 +20,16 @@ const copy={
 export default function InfrastructureStage({locale}:{locale:Locale}){
  const [active,setActive]=useState<Focus>("network");
  const [enhanced,setEnhanced]=useState(false);
+ const [inViewport,setInViewport]=useState(false);
+ const sectionRef=useRef<HTMLElement>(null);
+ useEffect(()=>{
+  const section=sectionRef.current;
+  if(!section)return;
+  if(!("IntersectionObserver" in window)){setInViewport(true);return;}
+  const observer=new IntersectionObserver(entries=>setInViewport(entries.some(entry=>entry.isIntersecting)),{rootMargin:"250px",threshold:0});
+  observer.observe(section);
+  return()=>observer.disconnect();
+ },[]);
  const t=copy[locale];const selected=categories.findIndex(x=>x.id===active);
  useEffect(()=>{
   let active=true;
@@ -32,7 +42,7 @@ export default function InfrastructureStage({locale}:{locale:Locale}){
   test();window.addEventListener("resize",test,{passive:true});
   return()=>{active=false;window.removeEventListener("resize",test);};
  },[]);
- return <section className="immersive-section" id="infrastructure" aria-labelledby="immersive-title" dir={locale==="ar"?"rtl":"ltr"}>
+ return <section ref={sectionRef} className="immersive-section" id="infrastructure" aria-labelledby="immersive-title" dir={locale==="ar"?"rtl":"ltr"}>
   <div className="container-xl">
    <div className="immersive-heading">
     <div><span className="immersive-eyebrow"><span className="immersive-pulse"/>{t.eyebrow} / 002</span><h2 id="immersive-title">{t.title}</h2></div>
@@ -41,7 +51,7 @@ export default function InfrastructureStage({locale}:{locale:Locale}){
    <div className="immersive-interface">
     <div className="immersive-visual" aria-label={t.fallback}>
      <div className="immersive-stage-top"><span><Orbit size={15}/>{t.scene}</span><span>SYS / 01—04</span></div>
-     {enhanced?<NetworkWorld active={active}/>:<div className="stage-blueprint" aria-label={t.fallback} role="img">
+     {enhanced&&inViewport?<NetworkWorld active={active}/>:<div className="stage-blueprint" aria-label={t.fallback} role="img">
       <div className="blueprint-glow"/>
       <span className="blueprint-label blueprint-label--n">LAN / VLAN</span>
       <span className="blueprint-label blueprint-label--s">FIREWALL / VPN</span>
