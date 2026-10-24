@@ -124,6 +124,14 @@ try{
  assert.equal(await d.locator('.case-site--enterprise-network-lab').count(),1,'Every engineering case uses its named design identity');
  assert.ok(await d.locator('.case-main .visual-project--large').isVisible(),'Case hero technical visual present');
  assert.equal(await d.locator('.source-topology-compact .source-edges button').count(),4,'Source-based base topology has four links');
+ assert.ok(await d.locator('.visual-project--large .visual-project-inspector').isVisible(),'Each case-study visual exposes an engineering inspector');
+ await d.locator('.visual-project--large .visual-project-interactive[role="button"]').first().click();
+ assert.notEqual(await d.locator('.visual-project-inspector-copy strong').innerText(),'Select a device or connection in the diagram','Project diagrams support direct inspection');
+ await d.locator('.source-topology-compact .source-diagram-node').first().click();
+ assert.equal(await d.locator('.source-inspector h3').innerText(),'hq-rtr','Source-defined devices are directly inspectable');
+ assert.ok(await d.locator('.source-inspector-config').count()>0,'Router inspection links to FRR configuration');
+ await d.locator('.source-topology-compact .source-edges button').first().click();
+ assert.ok((await d.locator('.source-inspector h3').innerText()).includes('↔'),'Inventory and source-inspector selection are synchronized');
  await d.waitForTimeout(400);
  await d.locator('.source-switch button').nth(1).click();
  assert.equal(await d.locator('.source-topology-compact .source-edges button').count(),6,'Secure source profile uses six links');
