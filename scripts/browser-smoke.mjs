@@ -53,11 +53,13 @@ try{
  const pb=await d.locator('.portrait-frame').boundingBox();assert.ok(pb&&pb.width>220,'Portrait prominent on desktop');
  await overflow(d,'desktop home');
  await d.locator('.hero').screenshot({path:path.join(root,'screenshots','desktop-hero.png'),animations:'disabled'});
+ await d.locator('.immersive-interface').screenshot({path:path.join(root,'screenshots','desktop-3d-infrastructure.png'),animations:'disabled'});
  await d.locator('.landing-overview').screenshot({path:path.join(root,'screenshots','desktop-overview.png'),animations:'disabled'});
 
  for(const section of ['projects','experience','education','expertise','services','contact']){
   await d.goto(base+'/'+section+'/',{waitUntil:'domcontentloaded'});
   assert.equal(await d.locator('.domain-node').count(),3,section+': unique three-stage technical visual');
+  if(section!=='contact')assert.equal(await d.locator('.domain-node .tech-mark-image img').count(),3,section+': sourced technology branding within each three-stage illustration');
   assert.equal(await d.locator('.domain-node[aria-pressed="true"]').count(),1,section+': exactly one active domain');
   await d.locator('.domain-node').nth(1).click();
   assert.equal(await d.locator('.domain-node').nth(1).getAttribute('aria-pressed'),'true',section+': active node selection responds to click');
@@ -154,6 +156,7 @@ try{
   assert.equal(await m.locator('.immersive-visual').getAttribute('data-orbit-angle'),'0.00',`${locale}: reset works on mobile`);
   assert.equal(await m.locator('.layer-button').count(),4,'Localized focus controls work in mobile layout');
 
+  await m.locator('.immersive-interface').screenshot({path:path.join(root,'screenshots',`mobile-${locale}-3d.png`),animations:'disabled'});
   await m.locator('.nav-toggle').click();
   assert.equal(await m.locator('#mobile-nav a').count(),9,'Six sections and three languages in mobile menu');
   assert.equal(await m.evaluate(()=>document.activeElement?.tagName),'A','Keyboard focus moves into open mobile navigation');
