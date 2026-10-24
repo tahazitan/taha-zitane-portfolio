@@ -1,7 +1,7 @@
 "use client";
 import {useEffect,useRef,useState,type CSSProperties} from "react";
 import dynamic from "next/dynamic";
-import {ArrowUpRight,Box,Orbit,Server,ShieldCheck,Activity,Network,MoveUpRight,RotateCcw,ChevronLeft,ChevronRight} from "lucide-react";
+import {ArrowUpRight,Box,Orbit,Server,ShieldCheck,Activity,Network,MoveUpRight,RotateCcw,ChevronLeft,ChevronRight,Pause,Play} from "lucide-react";
 import TechnologyMarks from "./TechnologyMarks";
 import type {Locale} from "@/data/content";
 import type {Focus} from "./NetworkWorld";
@@ -13,12 +13,13 @@ const categories=[
  {id:"monitoring" as Focus,icon:Activity,tools:["Wazuh","Zabbix","Wireshark"]}
 ];
 const copy={
- en:{orbitLeft:"Rotate infrastructure left",orbitRight:"Rotate infrastructure right",orbitReset:"Reset 3D view",eyebrow:"A LIVING INFRASTRUCTURE",title:"The systems behind the work.",subtitle:"Explore a three-dimensional infrastructure study: connected switching, security, virtual servers and monitoring. Select a layer to examine its role.",interaction:"MOVE POINTER TO EXPLORE · SELECT A LAYER",fallback:"INTERACTIVE INFRASTRUCTURE MODEL",foot:"Conceptual 3D visualization · not a production deployment",focus:["Network fabric","Security edge","Compute & identity","Observability"],detail:["Traffic paths, connectivity and segmentation provide the foundation for reliable services.","Security policies and encrypted connectivity protect flows between network zones.","Windows/Linux servers, directory services and virtualization carry the workloads.","Logs, monitoring and diagnostics help surface issues and support remediation."],link:"Explore engineering projects",scene:"LIVE SYSTEMS / 3D"},
- fr:{orbitLeft:"Pivoter l’infrastructure à gauche",orbitRight:"Pivoter l’infrastructure à droite",orbitReset:"Réinitialiser la vue 3D",eyebrow:"UNE INFRASTRUCTURE VIVANTE",title:"Les systèmes derrière le travail.",subtitle:"Explorez une infrastructure 3D : commutation, sécurité, serveurs virtuels et supervision. Sélectionnez une couche pour comprendre son rôle.",interaction:"DÉPLACEZ LE POINTEUR · CHOISISSEZ UNE COUCHE",fallback:"MODÈLE D’INFRASTRUCTURE",foot:"Visualisation 3D conceptuelle · pas un déploiement en production",focus:["Réseau & connectivité","Sécurité périmétrique","Systèmes & identité","Supervision"],detail:["Les flux et la segmentation constituent la base d'une infrastructure stable.","Les politiques de sécurité et les liens chiffrés contrôlent les échanges entre zones.","Windows/Linux, annuaire et virtualisation hébergent les services essentiels.","Les journaux, la surveillance et le diagnostic permettent d'identifier les problèmes."],link:"Découvrir les projets techniques",scene:"SYSTÈMES / 3D"},
- ar:{orbitLeft:"تدوير البنية نحو اليسار",orbitRight:"تدوير البنية نحو اليمين",orbitReset:"إعادة ضبط العرض الثلاثي الأبعاد",eyebrow:"بنية تحتية نابضة بالحياة",title:"اكتشف الأنظمة وراء كل مشروع.",subtitle:"استكشف نموذجاً ثلاثي الأبعاد يوضح الترابط بين الشبكات والحماية والخوادم الافتراضية والمراقبة. اختر أحد المجالات لمعرفة دوره.",interaction:"حرّك المؤشر للاستكشاف · اختر مجالاً",fallback:"نموذج تفاعلي للبنية التحتية",foot:"تصور هندسي ثلاثي الأبعاد لأغراض العرض وليس نظاماً إنتاجياً",focus:["الشبكات والاتصال","أمن الشبكات","الأنظمة والهوية","المراقبة والتحليل"],detail:["تشكّل مسارات البيانات وتقسيم الشبكات أساس استقرار الخدمات.","تُساهم السياسات الأمنية والاتصالات المشفرة في حماية حركة البيانات بين المناطق.","تستضيف أنظمة Windows وLinux والافتراضية خدمات المؤسسة.","يساعد جمع السجلات والمراقبة والتشخيص على اكتشاف المشكلات ومعالجتها."],link:"استكشف المشاريع الهندسية",scene:"أنظمة تفاعلية / 3D"}
+ en:{orbitLeft:"Rotate infrastructure left",orbitRight:"Rotate infrastructure right",orbitReset:"Reset 3D view",eyebrow:"A LIVING INFRASTRUCTURE",title:"The systems behind the work.",subtitle:"Explore a three-dimensional infrastructure study: connected switching, security, virtual servers and monitoring. Select a layer to examine its role.",interaction:"MOVE POINTER TO EXPLORE · SELECT A LAYER",fallback:"INTERACTIVE INFRASTRUCTURE MODEL",foot:"Conceptual 3D visualization · not a production deployment",focus:["Network fabric","Security edge","Compute & identity","Observability"],detail:["Traffic paths, connectivity and segmentation provide the foundation for reliable services.","Security policies and encrypted connectivity protect flows between network zones.","Windows/Linux servers, directory services and virtualization carry the workloads.","Logs, monitoring and diagnostics help surface issues and support remediation."],link:"Explore engineering projects",scene:"ENGINEERING MODEL / 3D",pause:"Pause motion",resume:"Resume motion"},
+ fr:{orbitLeft:"Pivoter l’infrastructure à gauche",orbitRight:"Pivoter l’infrastructure à droite",orbitReset:"Réinitialiser la vue 3D",eyebrow:"UNE INFRASTRUCTURE VIVANTE",title:"Les systèmes derrière le travail.",subtitle:"Explorez une infrastructure 3D : commutation, sécurité, serveurs virtuels et supervision. Sélectionnez une couche pour comprendre son rôle.",interaction:"DÉPLACEZ LE POINTEUR · CHOISISSEZ UNE COUCHE",fallback:"MODÈLE D’INFRASTRUCTURE",foot:"Visualisation 3D conceptuelle · pas un déploiement en production",focus:["Réseau & connectivité","Sécurité périmétrique","Systèmes & identité","Supervision"],detail:["Les flux et la segmentation constituent la base d'une infrastructure stable.","Les politiques de sécurité et les liens chiffrés contrôlent les échanges entre zones.","Windows/Linux, annuaire et virtualisation hébergent les services essentiels.","Les journaux, la surveillance et le diagnostic permettent d'identifier les problèmes."],link:"Découvrir les projets techniques",scene:"MODÈLE TECHNIQUE / 3D",pause:"Pause de l’animation",resume:"Relancer l’animation"},
+ ar:{orbitLeft:"تدوير البنية نحو اليسار",orbitRight:"تدوير البنية نحو اليمين",orbitReset:"إعادة ضبط العرض الثلاثي الأبعاد",eyebrow:"بنية تحتية نابضة بالحياة",title:"اكتشف الأنظمة وراء كل مشروع.",subtitle:"استكشف نموذجاً ثلاثي الأبعاد يوضح الترابط بين الشبكات والحماية والخوادم الافتراضية والمراقبة. اختر أحد المجالات لمعرفة دوره.",interaction:"حرّك المؤشر للاستكشاف · اختر مجالاً",fallback:"نموذج تفاعلي للبنية التحتية",foot:"تصور هندسي ثلاثي الأبعاد لأغراض العرض وليس نظاماً إنتاجياً",focus:["الشبكات والاتصال","أمن الشبكات","الأنظمة والهوية","المراقبة والتحليل"],detail:["تشكّل مسارات البيانات وتقسيم الشبكات أساس استقرار الخدمات.","تُساهم السياسات الأمنية والاتصالات المشفرة في حماية حركة البيانات بين المناطق.","تستضيف أنظمة Windows وLinux والافتراضية خدمات المؤسسة.","يساعد جمع السجلات والمراقبة والتشخيص على اكتشاف المشكلات ومعالجتها."],link:"استكشف المشاريع الهندسية",scene:"نموذج هندسي / 3D",pause:"إيقاف الحركة",resume:"استئناف الحركة"}
 } as const;
 export default function InfrastructureStage({locale}:{locale:Locale}){
  const [active,setActive]=useState<Focus>("network");
+ const [motionPaused,setMotionPaused]=useState(false);
  const [enhanced,setEnhanced]=useState(false);
  const [orbitAngle,setOrbitAngle]=useState(0);
  const orbitRef=useRef(0);
@@ -55,12 +56,18 @@ export default function InfrastructureStage({locale}:{locale:Locale}){
     <p>{t.subtitle}</p>
    </div>
    <div className="immersive-interface">
-    <div className="immersive-visual" aria-label={t.fallback} data-orbit-angle={orbitAngle.toFixed(2)}
+    <div className="immersive-visual" aria-label={t.fallback} data-orbit-angle={orbitAngle.toFixed(2)} data-motion-paused={motionPaused?"true":"false"}
      onTouchStart={event=>{if(event.touches.length===1)touchX.current=event.touches[0].clientX;}}
      onTouchMove={event=>{if(touchX.current===null||event.touches.length!==1)return;const x=event.touches[0].clientX;const delta=x-touchX.current;if(Math.abs(delta)>3){rotate(delta*.005);touchX.current=x;}}}
      onTouchEnd={()=>{touchX.current=null;}} onTouchCancel={()=>{touchX.current=null;}}>
-     <div className="immersive-stage-top"><span><Orbit size={15}/>{t.scene}</span><span>SYS / 01—04</span></div>
-     {enhanced&&inViewport?<NetworkWorld active={active} orbit={orbitRef}/>:<div className="stage-blueprint" aria-label={t.fallback} role="img">
+     <div className="immersive-stage-top"><span><Orbit size={15}/>{t.scene}</span>
+      <div className="immersive-stage-actions"><span>SYS / 01—04</span>
+       <button type="button" className="immersive-play-toggle" aria-pressed={!motionPaused} aria-label={motionPaused?t.resume:t.pause} title={motionPaused?t.resume:t.pause} onClick={()=>setMotionPaused(value=>!value)}>
+        {motionPaused?<Play size={13} aria-hidden="true"/>:<Pause size={13} aria-hidden="true"/>}<span>{motionPaused?t.resume:t.pause}</span>
+       </button>
+      </div>
+     </div>
+     {enhanced&&inViewport?<NetworkWorld active={active} orbit={orbitRef} onSelect={setActive} motionPaused={motionPaused} onContextLost={()=>setEnhanced(false)}/>:<div className="stage-blueprint" aria-label={t.fallback} role="img">
       <div className="blueprint-glow"/>
       <span className="blueprint-label blueprint-label--n">LAN / VLAN</span>
       <span className="blueprint-label blueprint-label--s">FIREWALL / VPN</span>
