@@ -11,7 +11,7 @@
 .stage-blueprint .blueprint-rack{transform:perspective(680px) rotateY(calc(-14deg + var(--mobile-orbit,0deg))) rotateX(5deg);transition:transform .4s cubic-bezier(.2,.9,.3,1)}
 .stage-blueprint{pointer-events:none}
 .site-return-top{position:fixed;z-index:90;inset-inline-end:clamp(14px,3vw,35px);bottom:clamp(15px,3vw,27px);width:48px;height:48px;display:grid;place-items:center;background:rgba(13,45,60,.94);color:#e4fbf7;border:1px solid #75b9c5;border-radius:12px;box-shadow:0 14px 31px rgba(8,30,43,.19);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:pointer;opacity:0;pointer-events:none;transform:translateY(18px);transition:opacity .25s,transform .3s,background .2s}
-html[data-scrolled="true"] .site-return-top{opacity:1;pointer-events:auto;transform:translateY(0)}
+.site-return-top[data-visible="true"]{opacity:1;pointer-events:auto;transform:translateY(0)}
 .site-return-top:hover{background:#286478}
 .site-return-top:active{transform:scale(.93)}
 /* Avoid allowing editorial text and complex network diagrams to break narrow screens. */
