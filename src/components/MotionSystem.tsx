@@ -55,7 +55,7 @@ export default function MotionSystem(){
   window.addEventListener("scroll",update,{passive:true});
   window.addEventListener("resize",update,{passive:true});
   document.addEventListener("pointermove",glow,{passive:true});
-  return()=>{window.removeEventListener("scroll",update);window.removeEventListener("resize",update);document.removeEventListener("pointermove",glow);mutation?.disconnect();observer?.disconnect();if(frame)window.cancelAnimationFrame(frame};
+  return()=>{window.removeEventListener("scroll",update);window.removeEventListener("resize",update);document.removeEventListener("pointermove",glow);mutation?.disconnect();observer?.disconnect();if(frame)window.cancelAnimationFrame(frame);};
  },[pathname]);
  return <div id="site-scroll-progress" className="site-scroll-progress" aria-hidden="true"/>;
 }
