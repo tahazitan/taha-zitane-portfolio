@@ -47,12 +47,12 @@ export default function SectionHeroVisual({locale,section}:{locale:Locale;sectio
   <h2 className="domain-visual-title">{t.title}</h2>
   <div className="domain-node-map" role="group" aria-label={t.title}>
    {t.nodes.map((n,i)=>{const Icon=icons[section][i];return <button type="button" className={"domain-node "+(selected===i?"is-active":"")} onClick={()=>setSelected(i)} aria-pressed={selected===i} key={n.label} aria-label={n.label}>
-    <span className="domain-node-plate"><Icon size={24}/><span className="domain-led"/></span>
+    <span className="domain-node-plate">{n.mark?<TechnologyMarks technologies={[n.mark]} limit={1} variant="mini"/>:<Icon size={28}/>}<Icon className="domain-overlay-glyph" size={13}/><span className="domain-led"/></span>
     <span className="domain-node-label">{n.label}</span>
     {i!==2&&<span className="domain-node-link" aria-hidden="true"/>}
    </button>})}
   </div>
-  <div className="domain-selected" aria-live="polite"><span className="domain-selected-num">0{selected+1} / FOCUS</span><p>{t.nodes[selected].detail}</p><TechnologyMarks technologies={[t.nodes[selected].mark]} limit={1} variant="inline"/><ArrowUpRight className="domain-selected-arrow" size={17}/></div>
+  <div className="domain-selected" aria-live="polite"><span className="domain-selected-num">0{selected+1} / FOCUS</span><p key={selected}>{t.nodes[selected].detail}</p><TechnologyMarks technologies={[t.nodes[selected].mark]} limit={1} variant="inline"/><ArrowUpRight className="domain-selected-arrow" size={17}/></div>
   <div className="domain-visual-foot"><span><Activity size={15}/>{t.caption}</span><span>TAHA / ZITANE</span></div>
  </div>;
 }
