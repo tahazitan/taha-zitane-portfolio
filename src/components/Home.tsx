@@ -4,6 +4,7 @@ import Reveal from "./Reveal";
 import LocaleSetup from "./LocaleSetup";
 import LandingOverview from "./LandingOverview";
 import InfrastructureStage from "./InfrastructureStage";
+import MobileTopologyTeaser from "./MobileTopologyTeaser";
 import FooterBrand from "./FooterBrand";
 import TechnologyMarks from "./TechnologyMarks";
 import {content,mailUrl,phoneNumber,prettyPhoneNumber,githubUrl,linkedInUrl,type Locale} from "@/data/content";
@@ -16,12 +17,13 @@ export default function Home({locale}:{locale:Locale}){
   <main>
    <section className="hero" id="top" aria-labelledby="hero-title"><div className="hero-sheen"/><div className="container-xl hero-shell">
     <div className="hero-meta"><span className="small-overline">{c.eyebrow}</span><span className="live-tag"><span className="pulse-dot"/>{c.availability}</span></div>
+    <MobileTopologyTeaser locale={locale}/>
     <div className="hero-grid"><div className="hero-copy">
       <div className="hero-serial"><span className="index-dot"/>{locale==='ar'?'الأنظمة / الشبكات / العمليات':'SYSTEMS / NETWORKS / OPERATIONS'}<span>— 001</span></div>
       <h1 id="hero-title"><span className="hero-person">{locale==='ar'?'طه زيطان':'Taha Zitane'}</span><span className="hero-serif">{locale==='ar'?'هندسة الأنظمة والشبكات':locale==='fr'?'Systèmes, réseaux & infrastructure.':'Systems, networks & infrastructure.'}</span></h1>
       <div className="hero-lead"><div className="hero-rule"/><div><h2>{c.heroSubtitle}</h2><p>{c.heroLead}</p></div></div>
       <TechnologyMarks technologies={["Windows Server","Cisco","Linux","Proxmox","FortiGate","Wazuh"]} limit={6} variant="hero"/>
-      <div className="hero-actions"><a className="btn btn-primary" href={locale==="en"?"/projects/":`/${locale}/projects/`}>{locale==='fr'?'Voir les projets':locale==='ar'?'المشاريع التقنية':'View projects'}<ArrowUpRight size={18}/></a><a className="btn btn-text" href="#contact">{locale==='fr'?'Me contacter':locale==='ar'?'تواصل معي':'Get in touch'}<ArrowRight size={18}/></a></div>
+      <div className="hero-actions"><a className="btn btn-primary" href={locale==="en"?"/projects/":`/${locale}/projects/`}>{locale==='fr'?'Voir les projets':locale==='ar'?'المشاريع التقنية':'View projects'}<ArrowUpRight size={18}/></a><a className="btn btn-text hero-3d-link" href="#infrastructure">{locale==='fr'?'Explorer la 3D':locale==='ar'?'استكشف البنية ثلاثية الأبعاد':'Explore the 3D lab'}<ArrowUpRight size={17}/></a><a className="btn btn-text" href="#contact">{locale==='fr'?'Me contacter':locale==='ar'?'تواصل معي':'Get in touch'}<ArrowRight size={18}/></a></div>
 
     </div><div className="hero-visual">
        <div className="hero-schematic" aria-hidden="true"><svg viewBox="0 0 660 640" preserveAspectRatio="xMidYMid meet">
