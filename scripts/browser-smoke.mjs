@@ -125,7 +125,10 @@ try{
  assert.ok(await d.locator('.case-main .visual-project--large').isVisible(),'Case hero technical visual present');
  assert.equal(await d.locator('.source-topology-compact .source-edges button').count(),4,'Source-based base topology has four links');
  assert.ok(await d.locator('.visual-project--large .visual-project-inspector').isVisible(),'Each case-study visual exposes an engineering inspector');
- await d.locator('.visual-project--large .visual-project-interactive[role="button"]').first().click();
+ await d.locator('.visual-project--large .visual-project-interactive[role="button"]').first().focus();
+ await d.keyboard.press('Enter');
+ assert.notEqual(await d.locator('.visual-project-inspector-copy strong').innerText(),'Select a device or connection in the diagram','Cable inspection supports keyboard selection');
+ await d.locator('.visual-project--large .visual-project-interactive[role="button"]').last().click();
  assert.notEqual(await d.locator('.visual-project-inspector-copy strong').innerText(),'Select a device or connection in the diagram','Project diagrams support direct inspection');
  await d.locator('.source-topology-compact .source-diagram-node').first().click();
  assert.equal(await d.locator('.source-inspector h3').innerText(),'hq-rtr','Source-defined devices are directly inspectable');
