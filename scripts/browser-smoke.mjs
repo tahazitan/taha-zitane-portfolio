@@ -36,6 +36,13 @@ try{
  assert.equal(await d.locator('.overview-card').count(),4,'Homepage is a focused four-path overview');
  assert.equal(await d.locator('.immersive-section .layer-button').count(),4,'Interactive 3D infrastructure has four functional layers');
  assert.equal(await d.locator('.immersive-orbit-controls button').count(),3,'The 3D visualization offers keyboard-accessible camera controls');
+ assert.equal(await d.locator('.immersive-play-toggle').count(),1,'3D scene has accessible motion controls');
+ assert.equal(await d.locator('.immersive-visual').getAttribute('data-motion-paused'),'false','3D model starts in active presentation mode');
+ await d.locator('.immersive-play-toggle').click();
+ assert.equal(await d.locator('.immersive-visual').getAttribute('data-motion-paused'),'true','Pause button stops automatic scene animation');
+ assert.equal(await d.locator('.immersive-play-toggle').getAttribute('aria-pressed'),'false','Paused scene is reflected in accessibility state');
+ await d.locator('.immersive-play-toggle').click();
+ assert.equal(await d.locator('.immersive-visual').getAttribute('data-motion-paused'),'false','Resume button restarts automatic scene animation');
  await d.locator('.immersive-orbit-controls button').nth(2).click();
  assert.equal(await d.locator('.immersive-visual').getAttribute('data-orbit-angle'),'0.25','Desktop camera rotates on request');
  await d.locator('.immersive-orbit-controls button').nth(1).click();
