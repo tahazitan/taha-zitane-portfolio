@@ -35,6 +35,8 @@ try{
  assert.equal(await d.locator('.hero-person').innerText(),'Taha Zitane');
  assert.equal(await d.locator('.overview-card').count(),4,'Homepage is a focused four-path overview');
  assert.equal(await d.locator('.immersive-section .layer-button').count(),4,'Interactive 3D infrastructure has four functional layers');
+ assert.equal(await d.locator('.mobile-lab-entry').count(),1,'Hero contains a discoverable 3D entry for mobile');
+ assert.ok(await d.locator('.mobile-lab-entry').isHidden(),'Source-backed 3D teaser should not clutter the desktop hero');
  assert.equal(await d.locator('.immersive-orbit-controls button').count(),3,'The 3D visualization offers keyboard-accessible camera controls');
  assert.equal(await d.locator('.immersive-play-toggle').count(),1,'3D scene has accessible motion controls');
  assert.equal(await d.locator('.immersive-visual').getAttribute('data-motion-paused'),'false','3D model starts in active presentation mode');
@@ -163,6 +165,16 @@ try{
   await m.waitForFunction(()=>{const p=document.querySelector('.portrait-photo');return p instanceof HTMLImageElement&&p.complete&&p.naturalWidth>100},{timeout:15000});
   const frame=await m.locator('.portrait-frame').boundingBox();
   assert.ok(frame&&frame.y<775,`${locale}: portrait appears in initial mobile viewport`);
+  const teaser=m.locator('.mobile-lab-entry');
+  assert.ok(await teaser.isVisible(),`${locale}: 3D must be prominently visible on the phone hero`);
+  const teaserBounds=await teaser.boundingBox();
+  assert.ok(teaserBounds && teaserBounds.y<510 && teaserBounds.y+teaserBounds.height<845,`${locale}: mobile 3D entry must fit into first phone viewport`);
+  assert.ok(await teaser.locator('svg.mobile-lab-topology').isVisible(),`${locale}: real source-defined topology preview is visible without WebGL`);
+  assert.equal(await teaser.locator('.mobile-lab-node').count(),5,`${locale}: exactly five documented equipment nodes on hero`);
+  await teaser.screenshot({path:path.join(root,'screenshots',`mobile-${locale}-visible-3d-hero.png`),animations:'disabled'});
+  await teaser.click();
+  assert.equal(await m.evaluate(()=>location.hash),'#infrastructure',`${locale}: mobile preview scrolls to interactive 3D scene`);
+
   assert.equal(await m.locator('.overview-card').count(),4);
   assert.ok(await m.locator('.immersive-section').count()===1,'locale: 3D infrastructure section exists on mobile');
   // Phone must get the real 3D canvas whenever this browser actually supports WebGL.
@@ -170,6 +182,7 @@ try{
   const mobileWebGL=await m.evaluate(()=>{
    try{const el=document.createElement('canvas');return Boolean(el.getContext('webgl2')||el.getContext('webgl'));}catch{return false}
   });
+  assert.ok(['webgl','blueprint'].includes(await m.locator('.immersive-visual').getAttribute('data-render-mode')),`${locale}: renderer reports WebGL or visual fallback`);
   if(mobileWebGL){
    await m.locator('.immersive-visual canvas').first().waitFor({state:'visible',timeout:20000});
    assert.equal(await m.locator('.stage-blueprint').count(),0,`${locale}: 3D must not be downgraded on phones with WebGL`);
@@ -206,6 +219,7 @@ try{
   const phone=await browser.newPage({viewport:{width,height:width===768?1024:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
   await phone.goto(base+'/',{waitUntil:'domcontentloaded'});
   assert.equal(await phone.locator('.immersive-orbit-controls button').count(),3,`${width}px: full 3D control surface on every device width`);
+  if(width<=430)assert.ok(await phone.locator('.mobile-lab-entry').isVisible(),`${width}px: mobile hero always exposes the 3D entry`);
   assert.equal(await phone.locator('.overview-card').count(),4,`${width}px: homepage content parity`);
   await overflow(phone,`${width}px homepage`);
   await phone.goto(base+'/projects/',{waitUntil:'domcontentloaded'});
