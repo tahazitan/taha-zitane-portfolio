@@ -42,7 +42,7 @@ const details={
   contact:["التواصل / التعاون","لنتحدث عن احتياجك.","أخبرني بطبيعة بيئتك التقنية والمشكلة والنتيجة المطلوبة. نحدد نطاق المهمة والصلاحيات والتوثيق قبل البدء.","مشاريع عن بُعد وتعاون مهني."]
  }
 } as const;
-const serviceTools=[["AnyDesk","Windows"],["Windows Server","Linux","Proxmox","Ubuntu"],["Wireshark","Wazuh","FortiGate","Palo Alto"],["Cisco","GNS3","Windows Server","Linux"]];
+const serviceTools=[["AnyDesk","Windows"],["Microsoft","Windows Server","Linux","Proxmox"],["Wireshark","Wazuh","FortiGate","Palo Alto"],["Cisco","GNS3","Windows Server","Linux"]];
 const marks={"2024 — 2025":{logo:"emsi",name:"EMSI",city:"TANGER"},"2020 — 2022":{logo:"ofppt",name:"OFPPT / ISMO",city:"TÉTOUAN"},"2019 — 2020":{logo:"university",name:"UNIVERSITÉ ABDELMALEK ESSAÂDI",city:"FACULTÉ DES SCIENCES"},"2019":{logo:"ministry",name:"LYCÉE AL-KHAWARIZMI",city:"CHEFCHAOUEN"}} as const;
 const route=(locale:Locale,section:SectionKey)=>`${locale==="en"?"":"/"+locale}/${section}/`;
 export default function SectionPage({locale,section}:{locale:Locale;section:SectionKey}){
