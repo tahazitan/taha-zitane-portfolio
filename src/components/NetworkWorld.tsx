@@ -80,7 +80,7 @@ function Diagram({active,orbit,onInspect,motionPaused,selected}:{active:Focus;or
    const relation=focusOf(aa)===active||focusOf(bb)===active;
    const vpn=(a==="branchA"||a==="branchB")&&b==="hqfw";
    const ca=coords(a),cb=coords(b);
-   return <Line key={a+"-"+b+"-"+i} points={[[ca.x,ca.y,ca.z-.16],[cb.x,cb.y,cb.z-.16]]} lineWidth={vpn?2:1.4} color={vpn?"#d7a876":"#5e8da7"} transparent opacity={relation?.83:.24} dashed={vpn} dashSize={.18} gapSize={.12}/>;
+   return <Line key={a+"-"+b+"-"+i} points={[[ca.x,ca.y,ca.z-.16],[cb.x,cb.y,cb.z-.16]]} lineWidth={vpn?2:1.4} color={vpn?"#d7a876":"#5e8da7"} transparent opacity={relation ? 0.83 : 0.24} dashed={vpn} dashSize={.18} gapSize={.12}/>;
   })}
   {inView.map(node=><ArchitectureNode key={node.id} node={node} active={active} selected={selected===node.id} onInspect={onInspect}/>)}
   <Trace active={active} paused={motionPaused}/>
