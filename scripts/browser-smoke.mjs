@@ -107,6 +107,17 @@ try{
  assert.equal(await d.locator('.service-diagram').count(),4,'Every service has a domain-specific workflow visual');
  assert.equal(await d.locator('.process-steps>div').count(),4,'Realistic collaboration steps');
  await overflow(d,'services desktop');
+  // Ensure a card is not rendered fully transparent before intersection events.
+  const firstService=d.locator('.service-item').first();
+  const serviceOpacity=await firstService.evaluate(el=>{
+   let opacity=1;
+   for(let current=el;current;current=current.parentElement){
+    opacity*=Number.parseFloat(getComputedStyle(current).opacity);
+   }
+   return opacity;
+  });
+  assert.ok(serviceOpacity>.9,'Service card hidden by entrance animation: '+serviceOpacity);
+  assert.ok((await firstService.innerText()).trim().length>60,'Service card must contain readable content');
  await d.locator('.service-item').first().screenshot({path:path.join(root,'screenshots','desktop-service-card.png'),animations:'disabled'});
 
  await d.goto(base+'/experience/',{waitUntil:'domcontentloaded'});
