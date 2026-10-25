@@ -1,6 +1,6 @@
 "use client";
 import {Canvas,useFrame,useThree} from "@react-three/fiber";
-import {Html,Line,RoundedBox} from "@react-three/drei";
+import {Line,RoundedBox} from "@react-three/drei";
 import {useReducedMotion} from "framer-motion";
 import {useEffect,useMemo,useRef} from "react";
 import * as THREE from "three";
@@ -36,6 +36,25 @@ function CameraFit(){
  },[size.width,size.height,camera]);
  return null;
 }
+function Nameplate({label,active}:{label:string;active:boolean}){
+ // Render the label as a GPU canvas texture, avoiding DOM portals inside
+ // React Three Fiber. Portals were triggering removeChild errors on unmount.
+ const texture=useMemo(()=>{
+  if(typeof document==="undefined")return null;
+  const canvas=document.createElement("canvas");canvas.width=512;canvas.height=128;
+  const ctx=canvas.getContext("2d");if(!ctx)return null;
+  ctx.fillStyle=active?"#204357":"#162e41";ctx.fillRect(0,0,512,128);
+  ctx.strokeStyle=active?"#91cbd8":"#436a7e";ctx.lineWidth=5;ctx.strokeRect(3,3,506,122);
+  ctx.font="600 36px Arial, sans-serif";ctx.textBaseline="middle";
+  ctx.fillStyle=active?"#f1fbfc":"#a9c7d4";ctx.textAlign="center";
+  ctx.fillText(label,256,67,460);
+  const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;
+  return map;
+ },[label,active]);
+ useEffect(()=>()=>texture?.dispose(),[texture]);
+ if(!texture)return null;
+ return <sprite position={[0,-.49,.19]} scale={[1.55,.39,1]}><spriteMaterial map={texture} transparent depthWrite={false} depthTest={false}/></sprite>;
+}
 function ArchitectureNode({node,active,selected,onInspect}:{node:TopologyNode;active:Focus;selected:boolean;onInspect:(id:string)=>void}){
  const kind=focusOf(node),lit=kind===active;
  const pos=stage[node.id];const color=palette[kind];
@@ -46,9 +65,7 @@ function ArchitectureNode({node,active,selected,onInspect}:{node:TopologyNode;ac
   <mesh position={[0,0,.15]}><boxGeometry args={[.65,.04,.025]}/><meshBasicMaterial color={color} transparent opacity={lit?1:.25}/></mesh>
   <mesh position={[-.24,-.12,.15]}><sphereGeometry args={[.035,8,8]}/><meshBasicMaterial color={lit?color:"#556e80"}/></mesh>
   {selected&&<mesh position={[0,0,-.03]}><boxGeometry args={[1.02,.6,.28]}/><meshBasicMaterial color={color} wireframe transparent opacity={.65}/></mesh>}
-  <Html center position={[0,-.37,0]} distanceFactor={12} style={{pointerEvents:"none"}} zIndexRange={[12,0]}>
-   <span className={"topology-3d-label"+(lit?" is-lit":"")} data-kind={kind}>{node.label}</span>
-  </Html>
+  <Nameplate label={node.label} active={lit}/>
  </group>;
 }
 function Trace({active,paused}:{active:Focus;paused:boolean}){
