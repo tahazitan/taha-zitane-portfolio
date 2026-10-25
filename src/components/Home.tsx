@@ -25,7 +25,7 @@ export default function Home({locale}:{locale:Locale}){
       <div className="hero-serial"><span className="index-dot"/>{locale==='ar'?'الأنظمة / الشبكات / العمليات':'SYSTEMS / NETWORKS / OPERATIONS'}<span>— 001</span></div>
       <h1 id="hero-title"><span className="hero-person">{locale==='ar'?'طه زيطان':'Taha Zitane'}</span><span className="hero-serif">{locale==='ar'?'هندسة الأنظمة والشبكات':locale==='fr'?'Systèmes, réseaux & infrastructure.':'Systems, networks & infrastructure.'}</span></h1>
       <div className="hero-lead"><div className="hero-rule"/><div><h2>{c.heroSubtitle}</h2><p>{c.heroLead}</p></div></div>
-      <TechnologyMarks technologies={["Windows Server","Cisco","Linux","Proxmox","FortiGate","Wazuh"]} limit={6} variant="hero"/>
+      {/* Tool marks belong to actual case studies and service context, not a logo-wall hero. */}
       <div className="hero-actions agency-hero-buttons"><a className="btn btn-primary agency-btn-primary" href={locale==="en"?"/projects/":`/${locale}/projects/`}>{locale==='fr'?'Voir les projets':locale==='ar'?'المشاريع التقنية':'View projects'}<ArrowUpRight size={18}/></a><a className="btn btn-text hero-3d-link" href="#infrastructure">{locale==='fr'?'Explorer la 3D':locale==='ar'?'استكشف البنية ثلاثية الأبعاد':'Explore the 3D lab'}<ArrowUpRight size={17}/></a><a className="btn btn-text" href="#contact">{locale==='fr'?'Me contacter':locale==='ar'?'تواصل معي':'Get in touch'}<ArrowRight size={18}/></a></div>
 
     </div><div className="hero-visual">
@@ -44,7 +44,7 @@ export default function Home({locale}:{locale:Locale}){
     <div className="hero-foot"><span><MoveDown size={14}/>{c.scroll}</span><div className="hero-foot-rule"/><span>{locale==='ar'?'البنية التحتية · التشغيل والدعم':locale==='fr'?'Infrastructure · Exploitation & support':'Infrastructure · Operations & support'}</span></div>
    </div></section>
 
-   <div className="agency-platforms studio-tool-rail" aria-label={locale==="fr"?"Technologies":rtl?"التقنيات":"Technology ecosystem"}><span>{locale==="fr"?"ÉCOSYSTÈME TECHNIQUE":rtl?"المنظومة التقنية":"TECHNOLOGY ECOSYSTEM"}</span><TechnologyMarks technologies={["Cisco","Microsoft","Windows Server","Linux","Docker","FortiGate","Palo Alto","Proxmox","Zabbix","Wazuh","Wireshark","Kali Linux","AnyDesk","GitHub","Ubuntu"]} limit={15} variant="inline"/></div>
+   <div className="agency-platforms studio-tool-rail" aria-label={locale==="fr"?"Technologies":rtl?"التقنيات":"Technology ecosystem"}><span>{locale==="fr"?"ÉCOSYSTÈME TECHNIQUE":rtl?"المنظومة التقنية":"TECHNOLOGY ECOSYSTEM"}</span><TechnologyMarks technologies={["Cisco","Windows Server","Linux","FortiGate","Proxmox","Wazuh","Wireshark","AnyDesk"]} limit={8} variant="inline"/></div>
 
    <InfrastructureStage locale={locale}/>
 
