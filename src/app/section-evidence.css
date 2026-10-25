@@ -1,0 +1,165 @@
+/* Purpose-built evidence-led page header, not a sixth recolor of a generic card.
+   Every page now uses truthful data and a clear editorial hierarchy. */
+.portfolio-template .detail-hero {
+ background:#0c2436;
+ border-bottom:1px solid #33536a;
+ padding:clamp(52px,6vw,88px) 0 clamp(56px,6vw,90px);
+}
+.portfolio-template .detail-hero::before{
+ content:"";position:absolute;inset:0;
+ background:linear-gradient(92deg,transparent 0,transparent 54%,rgba(74,144,174,.075) 100%);
+ pointer-events:none;
+}
+.portfolio-template .detail-hero-body{
+ display:grid;grid-template-columns:minmax(0,1fr) minmax(350px,.95fr);
+ align-items:start;gap:clamp(30px,6vw,100px);
+ margin-top:clamp(42px,5vw,78px);
+}
+.portfolio-template .detail-hero-body>div:first-child{padding-top:clamp(18px,4vw,58px)}
+.portfolio-template .detail-hero h1{
+ color:#f4f8fc;max-width:15ch;letter-spacing:-.048em;
+ font-size:clamp(39px,4.3vw,72px);line-height:1.13;
+}
+.portfolio-template .detail-hero-body>div:first-child>p{
+ color:#b9ced9;font-size:clamp(15px,1.2vw,18px);
+ line-height:1.8;max-width:54ch;margin-bottom:25px;
+}
+.portfolio-template .detail-headerline{
+ border-bottom:1px solid #37536a;padding-bottom:15px;
+ color:#99b6c4;font:500 11px/1.6 ui-monospace,monospace;letter-spacing:.04em;
+}
+.portfolio-template .detail-back{
+ display:inline-flex;align-items:center;gap:10px;min-height:44px;
+ color:#cfedf2;background:transparent;border:1px solid #567488;
+ border-radius:3px;font:600 12px/1.5 var(--font);
+ padding:11px 15px;
+}
+.portfolio-template .detail-back:hover{background:#214258;border-color:#90bdc8}
+.evidence-intro{
+ color:#e8f2f6;background:#132f44;
+ border:1px solid #446177;max-width:100%;overflow:hidden;
+ box-shadow:0 20px 50px rgba(0,10,23,.17);
+}
+.evidence-intro-head{
+ display:flex;align-items:center;justify-content:space-between;
+ flex-wrap:wrap;gap:10px;
+ padding:15px clamp(20px,2.5vw,30px);border-bottom:1px solid #456277;
+ background:#1a394e;
+}
+.evidence-intro-head span{
+ font:600 10px/1.5 ui-monospace,monospace;
+ letter-spacing:.09em;color:#8db5c7;
+}
+.evidence-intro-head strong{
+ font:600 10px/1.5 ui-monospace,monospace;
+ letter-spacing:.02em;color:#def2f5;
+}
+.evidence-intro-project-title{padding:28px clamp(20px,2.5vw,30px) 0;display:grid;gap:11px}
+.evidence-intro-project-title>span{color:#69cfcc;font:600 12px/1.4 ui-monospace,monospace}
+.evidence-intro-project-title>strong{
+ font:700 clamp(21px,2.25vw,30px)/1.32 var(--font);
+ color:#f7fbff;letter-spacing:-.035em;
+}
+.evidence-intro-description{
+ margin:13px clamp(20px,2.5vw,30px) 22px;
+ font:400 13px/1.8 var(--font);color:#bdd4df;
+}
+.evidence-intro-facts{
+ margin:0 clamp(20px,2.5vw,30px);
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ border:1px solid #426178;
+}
+.evidence-intro-facts>div{
+ padding:13px 15px;display:grid;gap:6px;
+ border-bottom:1px solid #426178;min-width:0;
+}
+.evidence-intro-facts>div:first-child{grid-column:1 / -1}
+.evidence-intro-facts>div:nth-child(2){border-inline-end:1px solid #426178;border-bottom:0}
+.evidence-intro-facts>div:last-child{border-bottom:0}
+.evidence-intro-facts span{
+ font:500 10px/1.5 ui-monospace,monospace;
+ color:#8fb5c9;letter-spacing:.02em;
+}
+.evidence-intro-facts strong{
+ font:600 12px/1.5 ui-monospace,monospace;
+ color:#e6f2f8;overflow-wrap:anywhere;
+}
+.evidence-intro-status{
+ margin:15px clamp(20px,2.5vw,30px);
+ color:#aac1d0;font:400 11px/1.7 var(--font);
+}
+.evidence-intro-actions{
+ padding:0 clamp(20px,2.5vw,30px) 24px;
+ display:flex;gap:10px;flex-wrap:wrap;
+}
+.evidence-intro-actions a{
+ display:inline-flex;align-items:center;justify-content:center;gap:8px;
+ border:1px solid #4f8792;color:#e9faf8;
+ font:600 12px/1.5 var(--font);padding:10px 13px;
+}
+.evidence-intro-actions a:first-child{background:#347c82;border-color:#347c82}
+.evidence-intro-actions a:hover{background:#306074}
+.evidence-intro-list{
+ display:grid;gap:0;padding:7px clamp(20px,2.5vw,30px) 18px;
+}
+.evidence-intro-entry{
+ padding:18px 0 17px;border-bottom:1px solid #39566b;
+ display:grid;grid-template-columns:minmax(90px,.29fr) minmax(0,1fr);
+ gap:4px 20px;align-items:start;
+}
+.evidence-intro-entry:last-child{border-bottom:0}
+.evidence-intro-entry small{
+ font:600 11px/1.6 ui-monospace,monospace;color:#91cbd0;
+ grid-row:span 2;overflow-wrap:anywhere;
+}
+.evidence-intro-entry strong{
+ font:600 clamp(13px,1.2vw,16px)/1.5 var(--font);
+ color:#f4fafc;overflow-wrap:anywhere;
+}
+.evidence-intro-entry>span{
+ color:#b2cbd8;font:400 11px/1.65 var(--font);
+ overflow-wrap:anywhere;
+}
+.evidence-intro-contact{
+ padding:25px clamp(20px,2.5vw,30px);
+ display:grid;gap:12px;
+}
+.evidence-intro-contact p{color:#bcd3de;font:400 14px/1.75 var(--font);margin:0 0 5px}
+.evidence-intro-contact a{
+ display:flex;gap:12px;align-items:center;min-height:48px;
+ border:1px solid #45677c;padding:10px 13px;
+ font:600 12px/1.5 var(--font);overflow-wrap:anywhere;
+}
+.evidence-intro-contact a svg:last-child{margin-inline-start:auto}
+.evidence-intro-contact a:hover{background:#214c61}
+.evidence-intro-bottom{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:15px;border-top:1px solid #476276;
+ padding:10px clamp(20px,2.5vw,30px);min-height:49px;
+ color:#87b0c2;font:500 10px/1.5 ui-monospace,monospace;
+}
+.evidence-intro-bottom a{
+ color:#bce8e6;display:grid;place-items:center;
+ width:29px;height:29px;border:1px solid #52748a;
+}
+.evidence-intro-bottom a:hover{background:#24566a}
+.portfolio-template.rtl .evidence-intro-entry{grid-template-columns:minmax(90px,.29fr) minmax(0,1fr)}
+@media(max-width:970px){
+ .portfolio-template .detail-hero-body{grid-template-columns:1fr;gap:32px}
+ .portfolio-template .detail-hero-body>div:first-child{padding-top:0}
+ .portfolio-template .detail-hero h1{max-width:20ch}
+ .evidence-intro{max-width:720px}
+}
+@media(max-width:550px){
+ .portfolio-template .detail-hero{padding:44px 0 55px}
+ .portfolio-template .detail-hero-body{gap:20px;margin-top:25px}
+ .portfolio-template .detail-hero h1{font-size:clamp(34px,9vw,46px)}
+ .evidence-intro-entry{grid-template-columns:1fr;gap:5px}
+ .evidence-intro-entry small{grid-row:auto}
+ .evidence-intro-facts{grid-template-columns:1fr}
+ .evidence-intro-facts>div:first-child{grid-column:auto}
+ .evidence-intro-facts>div:nth-child(2){border-inline-end:0;border-bottom:1px solid #426178}
+}
+@media(prefers-reduced-motion:reduce){
+ .evidence-intro *, .evidence-intro *::before, .evidence-intro *::after{transition:none!important;animation:none!important}
+}
