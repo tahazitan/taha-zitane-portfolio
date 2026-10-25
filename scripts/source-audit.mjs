@@ -11,7 +11,7 @@ const overview=read('src/components/LandingOverview.tsx');
 const immersive=read('src/components/InfrastructureStage.tsx');
 const network3d=read('src/components/NetworkWorld.tsx');
 const motionSystem=read('src/components/MotionSystem.tsx');
-const sectionStory=read('src/components/SectionHeroVisual.tsx');
+const sectionEvidence=read('src/components/SectionHeroEvidence.tsx');
 const siteMotionCSS=read('src/app/sitewide-motion.css');
 const immersiveCSS=read('src/app/immersive-experience.css');
 const mobilePremiumCSS=read('src/app/mobile-premium.css');
@@ -28,6 +28,7 @@ if(!layout.includes('portfolio-studio-skin.css')||!layout.includes('studio-sourc
 const casePage=read('src/components/CasePage.tsx');
 const gallery=read('src/components/ProjectExplorer.tsx');
 if(!home.includes('<InfrastructureStage locale={locale}/>')||!immersive.includes('NetworkWorld active={active} orbit={orbitRef}')||!immersive.includes('stage-blueprint'))throw Error('Missing progressive 3D engineering story');
+if(!network3d.includes('topologyDesigns')||!network3d.includes('architecture.links')||!network3d.includes('architecture.flows'))throw Error('3D must visualize structured enterprise infrastructure data instead of a decorative rack');
 if(!network3d.includes('useReducedMotion')||!immersiveCSS.includes('@media(prefers-reduced-motion:reduce)'))throw Error('Accessible static 3D motion behavior missing');
 if(immersive.includes('min-width: 900px')||!immersive.includes('window.WebGLRenderingContext'))throw Error('Mobile WebGL must not be disabled by device width');
 if(!network3d.includes('CameraFit')||!network3d.includes('orbit.current')||!immersive.includes('onTouchMove')||!immersive.includes('immersive-orbit-controls'))throw Error('Full 3D mobile viewport, touch, and explicit camera controls missing');
@@ -35,11 +36,11 @@ if(!layout.includes('mobile-premium.css')||!mobilePremiumCSS.includes('immersive
 if(!layout.includes('immersive-experience.css')||!layout.includes('<MotionSystem/>')||!motionSystem.includes('site-scroll-progress'))throw Error('Immersive global design missing');
 if(!layout.includes('sitewide-motion.css')||!motionSystem.includes('IntersectionObserver')||!siteMotionCSS.includes('.domain-visual'))throw Error('Sitewide motion and branding missing');
 if(!motionSystem.includes('site-return-top')||!nav.includes('aria-expanded={open}')||!nav.includes('onEscape'))throw Error('Whole-site mobile navigation and scroll controls missing');
-if(!section.includes('<SectionHeroVisual section={section} locale={locale}/>'))throw Error('Interactive technical story missing from six section pages');
-if(!sectionStory.includes('n.mark?<TechnologyMarks')||!mobilePremiumCSS.includes('.domain-node-plate .tech-mark'))throw Error('Section diagrams must include authentic contextual brand marks');
-for(const name of ['projects','experience','education','expertise','services','contact'])if(!sectionStory.includes(name+':{kicker:'))throw Error('Missing localized section identity: '+name);
+if(!section.includes('<SectionHeroEvidence section={section} locale={locale}/>'))throw Error('The page-specific professional record view is not wired across sections');
+if(!sectionEvidence.includes('c.experience.slice(0,3)')||!sectionEvidence.includes('p.studies.slice(0,3)')||!sectionEvidence.includes('projectRepo'))throw Error('Section introductions must use actual experience, education and traceable topology');
+for(const name of ['projects','experience','education','expertise','services','contact'])if(!sectionEvidence.includes(name+':'))throw Error('Missing distinct record type '+name);
 if(!casePage.includes('case-site--${slug}'))throw Error('Case-specific visual identity missing');
-for(const role of ['network','systems','security','monitoring'])if(!network3d.includes('kind="'+role+'"'))throw Error('Missing engineered 3D role: '+role);
+for(const role of ['network','systems','security','monitoring'])if(!network3d.includes(role+':'))throw Error('Missing 3D architectural layer: '+role);
 if(!casePage.includes('<SourceTopology locale={locale} compact/>'))throw new Error('Real source topology must remain in enterprise project');
 if(!gallery.includes('View project')||gallery.includes('Explore case study'))throw new Error('Project wording must be clear');
 
