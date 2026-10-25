@@ -18,6 +18,8 @@ import "./mobile-premium.css";
 import "./studio-design.css";
 import "./studio-source-template.css";
 import "./portfolio-studio-skin.css";
+import "./section-evidence.css";
+import "./engineering-3d.css";
 import MotionSystem from "@/components/MotionSystem";
 
 const siteUrl = "https://taha-zitane-engineering.zitanet44.workers.dev";
