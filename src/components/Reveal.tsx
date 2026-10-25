@@ -1,7 +1,9 @@
-"use client";
-import {motion, useReducedMotion} from "framer-motion";
-import { ReactNode } from "react";
-export default function Reveal({children,className="",delay=0}:{children:ReactNode,className?:string,delay?:number}){
- const reduce=useReducedMotion();
- return <motion.div className={className} initial={reduce?false:{opacity:0,y:22}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.12}} transition={{duration:.65,ease:[.22,1,.36,1],delay}}>{children}</motion.div>;
+import type {ReactNode} from "react";
+
+/** Content must be visible on first paint, before hydration, intersection events
+ * and reduced-motion checks. The global MotionSystem adds gentle decorative
+ * entrance animation without ever hiding cards or their interactive controls.
+ */
+export default function Reveal({children,className=""}:{children:ReactNode;className?:string;delay?:number}){
+ return <div className={className}>{children}</div>;
 }
