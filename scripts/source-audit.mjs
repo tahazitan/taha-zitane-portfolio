@@ -18,6 +18,13 @@ const mobilePremiumCSS=read('src/app/mobile-premium.css');
 const layout=read('src/app/layout.tsx');
 const nav=read('src/components/Navigation.tsx');
 const diagram=read('src/components/SourceTopology.tsx');
+const studioTheme=read('src/app/portfolio-studio-skin.css');
+const studioSource=read('src/app/studio-source-template.css');
+if(!layout.includes('portfolio-studio-skin.css')||!layout.includes('studio-source-template.css')||
+  !studioTheme.includes('.portfolio-template .studio-hero')||
+  !studioSource.includes('.agency-offer-row')||!home.includes('studio-tool-rail')||
+  !home.includes('studio-career-preview'))throw Error('Studio visual template was not wired to the entire public portfolio');
+
 const casePage=read('src/components/CasePage.tsx');
 const gallery=read('src/components/ProjectExplorer.tsx');
 if(!home.includes('<InfrastructureStage locale={locale}/>')||!immersive.includes('NetworkWorld active={active} orbit={orbitRef}')||!immersive.includes('stage-blueprint'))throw Error('Missing progressive 3D engineering story');
@@ -58,7 +65,7 @@ const anchors=['projects','experience','education','expertise','services','conta
 for(const anchor of anchors)if(!nav.includes('"'+anchor+'"'))throw new Error('Navigation missing '+anchor);
 if(!nav.includes('c.nav[i]'))throw new Error('Localized navigation labels not preserved');
 
-const sections=['className="hero"','className="about-section"','<LandingOverview locale={locale}/>','className="contact-section"'];
+const sections=['className="hero studio-hero"','className="about-section studio-about-section"','<LandingOverview locale={locale}/>','className="contact-section"'];
 for(let i=1;i<sections.length;i++)if(home.indexOf(sections[i])<=home.indexOf(sections[i-1]))throw new Error('Incorrect portfolio story order');
 for(const necessary of ['LandingOverview','portrait-photo','/images/taha-portrait.webp']){
  if(!home.includes(necessary))throw new Error('Missing real portfolio element: '+necessary);
