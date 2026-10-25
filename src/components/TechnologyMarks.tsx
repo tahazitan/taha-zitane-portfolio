@@ -5,6 +5,8 @@
 type Variant = "hero" | "card" | "inline" | "case" | "mini";
 type Brand = {key:string;name:string;matcher:RegExp;logo:boolean};
 const brands:Brand[] = [
+ {key:"microsoft",name:"Microsoft",matcher:/\bmicrosoft\b/i,logo:true},
+ {key:"kali",name:"Kali Linux",matcher:/\bkali(?:\s+linux)?\b/i,logo:true},
  {key:"windows",name:"Microsoft Windows",matcher:/\b(windows(?: server)?|active directory|ad ds|gpo|iis|microsoft)\b/i,logo:true},
  {key:"cisco",name:"Cisco",matcher:/\b(cisco|packet tracer)\b/i,logo:true},
  {key:"anydesk",name:"AnyDesk",matcher:/\banydesk\b/i,logo:true},
@@ -33,7 +35,7 @@ export default function TechnologyMarks({technologies,limit=5,variant="inline"}:
  if(!matched.length)return null;
  return <div className={"tech-marks tech-marks--"+variant} aria-label="Tools and technologies">
    {matched.map(brand=><span className={"tech-mark "+(brand.logo?"tech-mark--logo":"tech-mark--wordmark")} key={brand.key} title={brand.name} aria-label={brand.name}>
-     {brand.logo&&<span className="tech-mark-image"><img src={"/tech-logos/"+brand.key+(brand.key==="zabbix"?".webp":".svg")} width={25} height={25} alt="" loading={variant==="hero"?"eager":"lazy"} decoding="async" /></span>}
+     {brand.logo&&<span className="tech-mark-image"><img src={"/tech-logos/"+brand.key+".svg"} width={25} height={25} alt="" loading={variant==="hero"?"eager":"lazy"} decoding="async" /></span>}
      <span className="tech-mark-label">{brand.name}</span>
    </span>)}
  </div>;
