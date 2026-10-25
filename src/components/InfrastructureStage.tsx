@@ -5,7 +5,7 @@ import {ArrowUpRight,Box,Orbit,Server,ShieldCheck,Activity,Network,MoveUpRight,R
 import TechnologyMarks from "./TechnologyMarks";
 import type {Locale} from "@/data/content";
 import type {Focus} from "./NetworkWorld";
-import ArchitectureFallback from "./ArchitectureFallback";
+const ArchitectureFallback=dynamic(()=>import("./ArchitectureFallback"),{ssr:false,loading:()=> <div className="stage-loading" aria-hidden="true"><span/><span/><span/></div>});
 import {topologyDesigns} from "@/data/labTopologies";
 const NetworkWorld=dynamic(()=>import("./NetworkWorld"),{ssr:false,loading:()=> <div className="stage-loading" aria-hidden="true"><span/><span/><span/><span/></div>});
 const categories=[
