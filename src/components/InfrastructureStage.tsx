@@ -1,10 +1,11 @@
 "use client";
-import {useEffect,useRef,useState,type CSSProperties} from "react";
+import {useEffect,useRef,useState} from "react";
 import dynamic from "next/dynamic";
 import {ArrowUpRight,Box,Orbit,Server,ShieldCheck,Activity,Network,MoveUpRight,RotateCcw,ChevronLeft,ChevronRight,Pause,Play} from "lucide-react";
 import TechnologyMarks from "./TechnologyMarks";
 import type {Locale} from "@/data/content";
 import type {Focus} from "./NetworkWorld";
+import ArchitectureFallback from "./ArchitectureFallback";
 import {topologyDesigns} from "@/data/labTopologies";
 const NetworkWorld=dynamic(()=>import("./NetworkWorld"),{ssr:false,loading:()=> <div className="stage-loading" aria-hidden="true"><span/><span/><span/><span/></div>});
 const categories=[
@@ -78,11 +79,7 @@ export default function InfrastructureStage({locale}:{locale:Locale}){
        </button>
       </div>
      </div>
-     {enhanced&&inViewport?<NetworkWorld active={active} orbit={orbitRef} onSelect={setActive} onInspect={setInspected} selectedNode={inspected} motionPaused={motionPaused} onContextLost={()=>setEnhanced(false)}/>:<div className="stage-blueprint stage-topology-fallback" aria-label={t.fallback} role="group">
-      <div className="fallback-topology-heading">{enterprise.title}<span>{enterprise.nodes.length} NODES · {enterprise.links.length} LINKS</span></div>
-      <div className="fallback-topology-grid">{enterprise.nodes.filter(node=>["wan","remote","hqfw","core","branchA","branchB","identity","linux","siem"].includes(node.id)).map(node=><div className={"fallback-topology-node fallback-topology-node--"+node.kind} key={node.id}><small>{node.id}</small><strong>{node.label}</strong></div>)}</div>
-      <div className="fallback-topology-caption">{enterprise.subtitle}</div>
-     </div>}
+     {enhanced&&inViewport?<NetworkWorld active={active} orbit={orbitRef} onSelect={setActive} onInspect={setInspected} selectedNode={inspected} motionPaused={motionPaused} onContextLost={()=>setEnhanced(false)}/>:<div className="stage-blueprint stage-topology-fallback"><ArchitectureFallback active={active} locale={locale} selected={inspected} onInspect={setInspected}/></div>}
      <div className="immersive-orbit-controls" role="group" aria-label={t.fallback}>
       <button type="button" aria-label={t.orbitLeft} title={t.orbitLeft} onClick={()=>rotate(-.25)}><ChevronLeft size={21}/></button>
       <button type="button" aria-label={t.orbitReset} title={t.orbitReset} onClick={()=>setOrbitAngle(0)}><RotateCcw size={17}/></button>
