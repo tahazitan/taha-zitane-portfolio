@@ -64,7 +64,7 @@
 .portfolio-template .studio-hero .hero-visual{display:flex;padding:15px 0 55px;justify-content:flex-end;align-items:center;position:relative}
 .portfolio-template .studio-hero .hero-visual .portrait-frame{width:min(100%,465px);height:clamp(420px,43vw,575px);border:0;border-radius:47% 47% 0 0/34% 34% 0 0;box-shadow:-16px 20px 45px #071a2a55;background:#e8e9ec}
 .portfolio-template .studio-hero .hero-visual .portrait-photo{object-position:50% 14%;filter:none}
-.portfolio-template .studio-hero .hero-visual .portrait-frame:after{content:"";position:absolute;bottom:0;left:0;right:0;height:34%;background:linear-gradient(0deg,#0a2338bb,transparent);pointer-events:none}
+.portfolio-template .studio-hero .hero-visual .portrait-frame:after{content:"";position:absolute;inset:auto 0 0;height:34%;background:linear-gradient(0deg,#0a2338bb,transparent);pointer-events:none}
 .portfolio-template .studio-hero .portrait-vertical{color:#fff}
 .portfolio-template .studio-hero .hero-visual .portrait-caption{color:#edf9ff;margin-top:12px;gap:10px;width:min(100%,465px);font:11px/1.5 var(--mono)}
 .portfolio-template .studio-hero .portrait-caption strong,.portfolio-template .studio-hero .portrait-caption>span{color:#c2e2f0}
