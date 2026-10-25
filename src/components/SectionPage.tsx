@@ -43,7 +43,7 @@ const details={
  }
 } as const;
 const serviceTools=[["AnyDesk","Windows"],["Windows Server","Linux","Proxmox","Ubuntu"],["Wireshark","Wazuh","FortiGate","Palo Alto"],["Cisco","GNS3","Windows Server","Linux"]];
-const marks={"2024 — 2025":{logo:"emsi",name:"EMSI",city:"TANGER"},"2020 — 2022":{logo:"ofppt",name:"OFPPT / ISMO",city:"TÉTOUAN"},"2019 — 2020":{logo:"university",name:"UNIVERSITÉ ABDELMALEK ESSAÂDI",city:"FACULTÉ DES SCIENCES"},"2018":{logo:"ministry",name:"LYCÉE AL-KHAWARIZMI",city:"CHEFCHAOUEN"}} as const;
+const marks={"2024 — 2025":{logo:"emsi",name:"EMSI",city:"TANGER"},"2020 — 2022":{logo:"ofppt",name:"OFPPT / ISMO",city:"TÉTOUAN"},"2019 — 2020":{logo:"university",name:"UNIVERSITÉ ABDELMALEK ESSAÂDI",city:"FACULTÉ DES SCIENCES"},"2019":{logo:"ministry",name:"LYCÉE AL-KHAWARIZMI",city:"CHEFCHAOUEN"}} as const;
 const route=(locale:Locale,section:SectionKey)=>`${locale==="en"?"":"/"+locale}/${section}/`;
 export default function SectionPage({locale,section}:{locale:Locale;section:SectionKey}){
  const c=content[locale],p=professional[locale],t=details[locale][section],rtl=locale==="ar";
@@ -53,12 +53,12 @@ export default function SectionPage({locale,section}:{locale:Locale;section:Sect
   <Navigation locale={locale} section={section}/>
   <main>
    <section className="detail-hero" id="top"><div className="container-xl detail-hero-inner">
-    <div className="detail-headerline"><span>{t[0]}</span><span>TAHA ZITANE / {section.toUpperCase()}</span></div>
+    <div className="detail-headerline"><span>{t[0]}</span><span>{rtl?"طه زيطان":"TAHA ZITANE"} / {section.toUpperCase()}</span></div>
     <div className="detail-hero-body"><div><h1>{t[1]}</h1><p>{t[2]}</p><Link className="detail-back" href={homePath(locale)}><ArrowLeft size={17}/>{locale==="fr"?"Accueil":rtl?"الرئيسية":"Home"}</Link></div>
     <SectionHeroVisual section={section} locale={locale}/></div>
    </div></section>
    {section==="projects"&&<section id="work" className="section work-section"><div className="container-xl">
-    <div className="detail-section-caption"><span>01 / ENGINEERING PORTFOLIO</span><span>08 / CASE STUDIES</span></div>
+    <div className="detail-section-caption"><span>{locale==="fr"?"01 / PROJETS TECHNIQUES":rtl?"٠١ / المشاريع التقنية":"01 / ENGINEERING PORTFOLIO"}</span><span>{c.projects.length} {locale==="fr"?"ÉTUDES DE CAS":rtl?"دراسات تقنية":"CASE STUDIES"}</span></div>
     <ProjectExplorer locale={locale} projects={c.projects}/>
    </div></section>}
    {section==="experience"&&<section id="experience" className="section experience-section"><div className="container-xl">
