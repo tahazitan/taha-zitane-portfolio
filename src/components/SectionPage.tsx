@@ -48,7 +48,7 @@ const route=(locale:Locale,section:SectionKey)=>`${locale==="en"?"":"/"+locale}/
 export default function SectionPage({locale,section}:{locale:Locale;section:SectionKey}){
  const c=content[locale],p=professional[locale],t=details[locale][section],rtl=locale==="ar";
  const companyLine=locale==="fr"?"ENTREPRISES · INDÉPENDANTS · MISSIONS À DISTANCE":locale==="ar"?"الشركات · العملاء · المهام عن بُعد":"BUSINESSES · CLIENTS · REMOTE MISSIONS";
- return <div className={`page-shell detail-site section-site section-site--${section} ${rtl?"rtl":""}`} dir={rtl?"rtl":"ltr"}>
+ return <div className={`page-shell portfolio-template agency-site detail-site section-site section-site--${section} ${rtl?"rtl":""}`} dir={rtl?"rtl":"ltr"}>
   <LocaleSetup locale={locale}/>
   <Navigation locale={locale} section={section}/>
   <main>
