@@ -76,12 +76,14 @@ try{
 
  for(const section of ['projects','experience','education','expertise','services','contact']){
   await d.goto(base+'/'+section+'/',{waitUntil:'domcontentloaded'});
-  assert.equal(await d.locator('.domain-node').count(),3,section+': unique three-stage technical visual');
-  if(section!=='contact')assert.equal(await d.locator('.domain-node .tech-mark-image img').count(),3,section+': sourced technology branding within each three-stage illustration');
-  assert.equal(await d.locator('.domain-node[aria-pressed="true"]').count(),1,section+': exactly one active domain');
-  await d.locator('.domain-node').nth(1).click();
-  assert.equal(await d.locator('.domain-node').nth(1).getAttribute('aria-pressed'),'true',section+': active node selection responds to click');
-  assert.ok(await d.locator('.domain-selected').isVisible(),section+': contextual technical explanation visible');
+  assert.equal(await d.locator('.evidence-intro').count(),1,section+': page-specific editorial evidence');
+  assert.ok(await d.locator('.evidence-intro-head').isVisible(),section+': meaningful section heading');
+  if(['experience','education','expertise','services'].includes(section)){
+   const counts={experience:3,education:3,expertise:4,services:4};
+   assert.equal(await d.locator('.evidence-intro-entry').count(),counts[section],section+': real records rather than generic icon steps');
+  }
+  if(section==='projects')assert.ok(await d.locator('.evidence-intro-actions a[href*="topology.clab.yml"]').count()>0,'Project intro links to actual lab source');
+  if(section==='contact')assert.ok(await d.locator('.evidence-intro-contact a[href^="mailto:"]').count()>0,'Contact intro provides a real email action');
   await overflow(d,section+' desktop');
   await d.locator('.detail-hero').screenshot({path:path.join(root,'screenshots','desktop-'+section+'-hero.png'),animations:'disabled'});
  }
@@ -219,9 +221,9 @@ try{
   await m.screenshot({path:path.join(root,'screenshots',`mobile-${locale}.png`),animations:'disabled'});
   for(const s of ['projects','services','experience','education','expertise','contact']){
    await m.goto(base+`/${locale}/${s}/`,{waitUntil:'domcontentloaded'});
-   assert.ok(await m.locator('.domain-visual').isVisible(),`${locale} ${s}: own visual story remains visible on mobile`);
-   assert.ok(await m.locator('.mobile-menu').count()===0,`${locale} ${s}: mobile menu stays closed until requested`);
-   assert.equal(await m.locator('.domain-node').count(),3,`${locale} ${s}: technical nodes remain interactive`);
+   assert.ok(await m.locator('.evidence-intro').isVisible(),`${locale} ${s}: evidence panel visible on mobile`);
+   assert.ok(await m.locator('.mobile-menu').count()===0,`${locale} ${s}: menu stays closed until requested`);
+   assert.equal(await m.locator('.domain-node').count(),0,`${locale} ${s}: repetitive three-icon device carousels removed`);
    await overflow(m,`${locale} ${s} mobile`);
   }
  }

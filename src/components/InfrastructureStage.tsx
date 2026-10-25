@@ -1,10 +1,12 @@
 "use client";
-import {useEffect,useRef,useState,type CSSProperties} from "react";
+import {useEffect,useRef,useState} from "react";
 import dynamic from "next/dynamic";
 import {ArrowUpRight,Box,Orbit,Server,ShieldCheck,Activity,Network,MoveUpRight,RotateCcw,ChevronLeft,ChevronRight,Pause,Play} from "lucide-react";
 import TechnologyMarks from "./TechnologyMarks";
 import type {Locale} from "@/data/content";
 import type {Focus} from "./NetworkWorld";
+const ArchitectureFallback=dynamic(()=>import("./ArchitectureFallback"),{ssr:false,loading:()=> <div className="stage-loading" aria-hidden="true"><span/><span/><span/></div>});
+import {topologyDesigns} from "@/data/labTopologies";
 const NetworkWorld=dynamic(()=>import("./NetworkWorld"),{ssr:false,loading:()=> <div className="stage-loading" aria-hidden="true"><span/><span/><span/><span/></div>});
 const categories=[
  {id:"network" as Focus,icon:Network,tools:["Cisco","Linux","Wireshark"]},
@@ -19,6 +21,9 @@ const copy={
 } as const;
 export default function InfrastructureStage({locale}:{locale:Locale}){
  const [active,setActive]=useState<Focus>("network");
+ const [inspected,setInspected]=useState<string|null>(null);
+ const enterprise=topologyDesigns.find(topology=>topology.id==="enterprise")!;
+ const selectedDevice=enterprise.nodes.find(node=>node.id===inspected);
  const [motionPaused,setMotionPaused]=useState(false);
  const [enhanced,setEnhanced]=useState(false);
  const [orbitAngle,setOrbitAngle]=useState(0);
@@ -74,15 +79,7 @@ export default function InfrastructureStage({locale}:{locale:Locale}){
        </button>
       </div>
      </div>
-     {enhanced&&inViewport?<NetworkWorld active={active} orbit={orbitRef} onSelect={setActive} motionPaused={motionPaused} onContextLost={()=>setEnhanced(false)}/>:<div className="stage-blueprint" aria-label={t.fallback} role="img">
-      <div className="blueprint-glow"/>
-      <span className="blueprint-label blueprint-label--n">LAN / VLAN</span>
-      <span className="blueprint-label blueprint-label--s">FIREWALL / VPN</span>
-      <div className="blueprint-rack" style={{"--mobile-orbit":orbitAngle*18+"deg"} as CSSProperties}><div className="blueprint-rack-top"/>{categories.map((cat,i)=><div key={cat.id} className={"blueprint-unit "+(cat.id===active?"is-lit":"")}><span className="unit-slots">{Array.from({length:8},(_,k)=><i key={k}/>)}</span><span className="unit-led"/></div>)}</div>
-      <span className="blueprint-label blueprint-label--c">AD / LINUX / VM</span>
-      <span className="blueprint-label blueprint-label--o">LOG / SIEM</span>
-      <div className="blueprint-trace blueprint-trace--a"/><div className="blueprint-trace blueprint-trace--b"/>
-     </div>}
+     {enhanced&&inViewport?<NetworkWorld active={active} orbit={orbitRef} onSelect={setActive} onInspect={setInspected} selectedNode={inspected} motionPaused={motionPaused} onContextLost={()=>setEnhanced(false)}/>:<div className="stage-blueprint stage-topology-fallback"><ArchitectureFallback active={active} locale={locale} selected={inspected} onInspect={setInspected}/></div>}
      <div className="immersive-orbit-controls" role="group" aria-label={t.fallback}>
       <button type="button" aria-label={t.orbitLeft} title={t.orbitLeft} onClick={()=>rotate(-.25)}><ChevronLeft size={21}/></button>
       <button type="button" aria-label={t.orbitReset} title={t.orbitReset} onClick={()=>setOrbitAngle(0)}><RotateCcw size={17}/></button>
@@ -93,10 +90,10 @@ export default function InfrastructureStage({locale}:{locale:Locale}){
     <div className="immersive-panel">
      <div className="immersive-panel-title"><span>ARCHITECTURE / LAYERS</span><MoveUpRight size={19}/></div>
      <div className="layer-controls" role="group" aria-label={t.fallback}>
-      {categories.map((cat,i)=>{const Icon=cat.icon;return <button className={"layer-button "+(active===cat.id?"is-selected":"")} type="button" aria-pressed={active===cat.id} onClick={()=>setActive(cat.id)} key={cat.id}>
+      {categories.map((cat,i)=>{const Icon=cat.icon;return <button className={"layer-button "+(active===cat.id?"is-selected":"")} type="button" aria-pressed={active===cat.id} onClick={()=>{setActive(cat.id);setInspected(null)}} key={cat.id}>
        <span className="layer-icon"><Icon size={22}/></span><span className="layer-text"><small>0{i+1} / 04</small><strong>{t.focus[i]}</strong></span><ArrowUpRight size={18}/></button>})}
      </div>
-     <div className="layer-information" aria-live="polite"><span className="layer-number">0{selected+1} / SELECTED LAYER</span><p>{t.detail[selected]}</p><TechnologyMarks technologies={categories[selected].tools} limit={3} variant="inline"/></div>
+     <div className="layer-information" aria-live="polite"><span className="layer-number">{selectedDevice?"SELECTED NODE / "+selectedDevice.id:"0"+(selected+1)+" / SELECTED LAYER"}</span>{selectedDevice&&<strong className="selected-architecture-node">{selectedDevice.label} · {selectedDevice.kind}</strong>}<p>{t.detail[selected]}</p><TechnologyMarks technologies={categories[selected].tools} limit={3} variant="inline"/></div>
      <a className="immersive-project-link" href={locale==="en"?"/projects/":"/"+locale+"/projects/"}>{t.link}<ArrowUpRight size={19}/></a>
     </div>
    </div>

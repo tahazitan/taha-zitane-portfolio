@@ -1,0 +1,83 @@
+/* Source-derived enterprise architecture, not a decorative server rack.
+   3D nodes correspond to topologyDesigns; all labels are accessible DOM. */
+.immersive-visual:has(.topology-3d-label),
+.immersive-visual:has(.stage-topology-fallback){
+ background:radial-gradient(ellipse at 50% 42%,#193d52 0,#0b2233 68%);
+}
+.immersive-visual:has(.topology-3d-label)::before{opacity:.18}
+.topology-3d-label{
+ display:inline-block;min-width:60px;max-width:110px;
+ padding:4px 7px;border:1px solid #5f879c;border-radius:2px;
+ color:#b6ccd7;background:#112b3ce8;
+ font:700 9px/1.35 ui-monospace,SFMono-Regular,Consolas,monospace;
+ text-align:center;letter-spacing:0;white-space:normal;
+ transition:color .15s,border-color .15s;
+}
+.topology-3d-label.is-lit{color:#f3fbfb;border-color:#a1cbd6;background:#1a3c50}
+.topology-3d-label[data-kind="firewall"].is-lit{border-color:#dfb485}
+.topology-3d-label[data-kind="monitor"].is-lit{border-color:#88d1aa}
+.topology-3d-label[data-kind="server"].is-lit{border-color:#a8bcdc}
+.selected-architecture-node{display:block;color:#f1fafb;font-size:13px;font-weight:650;line-height:1.6;margin-top:10px}
+.stage-topology-fallback{
+ position:absolute;inset:0;
+ display:flex;flex-direction:column;align-items:stretch;
+ justify-content:center;gap:17px;
+ padding:74px clamp(24px,4vw,48px) 75px;
+ color:#e6f3f8;pointer-events:none;
+}
+.fallback-topology-heading{
+ display:flex;align-items:center;justify-content:space-between;gap:12px;
+ color:#cce6ee;font:700 12px/1.5 ui-monospace,monospace;
+ border-bottom:1px solid #3b6074;padding-bottom:14px;
+}
+.fallback-topology-heading span{font-size:10px;color:#88b4c9}
+.fallback-topology-grid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:9px;width:100%;
+}
+.fallback-topology-node{min-width:0;padding:11px;background:#1b3a50;border:1px solid #416e83;display:grid;gap:7px}
+.fallback-topology-node small{font:700 10px ui-monospace,monospace;color:#8db4c7}
+.fallback-topology-node strong{font:600 12px/1.4 var(--font);color:#edf7fa;overflow-wrap:anywhere}
+.fallback-topology-node--firewall{border-inline-start:3px solid #cda371}
+.fallback-topology-node--server{border-inline-start:3px solid #8fa5d0}
+.fallback-topology-node--monitor{border-inline-start:3px solid #74baa0}
+.fallback-topology-caption{font:500 11px/1.6 var(--font);color:#b1cbd8}
+.immersive-visual .immersive-stage-top,.immersive-visual .immersive-stage-foot{z-index:22}
+.immersive-visual .immersive-orbit-controls{z-index:25}
+@media(max-width:660px){
+ .topology-3d-label{font-size:8px;min-width:48px;max-width:78px;padding:3px 4px}
+ .stage-topology-fallback{padding:68px 13px 72px}
+ .fallback-topology-heading{font-size:10px}
+ .fallback-topology-heading span{font-size:8px}
+ .fallback-topology-node{padding:8px;gap:4px}
+ .fallback-topology-node strong{font-size:10px}
+ .fallback-topology-node small{font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){.topology-3d-label{transition:none}}
+
+/* SVG view is not a picture: nodes are keyboard-selectable and connected by
+   edges from the same architecture model powering WebGL. */
+.immersive-visual .stage-topology-fallback{
+ display:block;overflow:auto;min-height:0;pointer-events:auto;
+ overscroll-behavior:contain;scrollbar-color:#4c798c #10283a;
+}
+.reference-topology-shell{
+ padding:clamp(68px,6vw,88px) clamp(15px,2vw,25px) 72px;
+ min-width:690px;max-width:100%;color:#e7f7fb;
+}
+.reference-topology-summary,.reference-topology-note{
+ display:flex;justify-content:space-between;gap:12px;align-items:center;
+ flex-wrap:wrap;font:500 11px/1.5 ui-monospace,monospace;
+ color:#a9c9d8;
+}
+.reference-topology-summary strong{font-weight:650;color:#d4eef2}
+.reference-topology-summary{padding-bottom:13px}
+.reference-topology-svg{width:100%;height:auto;max-height:450px;display:block;border:1px solid #406578;background:#102a3c}
+.reference-topology-device{cursor:pointer;outline:none}
+.reference-topology-device:is(:hover,:focus-visible) rect{stroke:#f2cf97;stroke-width:4}
+.reference-topology-device:focus-visible{filter:drop-shadow(0 0 5px #8dd4de)}
+.reference-topology-note{padding-top:11px;font-size:10px}
+@media(max-width:660px){
+ .reference-topology-shell{max-width:none;width:740px;min-width:740px;padding:65px 14px 68px}
+ .reference-topology-svg{max-height:none}
+}

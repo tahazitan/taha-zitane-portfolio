@@ -7,8 +7,9 @@ type Brand = {key:string;name:string;matcher:RegExp;logo:boolean};
 const brands:Brand[] = [
  {key:"microsoft",name:"Microsoft",matcher:/\bmicrosoft\b/i,logo:true},
  {key:"kali",name:"Kali Linux",matcher:/\bkali(?:\s+linux)?\b/i,logo:true},
- {key:"windows",name:"Microsoft Windows",matcher:/\b(windows(?: server)?|active directory|ad ds|gpo|iis|microsoft)\b/i,logo:true},
- {key:"cisco",name:"Cisco",matcher:/\b(cisco|packet tracer)\b/i,logo:true},
+ {key:"windows",name:"Microsoft Windows",matcher:/\b(windows(?: server)?|active directory|ad ds|gpo|iis)\b/i,logo:true},
+ {key:"cisco",name:"Cisco",matcher:/\bcisco\b/i,logo:true},
+ {key:"packettracer",name:"Cisco Packet Tracer",matcher:/\bpacket\s*tracer\b/i,logo:false},
  {key:"anydesk",name:"AnyDesk",matcher:/\banydesk\b/i,logo:true},
  {key:"linux",name:"Linux",matcher:/\blinux\b/i,logo:true},
  {key:"ubuntu",name:"Ubuntu",matcher:/\bubuntu\b/i,logo:true},
@@ -30,8 +31,11 @@ const brands:Brand[] = [
  {key:"enova",name:"Enova Santé",matcher:/\benova\s+sant[ée]/i,logo:false}
 ];
 export default function TechnologyMarks({technologies,limit=5,variant="inline"}:{technologies:readonly string[];limit?:number;variant?:Variant}){
- const haystack=technologies.join(" | ");
- const matched=brands.filter(brand=>brand.matcher.test(haystack)).slice(0,limit);
+ const matched=technologies.reduce<Brand[]>((selected,technology)=>{
+   const match=brands.find(brand=>brand.matcher.test(technology));
+   if(match&&!selected.some(item=>item.key===match.key))selected.push(match);
+   return selected;
+ },[]).slice(0,limit);
  if(!matched.length)return null;
  return <div className={"tech-marks tech-marks--"+variant} aria-label="Tools and technologies">
    {matched.map(brand=><span className={"tech-mark "+(brand.logo?"tech-mark--logo":"tech-mark--wordmark")} key={brand.key} title={brand.name} aria-label={brand.name}>

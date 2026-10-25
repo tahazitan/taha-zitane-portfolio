@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {ArrowUpRight, ArrowLeft, Mail, Phone, Github, Linkedin, ShieldCheck, Layers3} from "lucide-react";
 import Navigation from "./Navigation";
-import SectionHeroVisual from "./SectionHeroVisual";
+import SectionHeroEvidence from "./SectionHeroEvidence";
 import LocaleSetup from "./LocaleSetup";
 import FooterBrand from "./FooterBrand";
 import Reveal from "./Reveal";
@@ -55,7 +55,7 @@ export default function SectionPage({locale,section}:{locale:Locale;section:Sect
    <section className="detail-hero" id="top"><div className="container-xl detail-hero-inner">
     <div className="detail-headerline"><span>{t[0]}</span><span>{rtl?"طه زيطان":"TAHA ZITANE"} / {c.nav[["projects","experience","education","expertise","services","contact"].indexOf(section)]}</span></div>
     <div className="detail-hero-body"><div><h1>{t[1]}</h1><p>{t[2]}</p><Link className="detail-back" href={homePath(locale)}><ArrowLeft size={17}/>{locale==="fr"?"Accueil":rtl?"الرئيسية":"Home"}</Link></div>
-    <SectionHeroVisual section={section} locale={locale}/></div>
+    <SectionHeroEvidence section={section} locale={locale}/></div>
    </div></section>
    {section==="projects"&&<section id="work" className="section work-section"><div className="container-xl">
     <div className="detail-section-caption"><span>{locale==="fr"?"01 / PROJETS TECHNIQUES":rtl?"٠١ / المشاريع التقنية":"01 / ENGINEERING PORTFOLIO"}</span><span>{c.projects.length} {locale==="fr"?"ÉTUDES DE CAS":rtl?"دراسات تقنية":"CASE STUDIES"}</span></div>

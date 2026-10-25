@@ -1,127 +1,114 @@
 "use client";
 import {Canvas,useFrame,useThree} from "@react-three/fiber";
-import {Grid,RoundedBox} from "@react-three/drei";
-import {useEffect,useMemo,useRef} from "react";
+import {Line,RoundedBox} from "@react-three/drei";
 import {useReducedMotion} from "framer-motion";
+import {useEffect,useMemo,useRef} from "react";
 import * as THREE from "three";
-export type Focus = "network" | "systems" | "security" | "monitoring";
-const palette={network:"#65e0db",systems:"#91baff",security:"#ffb38b",monitoring:"#c2a7ff"} as const;
-function Equipment({y,kind,selected,onSelect}:{y:number;kind:Focus;selected:boolean;onSelect:(kind:Focus)=>void}){
- const light=palette[kind];
- return <group position={[0,y,0.34]} onClick={event=>{event.stopPropagation();onSelect(kind)}} onPointerOver={event=>{event.stopPropagation();document.body.style.cursor="pointer"}} onPointerOut={()=>{document.body.style.cursor=""}}>
-   <RoundedBox args={[2.33,.36,.61]} radius={.055} smoothness={3} castShadow><meshStandardMaterial color={selected?"#285767":"#162f43"} metalness={.72} roughness={.35} emissive={light} emissiveIntensity={selected?.13:.018}/></RoundedBox>
-   <mesh position={[0,0,.314]}><boxGeometry args={[2.28,.28,.018]}/><meshStandardMaterial color="#1a3445" metalness={.45} roughness={.35}/></mesh>
-   {Array.from({length:kind==="network"?12:kind==="systems"?5:8},(_,i)=><mesh key={i} position={[-.85+i*(kind==="network"?.15:kind==="systems"?.34:.23),.012,.33]}>
-     <boxGeometry args={[.086,.072,.015]}/><meshStandardMaterial color={selected?light:"#598399"} emissive={light} emissiveIntensity={selected?.7:.1}/></mesh>)}
-   <mesh position={[.94,-.092,.331]}><sphereGeometry args={[.038,8,8]}/><meshStandardMaterial color={light} emissive={light} emissiveIntensity={selected?2:.38}/></mesh>
- </group>;
-}
-const connections=[
- {a:[-2.95,.85,-.3],b:[-.98,.8,.5],focus:"network" as Focus},
- {a:[-2.85,-.65,.12],b:[-1.02,-.63,.5],focus:"security" as Focus},
- {a:[1.03,1.03,.55],b:[3,1.1,-.4],focus:"systems" as Focus},
- {a:[1.02,-.76,.55],b:[3,-.92,.15],focus:"monitoring" as Focus}
-];
-function Cable({a,b,focus,selected}:{a:number[];b:number[];focus:Focus;selected:boolean}){
- const tube=useMemo(()=>new THREE.CatmullRomCurve3([
- new THREE.Vector3(a[0],a[1],a[2]),
- new THREE.Vector3((a[0]+b[0])/2,(a[1]+b[1])/2+.25,Math.max(a[2],b[2])+.35),
- new THREE.Vector3(b[0],b[1],b[2])
- ]),[a,b]);
- return <mesh><tubeGeometry args={[tube,28,selected?.024:.012,6,false]}/><meshBasicMaterial color={palette[focus]} transparent opacity={selected?.96:.27}/></mesh>;
-}
-// Conceptual packet path (not live network traffic), derived from scene cables.
-function DataPackets({focus,paused}:{focus:Focus;paused:boolean}){
- const root=useRef<THREE.Group>(null);
- const curve=useMemo(()=>{
-  const edge=connections.find(item=>item.focus===focus)!;
-  const {a,b}=edge;
-  return new THREE.CatmullRomCurve3([
-   new THREE.Vector3(a[0],a[1],a[2]),
-   new THREE.Vector3((a[0]+b[0])/2,(a[1]+b[1])/2+.25,Math.max(a[2],b[2])+.35),
-   new THREE.Vector3(b[0],b[1],b[2])
-  ]);
- },[focus]);
- useFrame(({clock})=>{
-  if(!root.current)return;
-  root.current.visible=!paused;
-  if(paused)return;
-  root.current.children.forEach((object,index)=>{
-   object.position.copy(curve.getPointAt((clock.elapsedTime*.19+index/3)%1));
-  });
- });
- return <group ref={root}>{[0,1,2].map(index=><mesh key={index}>
-  <sphereGeometry args={[.053,12,12]}/>
-  <meshBasicMaterial color={palette[focus]} toneMapped={false}/>
- </mesh>)}</group>;
-}
-function RemoteNode({pos,kind,selected,onSelect}:{pos:[number,number,number];kind:Focus;selected:boolean;onSelect:(kind:Focus)=>void}){
- return <group position={pos} onClick={event=>{event.stopPropagation();onSelect(kind)}} onPointerOver={event=>{event.stopPropagation();document.body.style.cursor="pointer"}} onPointerOut={()=>{document.body.style.cursor=""}}>
-   <RoundedBox args={[.66,.48,.58]} radius={.065} smoothness={3} castShadow><meshStandardMaterial color="#16374b" metalness={.54} roughness={.31} emissive={palette[kind]} emissiveIntensity={selected?.18:0}/></RoundedBox>
-   <mesh position={[0,0,.298]}><boxGeometry args={[.47,.15,.024]}/><meshStandardMaterial color={palette[kind]} emissive={palette[kind]} emissiveIntensity={selected?1.2:.18}/></mesh>
-   <mesh position={[0,-.35,0]}><cylinderGeometry args={[.09,.11,.19,8]}/><meshStandardMaterial color="#41647b" metalness={.68}/></mesh>
-   <mesh position={[0,-.47,0]}><cylinderGeometry args={[.37,.37,.035,20]}/><meshStandardMaterial color="#34556e" metalness={.67}/></mesh>
-   {selected&&<mesh rotation={[Math.PI/2,0,0]} position={[0,-.45,0]}><torusGeometry args={[.55,.012,5,44]}/><meshBasicMaterial color={palette[kind]} transparent opacity={.7}/></mesh>}
- </group>;
-}
+import {topologyDesigns,type TopologyNode} from "@/data/labTopologies";
+
+export type Focus="network"|"systems"|"security"|"monitoring";
+/** Positions are a view layout; IDs, roles and links are from the documented
+ * enterprise reference data. This is NOT observed production topology. */
+const architecture=topologyDesigns.find(t=>t.id==="enterprise")!;
+const stage:Record<string,[number,number,number]>={
+ remote:[-4.75,2.55,0],wan:[-.05,2.55,0],
+ hqfw:[-.05,1.35,.1],core:[-.05,.05,.2],
+ dmz:[-2.05,.35,.1],dmzapp:[-2.45,-.9,.2],
+ identity:[-1.6,-1.55,.2],linux:[.65,-1.55,.2],
+ siem:[.7,-2.8,.15],backups:[2.2,-2.8,.15],
+ branchA:[4.25,1.3,0],branchASw:[4.25,-.05,.1],branchAUsers:[4.25,-1.35,.1],
+ branchB:[-4.15,1.3,0],branchBSw:[-4.15,-.05,.1],branchBUsers:[-4.15,-1.35,.1],
+ users:[-1.15,-.48,.1],management:[1.6,-.48,.1],guests:[2.8,-1.55,.1]
+};
+const focusOf=(node:TopologyNode):Focus=>node.kind==="firewall"?"security":node.kind==="monitor"?"monitoring":node.kind==="server"?"systems":"network";
+const palette:Record<Focus,string>={network:"#65c5d7",security:"#edbd82",systems:"#b0bfe1",monitoring:"#7bd6ad"};
+const coords=(id:string):THREE.Vector3=>new THREE.Vector3(...(stage[id]??[0,0,0]));
+const inView=architecture.nodes.filter(node=>Boolean(stage[node.id]));
+const lines=architecture.links.filter(([a,b])=>Boolean(stage[a]&&stage[b]));
+const flowTypes:Record<Focus,string>={network:"branch",security:"remote",systems:"backup",monitoring:"monitor"};
 function CameraFit(){
- const {camera,size,invalidate}=useThree();
+ const {size,camera}=useThree();
  useEffect(()=>{
-  if(!(camera instanceof THREE.PerspectiveCamera))return;
-  const aspect=size.width/Math.max(1,size.height);
-  camera.position.set(0,1.15,aspect<.86?12.4:aspect<1.25?11.3:9.6);
-  camera.fov=aspect<.86?44:42;
-  camera.updateProjectionMatrix();
-  invalidate();
- },[camera,size.width,size.height,invalidate]);
+  if(!(camera instanceof THREE.OrthographicCamera))return;
+  camera.zoom=Math.max(18,Math.min(115,(size.width-38)/11,(size.height-75)/6.4));
+  camera.position.set(0,.03,20);
+  camera.lookAt(0,-.15,0);camera.updateProjectionMatrix();
+ },[size.width,size.height,camera]);
  return null;
 }
-function Rack({active,orbit,onSelect,motionPaused}:{active:Focus;orbit:{current:number};onSelect:(kind:Focus)=>void;motionPaused:boolean}){
- const reduced=useReducedMotion();
- const root=useRef<THREE.Group>(null);
- useFrame(({pointer,clock},delta)=>{
-   if(!root.current)return;
-   const smoothing=Math.min(1,delta*2.5);
-   const steady=reduced||motionPaused;
-   root.current.rotation.y+=((steady?0:pointer.x*.21)+orbit.current+(steady?0:Math.sin(clock.elapsedTime*.16)*.06)-root.current.rotation.y)*smoothing;
-   root.current.rotation.x+=((steady?0:-pointer.y*.07)-root.current.rotation.x)*smoothing;
-   root.current.position.y=steady?0:Math.sin(clock.elapsedTime*.48)*.035;
- });
- return <group ref={root} rotation={[0,-.14,0]}>
-   <mesh receiveShadow position={[0,-2.05,0]}><cylinderGeometry args={[2.1,2.35,.1,44]}/><meshStandardMaterial color="#102a3b" metalness={.65} roughness={.46}/></mesh>
-   <mesh position={[0,-2.002,0]} rotation={[-Math.PI/2,0,0]}><torusGeometry args={[1.82,.019,6,56]}/><meshBasicMaterial color={palette[active]} transparent opacity={.6}/></mesh>
-   {[-1.3,1.3].flatMap(x=>[-.1,.9].map(z=><mesh key={x+"-"+z} position={[x,.1,z]} castShadow><boxGeometry args={[.1,4,.1]}/><meshStandardMaterial color="#507083" metalness={.85} roughness={.25}/></mesh>))}
-   <mesh position={[0,2.1,.4]} castShadow><boxGeometry args={[2.72,.12,1.3]}/><meshStandardMaterial color="#26465a" metalness={.82} roughness={.3}/></mesh>
-   <mesh position={[0,-1.91,.4]}><boxGeometry args={[2.72,.12,1.3]}/><meshStandardMaterial color="#26465a" metalness={.82} roughness={.3}/></mesh>
-   <mesh position={[0,.1,-.13]}><boxGeometry args={[2.6,3.86,.08]}/><meshStandardMaterial color="#0d2235" metalness={.58} roughness={.41}/></mesh>
-   <Equipment y={1.58} kind="network" selected={active==="network"} onSelect={onSelect}/>
-   <Equipment y={.9} kind="security" selected={active==="security"} onSelect={onSelect}/>
-   <Equipment y={.22} kind="systems" selected={active==="systems"} onSelect={onSelect}/>
-   <Equipment y={-.46} kind="systems" selected={active==="systems"} onSelect={onSelect}/>
-   <Equipment y={-1.14} kind="monitoring" selected={active==="monitoring"} onSelect={onSelect}/>
-   <mesh position={[0,-1.72,.32]}><boxGeometry args={[2.3,.12,.6]}/><meshStandardMaterial color="#203c50" metalness={.7}/></mesh>
-   {connections.map((edge,i)=><Cable key={i} {...edge} selected={active===edge.focus}/>)}
-   <DataPackets focus={active} paused={Boolean(reduced||motionPaused)}/>
-   <RemoteNode pos={[-2.95,.85,-.3]} kind="network" selected={active==="network"} onSelect={onSelect}/>
-   <RemoteNode pos={[-2.85,-.65,.12]} kind="security" selected={active==="security"} onSelect={onSelect}/>
-   <RemoteNode pos={[3,1.1,-.4]} kind="systems" selected={active==="systems"} onSelect={onSelect}/>
-   <RemoteNode pos={[3,-.92,.15]} kind="monitoring" selected={active==="monitoring"} onSelect={onSelect}/>
+function Nameplate({label,active}:{label:string;active:boolean}){
+ // Render the label as a GPU canvas texture, avoiding DOM portals inside
+ // React Three Fiber. Portals were triggering removeChild errors on unmount.
+ const texture=useMemo(()=>{
+  if(typeof document==="undefined")return null;
+  const canvas=document.createElement("canvas");canvas.width=512;canvas.height=128;
+  const ctx=canvas.getContext("2d");if(!ctx)return null;
+  ctx.fillStyle=active?"#204357":"#162e41";ctx.fillRect(0,0,512,128);
+  ctx.strokeStyle=active?"#91cbd8":"#436a7e";ctx.lineWidth=5;ctx.strokeRect(3,3,506,122);
+  ctx.font="600 36px Arial, sans-serif";ctx.textBaseline="middle";
+  ctx.fillStyle=active?"#f1fbfc":"#a9c7d4";ctx.textAlign="center";
+  ctx.fillText(label,256,67,460);
+  const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;
+  return map;
+ },[label,active]);
+ useEffect(()=>()=>texture?.dispose(),[texture]);
+ if(!texture)return null;
+ return <sprite position={[0,-.49,.19]} scale={[1.55,.39,1]}><spriteMaterial map={texture} transparent depthWrite={false} depthTest={false}/></sprite>;
+}
+function ArchitectureNode({node,active,selected,onInspect}:{node:TopologyNode;active:Focus;selected:boolean;onInspect:(id:string)=>void}){
+ const kind=focusOf(node),lit=kind===active;
+ const pos=stage[node.id];const color=palette[kind];
+ return <group position={pos} onClick={e=>{e.stopPropagation();onInspect(node.id)}} onPointerOver={e=>{e.stopPropagation();document.body.style.cursor="pointer"}} onPointerOut={()=>{document.body.style.cursor=""}}>
+  <RoundedBox args={[.81,.42,.27]} radius={.072} smoothness={3} castShadow>
+   <meshStandardMaterial color={selected?"#3c5c6f":lit?"#29475b":"#1d3346"} metalness={.17} roughness={.7}/>
+  </RoundedBox>
+  <mesh position={[0,0,.15]}><boxGeometry args={[.65,.04,.025]}/><meshBasicMaterial color={color} transparent opacity={lit?1:.25}/></mesh>
+  <mesh position={[-.24,-.12,.15]}><sphereGeometry args={[.035,8,8]}/><meshBasicMaterial color={lit?color:"#556e80"}/></mesh>
+  {selected&&<mesh position={[0,0,-.03]}><boxGeometry args={[1.02,.6,.28]}/><meshBasicMaterial color={color} wireframe transparent opacity={.65}/></mesh>}
+  <Nameplate label={node.label} active={lit}/>
  </group>;
 }
-function Particles(){
- const buffer=useMemo(()=>{
-   const points=new Float32Array(270);
-   for(let i=0;i<90;i++){const a=i*2.3999632297;const r=2.5+(i%8)*.45;points[i*3]=Math.cos(a)*r;points[i*3+1]=((i*17)%49)/7-3.2;points[i*3+2]=Math.sin(a)*r-1.2;}
-   return points;
- },[]);
- return <points><bufferGeometry><bufferAttribute attach="attributes-position" args={[buffer,3]}/></bufferGeometry><pointsMaterial color="#82c8d5" size={.023} transparent opacity={.55} sizeAttenuation/></points>;
+function Trace({active,paused}:{active:Focus;paused:boolean}){
+ const reduced=useReducedMotion();
+ const marker=useRef<THREE.Mesh>(null);
+ const route=useMemo(()=>architecture.flows?.find(x=>x.id===flowTypes[active])?.nodes.filter(x=>stage[x])??[],[active]);
+ useFrame(({clock})=>{
+  if(!marker.current||route.length<2)return;
+  const speed=paused||reduced?0:clock.elapsedTime*.34;
+  const tick=speed%(route.length-1);
+  const index=Math.floor(tick);
+  marker.current.position.lerpVectors(coords(route[index]),coords(route[index+1]),tick-index);
+  marker.current.position.z+=.16;
+ });
+ if(route.length<2||paused||reduced)return null;
+ return <mesh ref={marker}><sphereGeometry args={[.085,12,12]}/><meshBasicMaterial color={palette[active]}/></mesh>;
 }
-export default function NetworkWorld({active,orbit,onSelect,motionPaused,onContextLost}:{active:Focus;orbit:{current:number};onSelect:(kind:Focus)=>void;motionPaused:boolean;onContextLost:()=>void}){
- return <Canvas dpr={[1,1.5]} camera={{position:[0,1.15,9.6],fov:42,near:.1,far:70}} gl={{alpha:true,antialias:true,powerPreference:"high-performance"}} onCreated={({gl})=>gl.domElement.addEventListener("webglcontextlost",event=>{event.preventDefault();onContextLost()},{once:true})} fallback={<div className="stage-no-webgl" aria-hidden="true"/>} aria-label="Interactive 3D network infrastructure visualization">
-   <CameraFit/>
-   <ambientLight intensity={1.4}/><directionalLight position={[4,6,7]} intensity={2.6} color="#d5f6ff"/><pointLight position={[-5,1,1]} color="#51d5d4" intensity={21} distance={14}/><pointLight position={[4,-2,2]} color="#ffb17f" intensity={10} distance={12}/>
-   <fog attach="fog" args={["#0b2030",13,27]}/>
-   <Grid position={[0,-2.16,0]} args={[13,13]} cellSize={.5} cellThickness={.35} cellColor="#356079" sectionSize={2.5} sectionThickness={.65} sectionColor="#5189a5" fadeDistance={12} fadeStrength={1.5}/>
-   <Particles/><Rack active={active} orbit={orbit} onSelect={onSelect} motionPaused={motionPaused}/>
+function Diagram({active,orbit,onInspect,motionPaused,selected}:{active:Focus;orbit:{current:number};onInspect:(id:string)=>void;motionPaused:boolean;selected:string|null}){
+ const root=useRef<THREE.Group>(null),reduced=useReducedMotion();
+ useFrame((state,delta)=>{
+  if(!root.current)return;
+  const target=(motionPaused||reduced?0:state.pointer.x*.055)+orbit.current*.3;
+  root.current.rotation.y=THREE.MathUtils.damp(root.current.rotation.y,target,2.7,delta);
+ });
+ return <group ref={root}>
+  <mesh position={[0,-.08,-.6]} receiveShadow><planeGeometry args={[11.5,6.6]}/><meshBasicMaterial color="#0d2535" transparent opacity={.58}/></mesh>
+  {lines.map(([a,b],i)=>{
+   const aa=architecture.nodes.find(n=>n.id===a)!,bb=architecture.nodes.find(n=>n.id===b)!;
+   const relation=focusOf(aa)===active||focusOf(bb)===active;
+   const vpn=(a==="branchA"||a==="branchB")&&b==="hqfw";
+   const ca=coords(a),cb=coords(b);
+   return <Line key={a+"-"+b+"-"+i} points={[[ca.x,ca.y,ca.z-.16],[cb.x,cb.y,cb.z-.16]]} lineWidth={vpn?2:1.4} color={vpn?"#d7a876":"#5e8da7"} transparent opacity={relation ? 0.83 : 0.24} dashed={vpn} dashSize={.18} gapSize={.12}/>;
+  })}
+  {inView.map(node=><ArchitectureNode key={node.id} node={node} active={active} selected={selected===node.id} onInspect={onInspect}/>)}
+  <Trace active={active} paused={motionPaused}/>
+ </group>;
+}
+export default function NetworkWorld({active,orbit,onSelect,onInspect,selectedNode,motionPaused,onContextLost}:{active:Focus;orbit:{current:number};onSelect:(kind:Focus)=>void;onInspect?:(id:string)=>void;selectedNode?:string|null;motionPaused:boolean;onContextLost:()=>void}){
+ const inspect=(id:string)=>{let n=architecture.nodes.find(x=>x.id===id);if(n)onSelect(focusOf(n));onInspect?.(id)};
+ return <Canvas orthographic camera={{position:[0,0,20],zoom:70,near:.1,far:100}} dpr={[1,1.5]} gl={{alpha:true,antialias:true,powerPreference:"low-power"}} onCreated={({gl})=>gl.domElement.addEventListener("webglcontextlost",e=>{e.preventDefault();onContextLost()},{once:true})} fallback={<div className="stage-no-webgl"/>} aria-label="Interactive three-dimensional reference network architecture: HQ, two branches and remote connectivity">
+  <CameraFit/>
+  <ambientLight intensity={1.9}/>
+  <directionalLight position={[3,5,8]} color="#d8effa" intensity={1.6}/>
+  <Diagram active={active} orbit={orbit} onInspect={inspect} motionPaused={motionPaused} selected={selectedNode??null}/>
  </Canvas>;
 }
