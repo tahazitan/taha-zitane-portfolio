@@ -1,10 +1,10 @@
 name: Publish portfolio to Cloudflare Workers
 
-# GitHub CI tests the exported Next.js site but does not publish it.
-# This workflow builds and deploys the exact contents of main to the public Worker.
+# Optional manual publishing fallback if GitHub Actions Cloudflare secrets are configured.
+# Production can also be published with an already-authenticated local Wrangler CLI.
+# Do not run on push: Cloudflare may already have Git-linked builds, and missing
+# repository secrets should not turn every normal code update into a false failure.
 on:
-  push:
-    branches: ["main"]
   workflow_dispatch:
 
 permissions:
