@@ -38,7 +38,7 @@ if(!layout.includes('sitewide-motion.css')||!motionSystem.includes('Intersection
 if(!motionSystem.includes('site-return-top')||!nav.includes('aria-expanded={open}')||!nav.includes('onEscape'))throw Error('Whole-site mobile navigation and scroll controls missing');
 if(!section.includes('<SectionHeroEvidence section={section} locale={locale}/>'))throw Error('The page-specific professional record view is not wired across sections');
 if(!sectionEvidence.includes('c.experience.slice(0,3)')||!sectionEvidence.includes('p.studies.slice(0,3)')||!sectionEvidence.includes('projectRepo'))throw Error('Section introductions must use actual experience, education and traceable topology');
-for(const name of ['projects','experience','education','expertise','services','contact'])if(!sectionEvidence.includes(name+':'))throw Error('Missing distinct record type '+name);
+for(const name of ['projects','experience','education','expertise','services','contact'])if(!sectionEvidence.includes('section===\"'+name+'\"'))throw Error('Missing distinct record type '+name);
 if(!casePage.includes('case-site--${slug}'))throw Error('Case-specific visual identity missing');
 for(const role of ['network','systems','security','monitoring'])if(!network3d.includes(role+':'))throw Error('Missing 3D architectural layer: '+role);
 if(!casePage.includes('<SourceTopology locale={locale} compact/>'))throw new Error('Real source topology must remain in enterprise project');
