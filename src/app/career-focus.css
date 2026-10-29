@@ -1,0 +1,25 @@
+/* Career-first recruiter area: scoped and responsive; no decorative performance effects. */
+.portfolio-template .career-focus{padding:clamp(64px,7vw,106px) 0;background:#f5f8fa;color:#17394a}
+.portfolio-template .career-focus-head{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);align-items:end;gap:clamp(28px,6vw,100px);padding-bottom:32px;border-bottom:1px solid #cfdfe6}
+.portfolio-template .career-focus-overline{display:inline-flex;align-items:center;gap:9px;font:700 11px/1.4 ui-monospace,monospace;color:#26758b;letter-spacing:.09em}
+.portfolio-template .career-focus-head h2{font-size:clamp(32px,4vw,60px);line-height:1.1;letter-spacing:-.045em;margin:18px 0 0;color:#16384a}
+.portfolio-template .career-focus-head>p{font-size:15px;line-height:1.8;color:#476675;max-width:550px;margin:0}
+.portfolio-template .career-focus-roles{margin-top:33px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.portfolio-template .career-focus-roles-label{grid-column:1/-1;color:#5a7581;font:700 11px ui-monospace,monospace;letter-spacing:.09em}
+.portfolio-template .career-focus-role{background:#fff;border:1px solid #d5e3e9;border-radius:9px;padding:23px 22px 26px;display:flex;gap:15px;min-height:160px}
+.portfolio-template .career-focus-role>span{font:700 11px ui-monospace,monospace;color:#2f8295;padding-top:4px}
+.portfolio-template .career-focus-role h3{font-size:17px;line-height:1.4;letter-spacing:-.015em;color:#173b4c;margin:0 0 8px}
+.portfolio-template .career-focus-role p{color:#55717f;font-size:13px;line-height:1.7;margin:0}
+.portfolio-template .career-focus-proof{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.portfolio-template .career-focus-proof>div{display:grid;grid-template-columns:30px 1fr;gap:7px 14px;align-content:start;padding:25px 26px;background:#eaf2f6;border:1px solid #d2e3e9;border-radius:9px}
+.portfolio-template .career-focus-proof svg{color:#307c8e}
+.portfolio-template .career-focus-proof span{font:750 11px/1.6 ui-monospace,monospace;letter-spacing:.06em}
+.portfolio-template .career-focus-proof p{grid-column:2;margin:0;color:#4e6b79;font-size:13px;line-height:1.7}
+.portfolio-template .career-focus-proof a{grid-column:2;display:inline-flex;align-items:center;gap:7px;width:max-content;margin-top:8px;color:#155a6b;font-weight:700;font-size:13px}
+.portfolio-template .career-focus-links{display:flex;flex-wrap:wrap;gap:14px 24px;margin-top:24px}
+.portfolio-template .career-focus-links a{display:inline-flex;align-items:center;gap:9px;color:#175d73;font-size:13px;font-weight:700;text-decoration:underline;text-underline-offset:4px}
+.portfolio-template .career-focus a:focus-visible{outline:3px solid #2b8194;outline-offset:4px}
+.portfolio-template .rtl .career-focus-head h2{letter-spacing:normal}
+@media(max-width:920px){.portfolio-template .career-focus-roles{grid-template-columns:1fr}.portfolio-template .career-focus-role{min-height:0}}
+@media(max-width:740px){.portfolio-template .career-focus-head,.portfolio-template .career-focus-proof{grid-template-columns:1fr}.portfolio-template .career-focus-head{gap:17px}.portfolio-template .career-focus-proof p,.portfolio-template .career-focus-proof a{grid-column:2}}
+@media(max-width:500px){.portfolio-template .career-focus-role{padding:19px}.portfolio-template .career-focus-proof>div{padding:20px}.portfolio-template .career-focus-head>p{font-size:14px}}
